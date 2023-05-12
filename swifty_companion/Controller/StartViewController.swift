@@ -27,6 +27,7 @@ class StartViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.setContentHuggingPriority(UILayoutPriority(rawValue: 200), for: .horizontal)
         field.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 700), for: .horizontal)
+        
         return field
     }()
     
@@ -66,8 +67,9 @@ class StartViewController: UIViewController {
     
     @objc func onButtonTapped() {
         
-        let login = "hmeriann"
-        showUserDetails(with: login)
+        guard let login = searchField.text, !login.isEmpty else { return }
+        
+        showUserDetails(with: login.lowercased())
     }
     
 }
