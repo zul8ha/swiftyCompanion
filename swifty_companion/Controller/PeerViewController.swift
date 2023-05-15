@@ -17,7 +17,22 @@ class PeerViewController: UIViewController {
     
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .leading
+        stack.distribution = .equalSpacing
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
         
+        return stack
+    }()
+    
+    private lazy var userInfo: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.alignment = .top
+        //        stack.setContentHuggingPriority(UILayoutPriority(rawValue: 252), for: .horizontal)
+        //        stack.setContentCompressionResistancePriority(UILayoutPriority(<#T##rawValue: Float##Float#>), for: <#T##NSLayoutConstraint.Axis#>)
         return stack
     }()
     
@@ -25,10 +40,14 @@ class PeerViewController: UIViewController {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(systemName: "person")
+        image.contentMode = .scaleAspectFit
+        
+        //        image.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
+        //        image.setContentCompressionResistancePriority(<#T##priority: UILayoutPriority##UILayoutPriority#>, for: <#T##NSLayoutConstraint.Axis#>)
         return image
     }()
     
-    private lazy var label: UILabel = {
+    private lazy var userName: UILabel = {
         
         let label = UILabel()
         
@@ -37,7 +56,12 @@ class PeerViewController: UIViewController {
         return label
     }()
     
-    // TODO show login in the label
+    private lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        
+        return table
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,61 +71,8 @@ class PeerViewController: UIViewController {
         setUpUI()
     }
     
-    // MARK: - loadUserdata
     
-    func loadUserdata(with login: String?) {
-        
-        guard let login = login else { return }
-        // curl  -H "Authorization: Bearer d1e32b7ac31f4c92558fc9e4797fdf214ccb9baf2d8fbe95fd287a04ae580f0b" "https://api.intra.42.fr/v2/users/ccade"
-        if let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") {
-            var urlRequest = URLRequest(url: url)
-            let bearer = "Bearer d1e32b7ac31f4c92558fc9e4797fdf214ccb9baf2d8fbe95fd287a04ae580f0b"
-            urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
-            
-            let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-                guard let self = self else { return }
-                self.handleResult(data: data, response: response, error: error)
-            }
-            
-            let dataTask = URLSession.shared.dataTask(with: urlRequest, completionHandler: completionHandler)
-            dataTask.resume()
-        }
-    }
-    
-    func handleResult(data: Data?, response: URLResponse?, error: Error?) {
-        if (error != nil) {
-            showError(error!.localizedDescription)
-        }
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            showError("Wrong response type")
-            return
-        }
-        
-        guard 200..<300 ~= httpResponse.statusCode else {
-            showError("Wrong status type: \(httpResponse.statusCode)")
-            return
-        }
-        
-        guard let data = data else {
-            showError("Empty data")
-            return
-        }
-        
-        let decoder = JSONDecoder()
-        do {
-            let decodedUser = try decoder.decode(User.self, from: data)
-            DispatchQueue.main.async {
-                self.user = decodedUser
-                
-                self.showUser(decodedUser)
-                
-            }
-        } catch {
-            showError("Decoding Error: \(error)")
-            print(String(bytes: data, encoding: .utf8)!)
-        }
-    }
+  
     
     // MARK:- SHOW USER
     
@@ -114,7 +85,7 @@ class PeerViewController: UIViewController {
     }
     
     func showUser(_ user: User) {
-        label.text = user.login
+        userName.text = user.login
         
         if let imageLink = user.image?.link {
             loadImage(with: imageLink)
@@ -133,7 +104,6 @@ class PeerViewController: UIViewController {
     
     func loadImage(with imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }
-        let urlRequest = URLRequest(url: url)
         
         let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
             guard let self = self else { return }
@@ -153,18 +123,37 @@ class PeerViewController: UIViewController {
     
     func setUpUI() {
         view.backgroundColor = .systemBackground
-        view.addSubview(peerImage)
-        view.addSubview(label)
+        stackView.backgroundColor = .lightGray
+        userInfo.backgroundColor = .darkGray
+        tableView.backgroundColor = .gray
+        
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+        
+        //        view.addSubview(tableView)
+        stackView.addArrangedSubview(peerImage)
+        NSLayoutConstraint.activate([
+            peerImage.heightAnchor.constraint(equalToConstant: 150),
+            peerImage.widthAnchor.constraint(equalTo:  peerImage.heightAnchor, multiplier: 1),
+            
+        ])
+        
+        stackView.addArrangedSubview(userInfo)
+        userInfo.addArrangedSubview(userName)
         
         NSLayoutConstraint.activate([
-            peerImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
-            peerImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            label.topAnchor.constraint(equalTo: peerImage.bottomAnchor, constant: 8),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8)
+            
+            //            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            //            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            //            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            
+            
         ])
     }
 }
 
-// curl -X POST --data "grant_type=client_credentials&client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&client_secret=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" https://api.intra.42.fr/oauth/token
-
-// curl  -H "Authorization: Bearer d1e32b7ac31f4c92558fc9e4797fdf214ccb9baf2d8fbe95fd287a04ae580f0b" "https://api.intra.42.fr/v2/users/ccade"
