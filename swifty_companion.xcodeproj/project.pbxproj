@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4D13A402A129A7F006F268B /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D13A3F2A129A7F006F268B /* HTTPClient.swift */; };
 		B57D06482A0E44E6003169FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* User.swift */; };
 		B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* PeerViewController.swift */; };
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A4D13A3F2A129A7F006F268B /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B588CA022A0BA95C00E11921 /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
 		B58AE88E2A0B9334004D049E /* swifty_companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swifty_companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,6 +37,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A4D13A412A129A84006F268B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A4D13A3F2A129A7F006F268B /* HTTPClient.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		B57D06462A0E44BE003169FE /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +77,7 @@
 				B58AE8A52A0B9E7C004D049E /* Controller */,
 				B58AE89A2A0B933D004D049E /* Assets.xcassets */,
 				B58AE89F2A0B933D004D049E /* Info.plist */,
+				A4D13A412A129A84006F268B /* Services */,
 			);
 			path = swifty_companion;
 			sourceTree = "<group>";
@@ -150,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B57D06482A0E44E6003169FE /* User.swift in Sources */,
+				A4D13A402A129A7F006F268B /* HTTPClient.swift in Sources */,
 				B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */,
 				B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,

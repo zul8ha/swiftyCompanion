@@ -10,6 +10,7 @@ import UIKit
 
 class PeerViewController: UIViewController {
     
+    var httpClient: HTTPClient?
     var login: String?
     var user: User?
     var skills: [Skills] = []
@@ -31,8 +32,6 @@ class PeerViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.alignment = .top
-        //        stack.setContentHuggingPriority(UILayoutPriority(rawValue: 252), for: .horizontal)
-        //        stack.setContentCompressionResistancePriority(UILayoutPriority(<#T##rawValue: Float##Float#>), for: <#T##NSLayoutConstraint.Axis#>)
         return stack
     }()
     
@@ -41,9 +40,6 @@ class PeerViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(systemName: "person")
         image.contentMode = .scaleAspectFit
-        
-        //        image.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
-        //        image.setContentCompressionResistancePriority(<#T##priority: UILayoutPriority##UILayoutPriority#>, for: <#T##NSLayoutConstraint.Axis#>)
         return image
     }()
     
@@ -67,59 +63,11 @@ class PeerViewController: UIViewController {
         super.viewDidLoad()
         
         //        setupTableView()
-        loadUserdata(with: login)
+        httpClient!.loadUserdata(with: login)
         setUpUI()
     }
     
-    
-  
-    
-    // MARK:- SHOW USER
-    
-    func parseUserForSkills(for user: User) {
-        for cursus in user.cursusUsers {
-            for skill in cursus.skills {
-                skills.append(skill)
-            }
-        }
-    }
-    
-    func showUser(_ user: User) {
-        userName.text = user.login
-        
-        if let imageLink = user.image?.link {
-            loadImage(with: imageLink)
-        }
-    }
-    
-    
-    func showError(_ message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(action)
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    func loadImage(with imageURLString: String) {
-        guard let url = URL(string: imageURLString) else { return }
-        
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let data = data,
-                    !data.isEmpty,
-                    let image = UIImage(data: data) {
-                    self.peerImage.image = image
-                }
-            }
-        }
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
-    }
-    
-    // MARK:- SET UP UI
+    // MARK: - SET UP UI
     
     func setUpUI() {
         view.backgroundColor = .systemBackground
