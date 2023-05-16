@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* User.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -39,6 +41,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A43E63CB2A140D2000FDCDAB /* HTTPClient */ = {
+			isa = PBXGroup;
+			children = (
+				A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */,
+			);
+			path = HTTPClient;
+			sourceTree = "<group>";
+		};
 		B57D06462A0E44BE003169FE /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +76,7 @@
 		B58AE8902A0B9334004D049E /* swifty_companion */ = {
 			isa = PBXGroup;
 			children = (
+				A43E63CB2A140D2000FDCDAB /* HTTPClient */,
 				B57D06462A0E44BE003169FE /* Model */,
 				B58AE8912A0B9334004D049E /* AppDelegate.swift */,
 				B58AE8A52A0B9E7C004D049E /* Controller */,
@@ -158,6 +169,7 @@
 				B57D06482A0E44E6003169FE /* User.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
+				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */,
 				B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,

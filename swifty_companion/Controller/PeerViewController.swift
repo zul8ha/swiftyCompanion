@@ -6,6 +6,9 @@
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
 
+// curl -X POST --data "grant_type=client_credentials&client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&client_secret=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" https://api.intra.42.fr/oauth/token
+
+
 import UIKit
 
 class PeerViewController: UIViewController {
@@ -14,7 +17,7 @@ class PeerViewController: UIViewController {
     var user: User?
     var skills: [Skill] = []
     var projects: [Project] = []
-    
+    private let httpClient: IHTTPClient = HTTPClient()
     
     
     private lazy var stackView: UIStackView = {
@@ -64,6 +67,7 @@ class PeerViewController: UIViewController {
         label.font = .systemFont(ofSize: 16, weight: .heavy)
         label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
+        label.numberOfLines = 0
         label.text = user?.displayName
         return label
     }()
@@ -76,7 +80,7 @@ class PeerViewController: UIViewController {
         label.font = .systemFont(ofSize: 12, weight: .light)
         label.setContentCompressionResistancePriority(UILayoutPriority(720), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(220), for: .horizontal)
-        
+        label.numberOfLines = 0
         label.text = user?.email
         return label
     }()
@@ -106,7 +110,7 @@ class PeerViewController: UIViewController {
      }()
     
     private lazy var tableView: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.estimatedRowHeight = UITableView.automaticDimension
         
@@ -123,7 +127,7 @@ class PeerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = login
+        title = login
         self.loadUserdata(with: login)
         setUpUI()
         self.tableView.reloadData()
@@ -137,17 +141,40 @@ class PeerViewController: UIViewController {
         // curl  -H "Authorization: Bearer d1e32b7ac31f4c92558fc9e4797fdf214ccb9baf2d8fbe95fd287a04ae580f0b" "https://api.intra.42.fr/v2/users/ccade"
         if let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") {
             var urlRequest = URLRequest(url: url)
-            let bearer = "Bearer 6185c1bff9ab376fe8ab31ec06f860997309a939a60d75f91c52480df0bdf69a"
+            let bearer = "Bearer 4cad27ee49cfc8918575203df3f42d11db6277d7ba263f03a44430b8ffc8873c"
             urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
             
-            let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
+            httpClient.loadData(with: urlRequest) { [weak self] result in
                 guard let self = self else { return }
-                self.handleResult(data: data, response: response, error: error)
+                
+                switch result {
+                case let .success(data):
+                    let decoder = JSONDecoder()
+                    do {
+                        let decodedUser = try decoder.decode(User.self, from: data)
+                        DispatchQueue.main.async {
+                            self.user = decodedUser
+                            self.parseUserForSkills(for: decodedUser)
+                            self.showUser(decodedUser)
+                            self.tableView.reloadData()
+                        }
+                    } catch {
+                        self.showError("Decoding Error: \(error)")
+                        print(String(bytes: data, encoding: .utf8)!)
+                    }
+                case let .failure(error):
+                    self.showError(error.localizedDescription)
+                }
             }
             
-            let dataTask = URLSession.shared.dataTask(with: urlRequest, completionHandler: completionHandler)
-            dataTask.resume()
+            
+            
+            
         }
+    }
+    
+    func handleUserLoading(with result: Result<Data, Error>) {
+        
     }
     
     func handleResult(data: Data?, response: URLResponse?, error: Error?) {
@@ -168,20 +195,6 @@ class PeerViewController: UIViewController {
         guard let data = data else {
             showError("Empty data")
             return
-        }
-        
-        let decoder = JSONDecoder()
-        do {
-            let decodedUser = try decoder.decode(User.self, from: data)
-            DispatchQueue.main.async {
-                self.user = decodedUser
-                self.parseUserForSkills(for: decodedUser)
-                self.showUser(decodedUser)
-                self.tableView.reloadData()
-            }
-        } catch {
-            showError("Decoding Error: \(error)")
-            print(String(bytes: data, encoding: .utf8)!)
         }
     }
     
