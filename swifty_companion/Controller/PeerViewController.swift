@@ -172,9 +172,9 @@ class PeerViewController: UIViewController {
             let decodedUser = try decoder.decode(User.self, from: data)
             DispatchQueue.main.async {
                 self.user = decodedUser
-                
+                self.parseUserForSkills(for: decodedUser)
                 self.showUser(decodedUser)
-                
+                self.tableView.reloadData()
             }
         } catch {
             showError("Decoding Error: \(error)")
@@ -312,12 +312,12 @@ extension PeerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard let user = user else {return 0}
+        guard let user = user else {return 0}
         switch section {
         case UserDescriptionSection.skills.sectionIndex:
             return skills.count
         case UserDescriptionSection.projects.sectionIndex:
-            return projects.count
+            return user.projectsUsers.count
         default:
             return 0
         }
@@ -327,7 +327,7 @@ extension PeerViewController: UITableViewDataSource {
 extension PeerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let user = user else { return UITableViewCell() }
+        guard let user = user else { return UITableViewCell() }
         switch indexPath.section {
         case UserDescriptionSection.skills.sectionIndex:
             let skill = skills[indexPath.row]
@@ -335,7 +335,7 @@ extension PeerViewController: UITableViewDelegate {
             cell.configure(with: skill)
             return cell
         case UserDescriptionSection.projects.sectionIndex:
-            let project = projects[indexPath.row]
+            let project = user.projectsUsers[indexPath.row].project
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as? ProjectTableViewCell else { return UITableViewCell() }
             cell.configure(with: project)
             return cell
