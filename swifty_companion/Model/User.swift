@@ -62,10 +62,10 @@ struct Image: Codable {
 struct CursusUser: Codable {
     let grade: String?
     let level: Double
-    let skills: [Skills]
+    let skills: [Skill]
 }
 
-struct Skills: Codable {
+struct Skill: Codable {
     let id: Int
     let name: String
     let level: Double
