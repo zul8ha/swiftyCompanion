@@ -15,6 +15,8 @@ class PeerViewController: UIViewController {
     var skills: [Skill] = []
     var projects: [Project] = []
     
+    
+    
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -49,7 +51,7 @@ class PeerViewController: UIViewController {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+//        label.font = .systemFont(ofSize: 18, weight: .heavy)
         label.text = user?.login
         return label
     }()
@@ -59,7 +61,7 @@ class PeerViewController: UIViewController {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.font = .systemFont(ofSize: 16, weight: .heavy)
         label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.text = user?.displayName
@@ -84,7 +86,7 @@ class PeerViewController: UIViewController {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
 //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
 //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.text = "xxx"
@@ -96,7 +98,7 @@ class PeerViewController: UIViewController {
          let label = UILabel()
          
          label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
 //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
 //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
          label.text = "xxx"
@@ -121,6 +123,7 @@ class PeerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.title = login
         self.loadUserdata(with: login)
         setUpUI()
         self.tableView.reloadData()
@@ -194,7 +197,7 @@ class PeerViewController: UIViewController {
     
     func showUser(_ user: User) {
         //        guard let user = user else { return }
-        userName.text = user.login
+//        userName.text = user.login
         userFullName.text = user.displayName
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
@@ -251,7 +254,7 @@ class PeerViewController: UIViewController {
         ])
         stackView.addArrangedSubview(userInfo)
         
-        userInfo.addArrangedSubview(userName)
+//        userInfo.addArrangedSubview(userName)
         userInfo.addArrangedSubview(userFullName)
         userInfo.addArrangedSubview(email)
         userInfo.addArrangedSubview(poolYear)
@@ -343,7 +346,5 @@ extension PeerViewController: UITableViewDelegate {
             return UITableViewCell()
         
         }
-        
-
     }
 }

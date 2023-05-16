@@ -62,7 +62,8 @@ class StartViewController: UIViewController {
         let peerViewController = PeerViewController()
         peerViewController.login = login
         
-        present(peerViewController, animated: true, completion: { print("peerViewController") })
+        navigationController?.pushViewController(peerViewController, animated: true)
+//        present(peerViewController, animated: true, completion: nil)
     }
     
     @objc func onButtonTapped() {
