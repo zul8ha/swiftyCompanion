@@ -59,7 +59,11 @@ class StartViewController: UIViewController {
     }
 
     func showUserDetails(with login: String) {
-        let peerViewController = PeerViewController()
+        let httpClient = HTTPClient()
+        let peerViewController = PeerViewController(
+            with: httpClient,
+            userService: UserService(with: httpClient)
+        )
         peerViewController.login = login
         
         navigationController?.pushViewController(peerViewController, animated: true)

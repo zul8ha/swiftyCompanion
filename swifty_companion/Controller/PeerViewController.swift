@@ -17,8 +17,18 @@ class PeerViewController: UIViewController {
     var user: User?
     var skills: [Skill] = []
     var projects: [Project] = []
-    private let httpClient: IHTTPClient = HTTPClient()
+    private let httpClient: IHTTPClient
+    private let userService: IUserService
     
+    init(with httpClient: IHTTPClient, userService: IUserService) {
+        self.httpClient = httpClient
+        self.userService = UserService(with: httpClient)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
@@ -54,7 +64,7 @@ class PeerViewController: UIViewController {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = .systemFont(ofSize: 18, weight: .heavy)
+        //        label.font = .systemFont(ofSize: 18, weight: .heavy)
         label.text = user?.login
         return label
     }()
@@ -91,23 +101,23 @@ class PeerViewController: UIViewController {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-//        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
-//        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
+        //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
+        //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.text = "xxx"
         return label
     }()
     
     private lazy var poolYear: UILabel = {
-         
-         let label = UILabel()
-         
-         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-//        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
-//        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
-         label.text = "xxx"
-         return label
-     }()
+        //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
+        //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
+        label.text = "xxx"
+        return label
+    }()
     
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -118,7 +128,7 @@ class PeerViewController: UIViewController {
         table.delegate = self
         table.register(SkillTableViewCell.self, forCellReuseIdentifier: "skillCell")
         table.register(ProjectTableViewCell.self, forCellReuseIdentifier: "projectCell")
-
+        
         return table
     }()
     
@@ -127,74 +137,32 @@ class PeerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = login
-        self.loadUserdata(with: login)
         setUpUI()
-        self.tableView.reloadData()
+        title = login
+        guard let login = login else { return }
+        loadUserData(with: login)
     }
     
     // MARK: - loadUserdata
     
-    func loadUserdata(with login: String?) {
+    func loadUserData(with login: String) {
         
-        guard let login = login else { return }
-        // curl  -H "Authorization: Bearer d1e32b7ac31f4c92558fc9e4797fdf214ccb9baf2d8fbe95fd287a04ae580f0b" "https://api.intra.42.fr/v2/users/ccade"
-        if let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") {
-            var urlRequest = URLRequest(url: url)
-            let bearer = "Bearer 4cad27ee49cfc8918575203df3f42d11db6277d7ba263f03a44430b8ffc8873c"
-            urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
-            
-            httpClient.loadData(with: urlRequest) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case let .success(data):
-                    let decoder = JSONDecoder()
-                    do {
-                        let decodedUser = try decoder.decode(User.self, from: data)
-                        DispatchQueue.main.async {
-                            self.user = decodedUser
-                            self.parseUserForSkills(for: decodedUser)
-                            self.showUser(decodedUser)
-                            self.tableView.reloadData()
-                        }
-                    } catch {
-                        self.showError("Decoding Error: \(error)")
-                        print(String(bytes: data, encoding: .utf8)!)
-                    }
-                case let .failure(error):
-                    self.showError(error.localizedDescription)
-                }
+        userService.loadUserData(with: login, completion: { [weak self] result in
+            DispatchQueue.main.async {
+                self?.handleUserLoading(with: result)
             }
-            
-            
-            
-            
-        }
+        })
     }
     
-    func handleUserLoading(with result: Result<Data, Error>) {
-        
-    }
-    
-    func handleResult(data: Data?, response: URLResponse?, error: Error?) {
-        if (error != nil) {
-            showError(error!.localizedDescription)
-        }
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            showError("Wrong response type")
-            return
-        }
-        
-        guard 200..<300 ~= httpResponse.statusCode else {
-            showError("Wrong status type: \(httpResponse.statusCode)")
-            return
-        }
-        
-        guard let data = data else {
-            showError("Empty data")
-            return
+    func handleUserLoading(with result: Result<User, Error>) {
+        switch result {
+        case let .success(user):
+            self.user = user
+            parseUserForSkills(for: user)
+            showUser(user)
+            tableView.reloadData()
+        case let .failure(error):
+            showError(error.localizedDescription)
         }
     }
     
@@ -210,7 +178,7 @@ class PeerViewController: UIViewController {
     
     func showUser(_ user: User) {
         //        guard let user = user else { return }
-//        userName.text = user.login
+        //        userName.text = user.login
         userFullName.text = user.displayName
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
@@ -220,7 +188,7 @@ class PeerViewController: UIViewController {
             loadImage(with: imageLink)
         }
     }
-        
+    
     func showError(_ message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -237,8 +205,8 @@ class PeerViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if let data = data,
-                    !data.isEmpty,
-                    let image = UIImage(data: data) {
+                   !data.isEmpty,
+                   let image = UIImage(data: data) {
                     self.peerImage.image = image
                 }
             }
@@ -267,7 +235,7 @@ class PeerViewController: UIViewController {
         ])
         stackView.addArrangedSubview(userInfo)
         
-//        userInfo.addArrangedSubview(userName)
+        //        userInfo.addArrangedSubview(userName)
         userInfo.addArrangedSubview(userFullName)
         userInfo.addArrangedSubview(email)
         userInfo.addArrangedSubview(poolYear)
@@ -341,7 +309,7 @@ extension PeerViewController: UITableViewDataSource {
 }
 
 extension PeerViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let user = user else { return UITableViewCell() }
         switch indexPath.section {
@@ -357,7 +325,7 @@ extension PeerViewController: UITableViewDelegate {
             return cell
         default:
             return UITableViewCell()
-        
+            
         }
     }
 }

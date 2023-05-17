@@ -15,24 +15,28 @@ enum HTTPClientError: Error {
     case emptyData
 }
 
-
 protocol IHTTPClient {
     
 //    func loadData(with request: URLRequest, completion: DataCompletion)
     func loadData(with request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
-class HTTPClient: IHTTPClient {
+final class HTTPClient: IHTTPClient {
+    
+    let session: IURLSession
+
+    init(with session: IURLSession = URLSession.shared) {
+        self.session = session
+    }
     
     func loadData(with request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) {
-        
         
         let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
             guard let self = self else { return }
             self.handleResult(data: data, response: response, error: error, completion: completion)
         }
-        
-        let dataTask = URLSession.shared.dataTask(with: request, completionHandler: completionHandler)
+        // URLSession.shared is an implicit dependencie
+        let dataTask = session.dataTask(with: request, completionHandler: completionHandler)
         dataTask.resume()
     }
     
