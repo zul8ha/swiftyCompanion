@@ -25,6 +25,7 @@ final class HTTPClient: IHTTPClient {
     
     let session: IURLSession
 
+    // URLSession.shared is an implicit dependencie
     init(with session: IURLSession = URLSession.shared) {
         self.session = session
     }
@@ -35,7 +36,6 @@ final class HTTPClient: IHTTPClient {
             guard let self = self else { return }
             self.handleResult(data: data, response: response, error: error, completion: completion)
         }
-        // URLSession.shared is an implicit dependencie
         let dataTask = session.dataTask(with: request, completionHandler: completionHandler)
         dataTask.resume()
     }

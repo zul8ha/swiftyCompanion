@@ -20,6 +20,7 @@ class PeerViewController: UIViewController {
     private let httpClient: IHTTPClient
     private let userService: IUserService
     
+    // MARK: - init
     init(with httpClient: IHTTPClient, userService: IUserService) {
         self.httpClient = httpClient
         self.userService = UserService(with: httpClient)
@@ -30,6 +31,7 @@ class PeerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Elements
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -58,16 +60,16 @@ class PeerViewController: UIViewController {
         stack.distribution = .equalSpacing
         return stack
     }()
-    
-    private lazy var userName: UILabel = {
-        
-        let label = UILabel()
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        //        label.font = .systemFont(ofSize: 18, weight: .heavy)
-        label.text = user?.login
-        return label
-    }()
+//    
+//    private lazy var userName: UILabel = {
+//        
+//        let label = UILabel()
+//        
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        //        label.font = .systemFont(ofSize: 18, weight: .heavy)
+//        label.text = user?.login
+//        return label
+//    }()
     
     private lazy var userFullName: UILabel = {
         
@@ -138,12 +140,13 @@ class PeerViewController: UIViewController {
         super.viewDidLoad()
         
         setUpUI()
+        // to show it as a title of the View - on the NavigationBar (the same as navigationItem.title = login)
         title = login
         guard let login = login else { return }
         loadUserData(with: login)
     }
     
-    // MARK: - loadUserdata
+    // MARK: - Load User Data
     
     func loadUserData(with login: String) {
         
@@ -166,7 +169,7 @@ class PeerViewController: UIViewController {
         }
     }
     
-    // MARK:- SHOW USER
+    // MARK: - Show User
     
     func parseUserForSkills(for user: User) {
         for cursus in user.cursusUsers {
@@ -177,8 +180,6 @@ class PeerViewController: UIViewController {
     }
     
     func showUser(_ user: User) {
-        //        guard let user = user else { return }
-        //        userName.text = user.login
         userFullName.text = user.displayName
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
@@ -215,7 +216,7 @@ class PeerViewController: UIViewController {
         dataTask.resume()
     }
     
-    // MARK: - SET UP UI
+    // MARK: - Set Up UI
     
     func setUpUI() {
         view.backgroundColor = .systemBackground
@@ -252,7 +253,7 @@ class PeerViewController: UIViewController {
     }
 }
 
-// MARK: - TABLE VIEW
+// MARK: - Table View
 
 enum UserDescriptionSection: CaseIterable {
     
