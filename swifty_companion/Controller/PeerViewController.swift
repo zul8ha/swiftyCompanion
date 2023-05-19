@@ -60,16 +60,6 @@ class PeerViewController: UIViewController {
         stack.distribution = .equalSpacing
         return stack
     }()
-//    
-//    private lazy var userName: UILabel = {
-//        
-//        let label = UILabel()
-//        
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        //        label.font = .systemFont(ofSize: 18, weight: .heavy)
-//        label.text = user?.login
-//        return label
-//    }()
     
     private lazy var userFullName: UILabel = {
         
@@ -105,7 +95,7 @@ class PeerViewController: UIViewController {
         label.font = .systemFont(ofSize: 12, weight: .semibold)
         //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
         //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
-        label.text = "xxx"
+        label.text = ""
         return label
     }()
     
@@ -117,7 +107,15 @@ class PeerViewController: UIViewController {
         label.font = .systemFont(ofSize: 12, weight: .semibold)
         //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
         //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
-        label.text = "xxx"
+        label.text = ""
+        return label
+    }()
+    
+    private lazy var userLevel: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.text = ""
         return label
     }()
     
@@ -184,6 +182,7 @@ class PeerViewController: UIViewController {
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
         poolYear.text = "Pool Year: \(user.poolYear)"
+        userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
         
         if let imageLink = user.image?.link {
             loadImage(with: imageLink)
@@ -231,24 +230,24 @@ class PeerViewController: UIViewController {
         stackView.addArrangedSubview(peerImage)
         NSLayoutConstraint.activate([
             peerImage.heightAnchor.constraint(equalToConstant: 150),
-            peerImage.widthAnchor.constraint(equalTo:  peerImage.heightAnchor, multiplier: 1),
+            peerImage.widthAnchor.constraint(equalTo: peerImage.heightAnchor, multiplier: 1),
             
         ])
         stackView.addArrangedSubview(userInfo)
         
-        //        userInfo.addArrangedSubview(userName)
         userInfo.addArrangedSubview(userFullName)
         userInfo.addArrangedSubview(email)
         userInfo.addArrangedSubview(poolYear)
         userInfo.addArrangedSubview(wallets)
+        userInfo.addArrangedSubview(userLevel)
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             
-            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4),
         ])
     }
 }

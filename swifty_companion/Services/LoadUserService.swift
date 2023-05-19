@@ -23,7 +23,7 @@ final class UserService: IUserService {
     func loadUserData(with login: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") else { return }
         var urlRequest = URLRequest(url: url)
-        let bearer = "Bearer 8d8e59dfced39371bc5e1c643ed6456cde23c9dabd7d4e7cda36a78892299401"
+        let bearer = "Bearer ce160a03f59ad525d303adedd25771688edbfbf61098dd2df0fb5f693229795e"
         urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
         
         httpClient.loadData(with: urlRequest) { result in

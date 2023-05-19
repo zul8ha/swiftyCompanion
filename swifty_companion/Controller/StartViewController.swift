@@ -24,19 +24,26 @@ class StartViewController: UIViewController {
         let field = UITextField()
         
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.layer.cornerRadius = 10
+        field.backgroundColor = .systemGray6
         field.borderStyle = .roundedRect
-        field.setContentHuggingPriority(UILayoutPriority(rawValue: 200), for: .horizontal)
-        field.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 700), for: .horizontal)
+        field.placeholder = "Type here the 42peer nickname"
+        field.font = .systemFont(ofSize: 12)
+//        field.setContentHuggingPriority(UILayoutPriority(rawValue: 200), for: .horizontal)
+//        field.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 700), for: .horizontal)
         
         return field
     }()
     
     private lazy var searchButton: UIButton = {
-        let button = UIButton(type: .system )
+        let button = UIButton(type: .system)
         
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 5
         button.setTitle("Zoek", for: .normal)
-        button.tintColor = .blue
+        button.tintColor = .white
+        button.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        button.backgroundColor = .darkGray
         button.addTarget(self, action: #selector(onButtonTapped), for: .touchUpInside)
         
         return button
@@ -55,7 +62,13 @@ class StartViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8 ),
         ])
         stackView.addArrangedSubview(searchField)
+        NSLayoutConstraint.activate([
+            searchField.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.78)
+        ])
         stackView.addArrangedSubview(searchButton)
+        NSLayoutConstraint.activate([
+            searchButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.2)
+        ])
     }
 
     func showUserDetails(with login: String) {
