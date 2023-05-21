@@ -9,7 +9,10 @@
 /* Begin PBXBuildFile section */
 		A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */; };
 		A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */; };
-		A43E63D22A14D5E400FDCDAB /* LoadUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D12A14D5E400FDCDAB /* LoadUserService.swift */; };
+		A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D12A14D5E400FDCDAB /* UserService.swift */; };
+		A43E63D42A17C67600FDCDAB /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D32A17C67600FDCDAB /* AuthViewController.swift */; };
+		A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D52A18CA2200FDCDAB /* AuthService.swift */; };
+		A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D72A18CC0000FDCDAB /* Token.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* User.swift */; };
@@ -22,7 +25,10 @@
 /* Begin PBXFileReference section */
 		A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IURLSession.swift; sourceTree = "<group>"; };
-		A43E63D12A14D5E400FDCDAB /* LoadUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadUserService.swift; sourceTree = "<group>"; };
+		A43E63D12A14D5E400FDCDAB /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		A43E63D32A17C67600FDCDAB /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		A43E63D52A18CA2200FDCDAB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		A43E63D72A18CC0000FDCDAB /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -56,7 +62,8 @@
 		A43E63D02A14D5D700FDCDAB /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A43E63D12A14D5E400FDCDAB /* LoadUserService.swift */,
+				A43E63D12A14D5E400FDCDAB /* UserService.swift */,
+				A43E63D52A18CA2200FDCDAB /* AuthService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -65,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				B57D06472A0E44E6003169FE /* User.swift */,
+				A43E63D72A18CC0000FDCDAB /* Token.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -107,6 +115,7 @@
 				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
 				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
 				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
+				A43E63D32A17C67600FDCDAB /* AuthViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -180,10 +189,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A43E63D22A14D5E400FDCDAB /* LoadUserService.swift in Sources */,
+				A43E63D42A17C67600FDCDAB /* AuthViewController.swift in Sources */,
+				A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */,
 				B57D06482A0E44E6003169FE /* User.swift in Sources */,
+				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
+				A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */,

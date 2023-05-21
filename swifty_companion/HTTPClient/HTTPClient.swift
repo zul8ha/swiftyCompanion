@@ -13,6 +13,7 @@ enum HTTPClientError: Error {
     case wrongResponseType
     case wrongStatusCode
     case emptyData
+    case unauthorized
 }
 
 protocol IHTTPClient {
@@ -51,6 +52,10 @@ final class HTTPClient: IHTTPClient {
         }
         guard let httpResponse = response as? HTTPURLResponse else {
             completion(.failure(HTTPClientError.wrongResponseType))
+            return
+        }
+        if case let statusCode = httpResponse.statusCode, statusCode == 401 {
+            completion(.failure(HTTPClientError.unauthorized))
             return
         }
         guard 200..<300 ~= httpResponse.statusCode else {

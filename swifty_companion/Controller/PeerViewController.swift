@@ -46,7 +46,7 @@ class PeerViewController: UIViewController {
     private lazy var peerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(systemName: "person")
+//        image.image = UIImage(systemName: "person")
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -163,7 +163,16 @@ class PeerViewController: UIViewController {
             showUser(user)
             tableView.reloadData()
         case let .failure(error):
-            showError(error.localizedDescription)
+            switch result {
+            case .failure(HTTPClientError.unauthorized):
+                let authViewController = AuthViewController()
+//                    with: httpClient,
+//                    userService: UserService(with: httpClient)
+//                )
+                navigationController?.pushViewController(authViewController, animated: true)
+            default:
+                showError(error.localizedDescription)
+            }
         }
     }
     
@@ -182,7 +191,7 @@ class PeerViewController: UIViewController {
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
         poolYear.text = "Pool Year: \(user.poolYear)"
-        userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
+//        userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
         
         if let imageLink = user.image?.link {
             loadImage(with: imageLink)

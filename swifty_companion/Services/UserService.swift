@@ -1,5 +1,5 @@
 //
-//  LoadUserService.swift
+//  UserService.swift
 //  swifty_companion
 //
 //  Created by Zuleykha Pavlichenkova on 17.05.2023.
@@ -38,6 +38,7 @@ final class UserService: IUserService {
                 }
             case let .failure(error):
                 completion(.failure(error))
+                //                print("🐙🐙🐙 \(error)")
             }
         }
     }
