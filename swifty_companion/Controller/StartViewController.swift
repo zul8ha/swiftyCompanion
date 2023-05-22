@@ -62,7 +62,9 @@ class StartViewController: UIViewController {
     
     
     // MARK: - showAuthPage
-    
+
+    var decodedToken: Token?
+
     func showAuthPage() {
         let stringUrl = "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
         guard let signInURL = URL(string: stringUrl) else { return }
@@ -117,8 +119,6 @@ class StartViewController: UIViewController {
         dataTask.resume()
     }
     
-    var decodedToken: Token?
-    
     func extractToken(data: Data?, response: URLResponse?, error: Error?) {
         if let error = error {
             print(error.localizedDescription)
@@ -139,6 +139,7 @@ class StartViewController: UIViewController {
         let decoder = JSONDecoder()
         do {
             decodedToken = try decoder.decode(Token.self, from: data)
+            print("☎️ \(decodedToken)")
         } catch {
             print(error.localizedDescription)
         }
