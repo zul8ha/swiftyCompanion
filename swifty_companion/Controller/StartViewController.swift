@@ -60,6 +60,9 @@ class StartViewController: UIViewController {
         showAuthPage()
     }
     
+    
+    // MARK: - showAuthPage
+    
     func showAuthPage() {
         let stringUrl = "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
         guard let signInURL = URL(string: stringUrl) else { return }
@@ -77,10 +80,9 @@ class StartViewController: UIViewController {
                 let queryItems = urlComponents.queryItems,
                 // get the query item code's value from:
                 let code = queryItems.first(where: {$0.name == "code"})?.value
-            else { return }
+                else { return }
             self?.exchangeCodeForTokens(with: code)
         }
-        
         
         authenticationSession.presentationContextProvider = self
         if !authenticationSession.start() {
@@ -115,6 +117,8 @@ class StartViewController: UIViewController {
         dataTask.resume()
     }
     
+    var decodedToken: Token?
+    
     func extractToken(data: Data?, response: URLResponse?, error: Error?) {
         if let error = error {
             print(error.localizedDescription)
@@ -125,57 +129,22 @@ class StartViewController: UIViewController {
         }
         guard 200..<300 ~= httpResponse.statusCode else {
             print(HTTPClientError.wrongStatusCode)
-            print("@@@@ httpResponse.statusCode: \(httpResponse.statusCode)")
+            print("⏰ httpResponse.statusCode: \(httpResponse.statusCode)")
             return
         }
         guard let data = data else {
             print(HTTPClientError.emptyData)
             return
         }
-        
-        print(String(bytes: data, encoding: .utf8))
+        let decoder = JSONDecoder()
+        do {
+            decodedToken = try decoder.decode(Token.self, from: data)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
-    // curl -X POST --data "grant_type=client_credentials&client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&client_secret=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" https://api.intra.42.fr/oauth/token
-    
-    //    func refreshToken(completion: @escaping (Result<Token, Error>) -> Void) {
-    //
-    //        let uID = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-    //        let secret = "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"
-    //        let httpClient: IHTTPClient
-    //
-    //        let requestHeaders: [String:String] = ["Content-Type" : "application/x-www-form-urlencoded"]
-    //
-    //        var requestBodyComponents = URLComponents()
-    //        requestBodyComponents.queryItems = [
-    //            URLQueryItem(name: "grant_type", value: "client_credentials"),
-    //            URLQueryItem(name: "client_id", value: uID),
-    //            URLQueryItem(name: "client_secret", value: secret)
-    //        ]
-    //
-    //        var request = URLRequest(url: URL(string: "https://api.intra.42.fr/oauth/token")!)
-    //        request.httpMethod = "POST"
-    //        request.allHTTPHeaderFields = requestHeaders
-    //        request.httpBody = requestBodyComponents.query?.data(using: .utf8)
-    //
-    //        httpClient.loadData(with: request) { result in
-    //            switch result {
-    //            case let .success(data):
-    //                let decoder = JSONDecoder()
-    //                do {
-    //                    let decodedToken = try decoder.decode(Token.self, from: data)
-    //                    completion(.success(decodedToken))
-    //                } catch {
-    //                    completion(.failure(error))
-    //                }
-    //            case let .failure(error):
-    //                completion(.failure(error))
-    //            }
-    //        }
-    //    }
-    //
-    
-    
+    // MARK: - setUpUI
     func setUpUI() {
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -193,13 +162,14 @@ class StartViewController: UIViewController {
         ])
     }
     
-    func showUserDetails(with login: String) {
+    func showUserDetails(with login: String, token: Token) {
         let httpClient = HTTPClient()
         let peerViewController = PeerViewController(
             with: httpClient,
             userService: UserService(with: httpClient)
         )
         peerViewController.login = login
+        peerViewController.token = token
         
         navigationController?.pushViewController(peerViewController, animated: true)
         //        present(peerViewController, animated: true, completion: nil)
@@ -207,12 +177,15 @@ class StartViewController: UIViewController {
     
     @objc func onButtonTapped() {
         
-        guard let login = searchField.text, !login.isEmpty else { return }
-        
-        showUserDetails(with: login.lowercased())
+        guard let login = searchField.text,
+            !login.isEmpty,
+            let token = decodedToken
+        else { return }
+        showUserDetails(with: login.lowercased(), token: token)
     }
-    
 }
+
+//MARK: - ASWebAuthenticationPresentationContextProviding
 
 extension StartViewController: ASWebAuthenticationPresentationContextProviding {
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {

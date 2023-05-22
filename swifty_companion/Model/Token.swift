@@ -12,6 +12,11 @@ struct Token: Decodable {
     var access_token: String
     var token_type: String
     var expires_in: Int
+    var refresh_token: String
     var scope: String
     var created_at: Int
+    
+    func getAccessToken() -> String {
+        return access_token
+    }
 }

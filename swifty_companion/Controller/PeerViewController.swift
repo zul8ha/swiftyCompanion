@@ -15,6 +15,7 @@ class PeerViewController: UIViewController {
     
     var login: String?
     var user: User?
+    var token: Token?
     var skills: [Skill] = []
     var projects: [Project] = []
     private let httpClient: IHTTPClient
@@ -147,8 +148,8 @@ class PeerViewController: UIViewController {
     // MARK: - Load User Data
     
     func loadUserData(with login: String) {
-        
-        userService.loadUserData(with: login, completion: { [weak self] result in
+        guard let token = token else { return }
+        userService.loadUserData(with: login, token: token.access_token, completion: { [weak self] result in
             DispatchQueue.main.async {
                 self?.handleUserLoading(with: result)
             }
