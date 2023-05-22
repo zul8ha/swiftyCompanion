@@ -164,16 +164,7 @@ class PeerViewController: UIViewController {
             showUser(user)
             tableView.reloadData()
         case let .failure(error):
-            switch result {
-            case .failure(HTTPClientError.unauthorized):
-                let authViewController = AuthViewController()
-//                    with: httpClient,
-//                    userService: UserService(with: httpClient)
-//                )
-                navigationController?.pushViewController(authViewController, animated: true)
-            default:
-                showError(error.localizedDescription)
-            }
+            showError(error.localizedDescription)
         }
     }
     

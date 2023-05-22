@@ -10,7 +10,6 @@
 		A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */; };
 		A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */; };
 		A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D12A14D5E400FDCDAB /* UserService.swift */; };
-		A43E63D42A17C67600FDCDAB /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D32A17C67600FDCDAB /* AuthViewController.swift */; };
 		A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D52A18CA2200FDCDAB /* AuthService.swift */; };
 		A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D72A18CC0000FDCDAB /* Token.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
@@ -26,7 +25,6 @@
 		A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IURLSession.swift; sourceTree = "<group>"; };
 		A43E63D12A14D5E400FDCDAB /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
-		A43E63D32A17C67600FDCDAB /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		A43E63D52A18CA2200FDCDAB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		A43E63D72A18CC0000FDCDAB /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
@@ -54,6 +52,7 @@
 		A43E63CB2A140D2000FDCDAB /* HTTPClient */ = {
 			isa = PBXGroup;
 			children = (
+				A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */,
 				A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */,
 			);
 			path = HTTPClient;
@@ -103,7 +102,6 @@
 				B58AE8A52A0B9E7C004D049E /* Controller */,
 				B58AE89A2A0B933D004D049E /* Assets.xcassets */,
 				B58AE89F2A0B933D004D049E /* Info.plist */,
-				A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */,
 			);
 			path = swifty_companion;
 			sourceTree = "<group>";
@@ -115,7 +113,6 @@
 				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
 				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
 				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
-				A43E63D32A17C67600FDCDAB /* AuthViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -189,7 +186,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A43E63D42A17C67600FDCDAB /* AuthViewController.swift in Sources */,
 				A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */,
 				B57D06482A0E44E6003169FE /* User.swift in Sources */,
 				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
