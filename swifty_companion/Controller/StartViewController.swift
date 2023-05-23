@@ -62,9 +62,9 @@ class StartViewController: UIViewController {
     
     
     // MARK: - showAuthPage
-
+    
     var decodedToken: Token?
-
+    
     func showAuthPage() {
         let stringUrl = "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
         guard let signInURL = URL(string: stringUrl) else { return }
@@ -83,10 +83,13 @@ class StartViewController: UIViewController {
                 // get the query item code's value from:
                 let code = queryItems.first(where: {$0.name == "code"})?.value
                 else { return }
+            
             self?.exchangeCodeForTokens(with: code)
         }
         
         authenticationSession.presentationContextProvider = self
+        //        authenticationSession.prefersEphemeralWebBrowserSession = true
+        
         if !authenticationSession.start() {
             print("Failed to start")
         }
@@ -136,13 +139,14 @@ class StartViewController: UIViewController {
             print(HTTPClientError.emptyData)
             return
         }
+        
         let decoder = JSONDecoder()
-        do {
-            decodedToken = try decoder.decode(Token.self, from: data)
-            print("☎️ \(decodedToken)")
-        } catch {
-            print(error.localizedDescription)
-        }
+            do {
+                decodedToken = try decoder.decode(Token.self, from: data)
+    //            print("☎️ \(decodedToken)")
+            } catch {
+                print(error.localizedDescription)
+            }
     }
     
     // MARK: - setUpUI
@@ -181,7 +185,7 @@ class StartViewController: UIViewController {
         guard let login = searchField.text,
             !login.isEmpty,
             let token = decodedToken
-        else { return }
+            else { return }
         showUserDetails(with: login.lowercased(), token: token)
     }
 }
