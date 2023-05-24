@@ -7,11 +7,11 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 final class SignInViewController: UIViewController {
-    
-    
-    
+    let authHandler = AuthHandler()
+
     private lazy var signInButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -37,12 +37,29 @@ final class SignInViewController: UIViewController {
     }
     
     @objc func onSignInButtonTapped() {
-//        showAuthPage()
         
-        let startViewController = StartViewController()
-        navigationController?.pushViewController(startViewController, animated: true)
+//        let authHandler = AuthHandler()
+        authHandler.showAuthPage()
+        
+        if authHandler.decodedToken == nil {
+            print("📸📸📸📸📸📸 - EMPTY TOKEN")
+        } else {
+            let startViewController = StartViewController()
+            navigationController?.pushViewController(startViewController, animated: true)
+        }
+        
+        
 //        self.present(startViewController, animated: true, completion: nil)
 //        self.show(startViewController, sender: self)
     }
     
+}
+
+//MARK: - ASWebAuthenticationPresentationContextProviding
+
+extension SignInViewController: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+        return window ?? ASPresentationAnchor()
+    }
 }

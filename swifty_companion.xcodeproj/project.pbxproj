@@ -20,6 +20,7 @@
 		B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* StartViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
 		B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */; };
+		B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		B58AE89A2A0B933D004D049E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B58AE89F2A0B933D004D049E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			children = (
 				A43E63D12A14D5E400FDCDAB /* UserService.swift */,
 				A43E63D52A18CA2200FDCDAB /* AuthService.swift */,
+				B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
 				A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */,
+				B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,
