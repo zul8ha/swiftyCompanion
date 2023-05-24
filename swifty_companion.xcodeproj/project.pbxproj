@@ -19,6 +19,7 @@
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
 		B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* StartViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
+		B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		B58AE8952A0B9334004D049E /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		B58AE89A2A0B933D004D049E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B58AE89F2A0B933D004D049E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
 				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
 				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
+				B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
+				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,
 				B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */,
 				B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,

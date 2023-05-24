@@ -152,6 +152,8 @@ class StartViewController: UIViewController {
     // MARK: - setUpUI
     func setUpUI() {
         view.addSubview(stackView)
+        view.backgroundColor = .systemBackground
+        navigationController?.setNavigationBarHidden(true, animated: true)   
         NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8 ),
@@ -169,10 +171,13 @@ class StartViewController: UIViewController {
     
     func showUserDetails(with login: String, token: Token) {
         let httpClient = HTTPClient()
+//        let navigationController = UINavigationController()
         let peerViewController = PeerViewController(
             with: httpClient,
             userService: UserService(with: httpClient)
         )
+//        navigationController.viewControllers = [peerViewController]
+
         peerViewController.login = login
         peerViewController.token = token
         

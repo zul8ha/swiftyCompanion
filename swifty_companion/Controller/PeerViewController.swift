@@ -220,7 +220,7 @@ class PeerViewController: UIViewController {
     
     func setUpUI() {
         view.backgroundColor = .systemBackground
-        
+        navigationController?.setNavigationBarHidden(false, animated: true)
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
