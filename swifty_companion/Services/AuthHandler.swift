@@ -9,15 +9,23 @@
 import Foundation
 import AuthenticationServices
 
-final class AuthHandler {
+protocol IAuthHandler {
+    func showAuthPage(with authContentProvider: ASWebAuthenticationPresentationContextProviding, completion: Result<Token, Error>)
+}
+
+enum AuthError {
+    case showAuthPageError // couldn't get the code
+    case
+}
+
+final class AuthHandler: IAuthHandler {
  
     // MARK: - showAuthPage
     
     var decodedToken: Token?
     var startViewController: StartViewController?
-    var signInViewController: SignInViewController?
     
-    func showAuthPage() {
+    func showAuthPage(with authContentProvider: ASWebAuthenticationPresentationContextProviding, completion: Result<Token, Error>) {
         let stringUrl = "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
         guard let signInURL = URL(string: stringUrl) else { return }
         let callbackURLScheme = "hmeriann"
@@ -34,7 +42,12 @@ final class AuthHandler {
                 let queryItems = urlComponents.queryItems,
                 // get the query item code's value from:
                 let code = queryItems.first(where: {$0.name == "code"})?.value
-                else { return }
+                else {
+                
+                completion(.failure)
+                return
+                
+            }
             
             self?.exchangeCodeForTokens(with: code)
         }
@@ -42,7 +55,7 @@ final class AuthHandler {
         print("🚹")
 
         
-        authenticationSession.presentationContextProvider = signInViewController
+        authenticationSession.presentationContextProvider = authContentProvider
         //        authenticationSession.prefersEphemeralWebBrowserSession = true
         
         if !authenticationSession.start() {
@@ -99,7 +112,7 @@ final class AuthHandler {
             do {
                 decodedToken = try decoder.decode(Token.self, from: data)
                 startViewController?.decodedToken = decodedToken
-    //            print("☎️ \(decodedToken)")
+//                print("☎️ \(decodedToken)")
             } catch {
                 print(error.localizedDescription)
             }

@@ -39,14 +39,17 @@ final class SignInViewController: UIViewController {
     @objc func onSignInButtonTapped() {
         
 //        let authHandler = AuthHandler()
-        authHandler.showAuthPage()
-        
-        if authHandler.decodedToken == nil {
-            print("📸📸📸📸📸📸 - EMPTY TOKEN")
-        } else {
-            let startViewController = StartViewController()
-            navigationController?.pushViewController(startViewController, animated: true)
+        authHandler.showAuthPage(with: self) { result in
+            
+            
         }
+        
+//        if authHandler.decodedToken == nil {
+//            print("📸📸📸📸📸📸 - EMPTY TOKEN")
+//        } else {
+//            let startViewController = StartViewController()
+//            navigationController?.pushViewController(startViewController, animated: true)
+//        }
         
         
 //        self.present(startViewController, animated: true, completion: nil)
