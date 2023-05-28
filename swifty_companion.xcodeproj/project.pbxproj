@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A43978A62A220FCC00406BCB /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43978A52A220FCC00406BCB /* AppRouter.swift */; };
+		A43978AD2A22444700406BCB /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A43978AC2A22444700406BCB /* Launch Screen.storyboard */; };
 		A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */; };
 		A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */; };
 		A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E63D12A14D5E400FDCDAB /* UserService.swift */; };
@@ -17,13 +19,15 @@
 		B57D06482A0E44E6003169FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* User.swift */; };
 		B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* PeerViewController.swift */; };
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
-		B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* StartViewController.swift */; };
+		B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* UserSearchViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
 		B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */; };
 		B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A43978A52A220FCC00406BCB /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		A43978AC2A22444700406BCB /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A43E63CC2A140D3900FDCDAB /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		A43E63CE2A14D53F00FDCDAB /* IURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IURLSession.swift; sourceTree = "<group>"; };
 		A43E63D12A14D5E400FDCDAB /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -35,7 +39,7 @@
 		B588CA022A0BA95C00E11921 /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
 		B58AE88E2A0B9334004D049E /* swifty_companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swifty_companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58AE8912A0B9334004D049E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B58AE8952A0B9334004D049E /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		B58AE8952A0B9334004D049E /* UserSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
 		B58AE89A2A0B933D004D049E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B58AE89F2A0B933D004D049E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +57,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A43978A72A220FDA00406BCB /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B58AE8912A0B9334004D049E /* AppDelegate.swift */,
+				A43978A52A220FCC00406BCB /* AppRouter.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		A43978A82A2210B200406BCB /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		A43978A92A2210BF00406BCB /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				B58AE8952A0B9334004D049E /* UserSearchViewController.swift */,
+			);
+			path = SearchView;
+			sourceTree = "<group>";
+		};
+		A43978AA2A2210D000406BCB /* ShowUserProperties */ = {
+			isa = PBXGroup;
+			children = (
+				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
+				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
+				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
+			);
+			path = ShowUserProperties;
+			sourceTree = "<group>";
+		};
+		A43978AB2A22440900406BCB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B58AE89A2A0B933D004D049E /* Assets.xcassets */,
+				B58AE89F2A0B933D004D049E /* Info.plist */,
+				A43978AC2A22444700406BCB /* Launch Screen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A43E63CB2A140D2000FDCDAB /* HTTPClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,27 +149,24 @@
 		B58AE8902A0B9334004D049E /* swifty_companion */ = {
 			isa = PBXGroup;
 			children = (
+				A43978AB2A22440900406BCB /* Resources */,
 				A43E63D02A14D5D700FDCDAB /* Services */,
 				A43E63CB2A140D2000FDCDAB /* HTTPClient */,
 				B57D06462A0E44BE003169FE /* Model */,
-				B58AE8912A0B9334004D049E /* AppDelegate.swift */,
-				B58AE8A52A0B9E7C004D049E /* Controller */,
-				B58AE89A2A0B933D004D049E /* Assets.xcassets */,
-				B58AE89F2A0B933D004D049E /* Info.plist */,
+				A43978A72A220FDA00406BCB /* Application */,
+				B58AE8A52A0B9E7C004D049E /* UserStories */,
 			);
 			path = swifty_companion;
 			sourceTree = "<group>";
 		};
-		B58AE8A52A0B9E7C004D049E /* Controller */ = {
+		B58AE8A52A0B9E7C004D049E /* UserStories */ = {
 			isa = PBXGroup;
 			children = (
-				B58AE8952A0B9334004D049E /* StartViewController.swift */,
-				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
-				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
-				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
-				B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */,
+				A43978A92A2210BF00406BCB /* SearchView */,
+				A43978AA2A2210D000406BCB /* ShowUserProperties */,
+				A43978A82A2210B200406BCB /* SignIn */,
 			);
-			path = Controller;
+			path = UserStories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A43978AD2A22444700406BCB /* Launch Screen.storyboard in Resources */,
 				B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,13 +243,14 @@
 				B57D06482A0E44E6003169FE /* User.swift in Sources */,
 				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
+				A43978A62A220FCC00406BCB /* AppRouter.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
 				A43E63D62A18CA2200FDCDAB /* AuthService.swift in Sources */,
 				B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,
-				B58AE8962A0B9334004D049E /* StartViewController.swift in Sources */,
+				B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */,
 				B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,
 			);
@@ -329,14 +377,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = swifty_companion/Info.plist;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = swifty_companion/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zu.swifty-companion";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -346,14 +396,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = swifty_companion/Info.plist;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = swifty_companion/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zu.swifty-companion";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

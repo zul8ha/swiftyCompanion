@@ -10,12 +10,18 @@ import Foundation
 import AuthenticationServices
 
 protocol IAuthHandler {
-    func showAuthPage(with authContentProvider: ASWebAuthenticationPresentationContextProviding, completion: Result<Token, Error>)
+    func showAuthPage(
+        with authContentProvider: ASWebAuthenticationPresentationContextProviding,
+        completion: @escaping (Result<Token, Error>) -> Void
+    )
 }
 
-enum AuthError {
-    case showAuthPageError // couldn't get the code
-    case
+enum AuthError: Error {
+    case showAuthPageError(Error?) // couldn't get the code
+    case wrongResponseType
+    case wrongStatusCode
+    case emptyData
+    case decodingError(Error)
 }
 
 final class AuthHandler: IAuthHandler {
@@ -23,9 +29,13 @@ final class AuthHandler: IAuthHandler {
     // MARK: - showAuthPage
     
     var decodedToken: Token?
-    var startViewController: StartViewController?
+    var startViewController: UserSearchViewController?
     
-    func showAuthPage(with authContentProvider: ASWebAuthenticationPresentationContextProviding, completion: Result<Token, Error>) {
+    
+    func showAuthPage(
+        with authContentProvider: ASWebAuthenticationPresentationContextProviding,
+        completion: @escaping (Result<Token, Error>) -> Void
+    ) {
         let stringUrl = "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
         guard let signInURL = URL(string: stringUrl) else { return }
         let callbackURLScheme = "hmeriann"
@@ -33,8 +43,12 @@ final class AuthHandler: IAuthHandler {
             url: signInURL,
             callbackURLScheme: callbackURLScheme
         ) { [weak self] callbackURL, error in
+            
+            if let error {
+                completion(.failure(AuthError.showAuthPageError(error)))
+            }
+                
             guard
-                error == nil,
                 let callbackURL = callbackURL,
                 // parse the URLComponents from the callbackURL's absolute string
                 let urlComponents = URLComponents(string: callbackURL.absoluteString),
@@ -44,26 +58,26 @@ final class AuthHandler: IAuthHandler {
                 let code = queryItems.first(where: {$0.name == "code"})?.value
                 else {
                 
-                completion(.failure)
+                completion(.failure(AuthError.showAuthPageError(nil)))
                 return
                 
             }
             
-            self?.exchangeCodeForTokens(with: code)
+            self?.exchangeCodeForTokens(with: code, completion: completion)
         }
-        
-        print("🚹")
-
-        
+                
         authenticationSession.presentationContextProvider = authContentProvider
-        //        authenticationSession.prefersEphemeralWebBrowserSession = true
+//        authenticationSession.prefersEphemeralWebBrowserSession = true
         
         if !authenticationSession.start() {
             print("Failed to start")
         }
     }
     
-    func exchangeCodeForTokens(with code: String) {
+    func exchangeCodeForTokens(
+        with code: String,
+        completion: @escaping (Result<Token, Error>) -> Void
+    ) {
         let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
         let clientSecret = "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"
         var urlComponents = URLComponents()
@@ -85,36 +99,38 @@ final class AuthHandler: IAuthHandler {
         
         let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
-            self.extractToken(data: data, response: response, error: error)
+            let result = self.extractToken(data: data, response: response, error: error)
+            completion(result)
         }
         dataTask.resume()
     }
     
-    func extractToken(data: Data?, response: URLResponse?, error: Error?) {
+    func extractToken(
+        data: Data?,
+        response: URLResponse?,
+        error: Error?
+    ) -> Result<Token, Error> {
+        
         if let error = error {
             print(error.localizedDescription)
         }
         guard let httpResponse = response as? HTTPURLResponse else {
-            print("🐙Failed to get HTTPURLResponse")
-            return
+            return .failure(AuthError.wrongResponseType)
         }
         guard 200..<300 ~= httpResponse.statusCode else {
-            print(HTTPClientError.wrongStatusCode)
-            print("⏰ httpResponse.statusCode: \(httpResponse.statusCode)")
-            return
+            return .failure(AuthError.wrongStatusCode)
         }
         guard let data = data else {
-            print(HTTPClientError.emptyData)
-            return
+            return .failure(AuthError.emptyData)
         }
         
         let decoder = JSONDecoder()
             do {
-                decodedToken = try decoder.decode(Token.self, from: data)
-                startViewController?.decodedToken = decodedToken
-//                print("☎️ \(decodedToken)")
+                let decodedToken = try decoder.decode(Token.self, from: data)
+                self.decodedToken = decodedToken
+                return .success(decodedToken)
             } catch {
-                print(error.localizedDescription)
+                return .failure(AuthError.decodingError(error))
             }
     }
     

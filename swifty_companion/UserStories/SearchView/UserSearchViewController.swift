@@ -8,9 +8,23 @@
 
 import UIKit
 
-class StartViewController: UIViewController {
+protocol UserSearchListener: AnyObject {
+    func didSignOut()
+}
+
+final class UserSearchViewController: UIViewController {
     
     var decodedToken: Token?
+    weak var listener: UserSearchListener?
+    
+    init(decodedToken: Token) {
+        super.init(nibName: nil, bundle: nil)
+        self.decodedToken = decodedToken
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -53,6 +67,7 @@ class StartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Search User"
         setUpUI()
     }
 //
@@ -67,7 +82,7 @@ class StartViewController: UIViewController {
     func setUpUI() {
         view.addSubview(stackView)
         view.backgroundColor = .systemBackground
-        navigationController?.setNavigationBarHidden(true, animated: true)   
+//        navigationController?.setNavigationBarHidden(true, animated: true)   
         NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8 ),

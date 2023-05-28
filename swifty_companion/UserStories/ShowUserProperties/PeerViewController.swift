@@ -37,7 +37,7 @@ class PeerViewController: UIViewController {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.alignment = .leading
-        stack.distribution = .fillProportionally
+        stack.distribution = .equalSpacing
         stack.spacing = 8
         stack.translatesAutoresizingMaskIntoConstraints = false
         
@@ -47,7 +47,9 @@ class PeerViewController: UIViewController {
     private lazy var peerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-//        image.image = UIImage(systemName: "person")
+        image.image = UIImage(systemName: "person")
+        image.tintColor = .darkGray
+        image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -57,8 +59,8 @@ class PeerViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .leading
         stack.axis = .vertical
-        stack.alignment = .top
         stack.distribution = .equalSpacing
+        stack.spacing = 8
         return stack
     }()
     
@@ -94,8 +96,6 @@ class PeerViewController: UIViewController {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-        //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
-        //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.text = ""
         return label
     }()
@@ -106,8 +106,6 @@ class PeerViewController: UIViewController {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-        //        label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
-        //        label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.text = ""
         return label
     }()
@@ -231,7 +229,8 @@ class PeerViewController: UIViewController {
         stackView.addArrangedSubview(peerImage)
         NSLayoutConstraint.activate([
             peerImage.heightAnchor.constraint(equalToConstant: 150),
-            peerImage.widthAnchor.constraint(equalTo: peerImage.heightAnchor, multiplier: 1),
+            peerImage.widthAnchor.constraint(equalToConstant: 150)
+//            peerImage.widthAnchor.constraint(equalTo: peerImage.heightAnchor, multiplier: 1),
             
         ])
         stackView.addArrangedSubview(userInfo)
@@ -241,6 +240,12 @@ class PeerViewController: UIViewController {
         userInfo.addArrangedSubview(poolYear)
         userInfo.addArrangedSubview(wallets)
         userInfo.addArrangedSubview(userLevel)
+        
+//        let spacerView = UIView()
+//        spacerView.translatesAutoresizingMaskIntoConstraints = false
+//        stackView.addArrangedSubview(spacerView)
+//        spacerView.setContentHuggingPriority(UILayoutPriority(50), for: .horizontal)
+        
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

@@ -9,8 +9,19 @@
 import UIKit
 import AuthenticationServices
 
+protocol SignInListener: AnyObject {
+    func didSignIn(with token: Token)
+}
+
 final class SignInViewController: UIViewController {
     let authHandler = AuthHandler()
+    weak var listener: SignInListener?
+    var isAuthSessionRunning = false {
+        didSet {
+            signInButton.isEnabled = !isAuthSessionRunning
+            print("💲 isAuthSessionRunning: \(isAuthSessionRunning)")
+        }
+    }
 
     private lazy var signInButton: UIButton = {
         let button = UIButton()
@@ -26,7 +37,8 @@ final class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        view.backgroundColor = .systemBackground
+//        navigationController?.setNavigationBarHidden(true, animated: true)
         view.addSubview(signInButton)
         NSLayoutConstraint.activate([
             signInButton.widthAnchor.constraint(equalToConstant: 120),
@@ -38,30 +50,31 @@ final class SignInViewController: UIViewController {
     
     @objc func onSignInButtonTapped() {
         
-//        let authHandler = AuthHandler()
-        authHandler.showAuthPage(with: self) { result in
-            
-            
+        isAuthSessionRunning = true
+        authHandler.showAuthPage(with: self) { [weak self] result in
+            self?.handleAuth(result: result)
         }
-        
-//        if authHandler.decodedToken == nil {
-//            print("📸📸📸📸📸📸 - EMPTY TOKEN")
-//        } else {
-//            let startViewController = StartViewController()
-//            navigationController?.pushViewController(startViewController, animated: true)
-//        }
-        
-        
-//        self.present(startViewController, animated: true, completion: nil)
-//        self.show(startViewController, sender: self)
     }
     
+    func handleAuth(result: Result<Token, Error>) {
+        DispatchQueue.main.async {
+            
+            self.isAuthSessionRunning = false
+            switch result {
+            case let .success(token):
+                self.listener?.didSignIn(with: token)
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
 }
 
 //MARK: - ASWebAuthenticationPresentationContextProviding
 
 extension SignInViewController: ASWebAuthenticationPresentationContextProviding {
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        
         let window = UIApplication.shared.windows.first { $0.isKeyWindow }
         return window ?? ASPresentationAnchor()
     }
