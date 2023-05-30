@@ -30,7 +30,7 @@ final class AppRouter {
     func showUserSearch(with token: Token) {
         let searchController = UserSearchViewController(decodedToken: token)
         navigationController?.viewControllers = [searchController]
-        
+        print(token)
     }
 }
 
