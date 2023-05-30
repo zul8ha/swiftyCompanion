@@ -26,16 +26,6 @@ final class UserSearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        
-        return stackView
-    }()
-    
     private lazy var searchField: UITextField = {
         let field = UITextField()
         
@@ -80,21 +70,22 @@ final class UserSearchViewController: UIViewController {
 
     // MARK: - setUpUI
     func setUpUI() {
-        view.addSubview(stackView)
         view.backgroundColor = .systemBackground
-//        navigationController?.setNavigationBarHidden(true, animated: true)   
+//        navigationController?.setNavigationBarHidden(true, animated: true)
+
+        view.addSubview(searchField)
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8 ),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8 ),
+            searchField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.72),
+            searchField.heightAnchor.constraint(equalToConstant: 42),
+            searchField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
         ])
-        stackView.addArrangedSubview(searchField)
+        view.addSubview(searchButton)
         NSLayoutConstraint.activate([
-            searchField.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.78)
-        ])
-        stackView.addArrangedSubview(searchButton)
-        NSLayoutConstraint.activate([
-            searchButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.2)
+            searchButton.heightAnchor.constraint(equalToConstant: 42),
+            searchButton.centerYAnchor.constraint(equalTo: searchField.centerYAnchor),
+            searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
+            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
     }
     
