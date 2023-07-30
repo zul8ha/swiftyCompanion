@@ -23,7 +23,7 @@ enum AuthError: Error {
     case emptyData
     case decodingError(Error)
 }
-
+///
 final class AuthHandler: IAuthHandler {
  
     // MARK: - showAuthPage
@@ -47,7 +47,7 @@ final class AuthHandler: IAuthHandler {
             if let error {
                 completion(.failure(AuthError.showAuthPageError(error)))
             }
-                
+            
             guard
                 let callbackURL = callbackURL,
                 // parse the URLComponents from the callbackURL's absolute string
@@ -57,10 +57,8 @@ final class AuthHandler: IAuthHandler {
                 // get the query item code's value from:
                 let code = queryItems.first(where: {$0.name == "code"})?.value
                 else {
-                
-                completion(.failure(AuthError.showAuthPageError(nil)))
-                return
-                
+                    completion(.failure(AuthError.showAuthPageError(nil)))
+                    return
             }
             
             self?.exchangeCodeForTokens(with: code, completion: completion)
@@ -78,8 +76,9 @@ final class AuthHandler: IAuthHandler {
         with code: String,
         completion: @escaping (Result<Token, Error>) -> Void
     ) {
+        print("😶‍🌫️", #function, code)
         let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-        let clientSecret = "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"
+        let clientSecret = "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"
         var urlComponents = URLComponents()
         
         urlComponents.scheme = "https"
@@ -93,7 +92,7 @@ final class AuthHandler: IAuthHandler {
             URLQueryItem(name: "redirect_uri", value: "hmeriann://oauth-callback/")
         ]
         guard let url = urlComponents.url else { return }
-        print(url.absoluteString)
+        print("👻", url.absoluteString)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         

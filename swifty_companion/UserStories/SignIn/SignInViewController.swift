@@ -10,7 +10,7 @@ import UIKit
 import AuthenticationServices
 
 protocol SignInListener: AnyObject {
-    func didSignIn(with token: Token)
+    func didSignIn(with accessToken: AccessToken)
 }
 
 final class SignInViewController: UIViewController {
@@ -62,7 +62,7 @@ final class SignInViewController: UIViewController {
             self.isAuthSessionRunning = false
             switch result {
             case let .success(token):
-                self.listener?.didSignIn(with: token)
+                self.listener?.didSignIn(with: token.access_token)
             case let .failure(error):
                 print(error)
             }

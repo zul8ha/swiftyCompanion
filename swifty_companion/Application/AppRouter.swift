@@ -8,17 +8,32 @@
 
 import UIKit
 
-final class AppRouter {
+protocol IAppRouter {
+    func startApp(in window: UIWindow)
+}
+
+final class AppRouter: IAppRouter {
     
     weak var window: UIWindow?
     var navigationController: UINavigationController?
+    let authManager: IAuthManager
+    
+    init(with authManager: IAuthManager) {
+        self.authManager = authManager
+    }
     
     func startApp(in window: UIWindow) {
         self.window = window
         navigationController = UINavigationController()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        showShigIn()
+        
+        switch authManager.authState {
+        case let .authorised(accessToken):
+            showUserSearch(with: accessToken)
+        case .unauthorised:
+            showShigIn()
+        }
     }
     
     func showShigIn() {
@@ -27,16 +42,16 @@ final class AppRouter {
         navigationController?.present(viewController, animated: true)
     }
     
-    func showUserSearch(with token: Token) {
-        let searchController = UserSearchViewController(decodedToken: token)
+    func showUserSearch(with accessToken: AccessToken) {
+        let searchController = UserSearchViewController(accessToken: accessToken)
         navigationController?.viewControllers = [searchController]
-        print(token)
+        print(accessToken)
     }
 }
 
 extension AppRouter: SignInListener {
-    func didSignIn(with token: Token) {
-        showUserSearch(with: token)
+    func didSignIn(with accessToken: AccessToken) {
+        showUserSearch(with: accessToken)
         if navigationController?.presentedViewController is SignInViewController {
             navigationController?.dismiss(animated: true)
         }

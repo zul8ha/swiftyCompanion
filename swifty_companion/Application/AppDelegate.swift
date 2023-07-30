@@ -12,7 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let appRouter = AppRouter()
+    private let authManager: IAuthManager = AuthManager()
+    private lazy var appRouter: IAppRouter = AppRouter(with: authManager)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         

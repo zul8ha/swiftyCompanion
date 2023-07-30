@@ -7,6 +7,7 @@
 //
 
 import Foundation
+// TODO: Rename fields to scakeCase
 
 struct Token: Decodable {
     var access_token: String

@@ -14,12 +14,12 @@ protocol UserSearchListener: AnyObject {
 
 final class UserSearchViewController: UIViewController {
     
-    var decodedToken: Token?
+    var accessToken: AccessToken?
     weak var listener: UserSearchListener?
     
-    init(decodedToken: Token) {
+    init(accessToken: AccessToken) {
         super.init(nibName: nil, bundle: nil)
-        self.decodedToken = decodedToken
+        self.accessToken = accessToken
     }
     
     required init?(coder: NSCoder) {
@@ -35,8 +35,10 @@ final class UserSearchViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.placeholder = "Type here the 42peer nickname"
         field.font = .systemFont(ofSize: 12)
-        //        field.setContentHuggingPriority(UILayoutPriority(rawValue: 200), for: .horizontal)
-        //        field.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 700), for: .horizontal)
+        
+        if let searchParameter = field.text {
+            
+        }
         
         return field
     }()
@@ -89,7 +91,7 @@ final class UserSearchViewController: UIViewController {
         ])
     }
     
-    func showUserDetails(with login: String, token: Token) {
+    func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
 //        let navigationController = UINavigationController()
         let peerViewController = PeerViewController(
@@ -99,7 +101,7 @@ final class UserSearchViewController: UIViewController {
 //        navigationController.viewControllers = [peerViewController]
 
         peerViewController.login = login
-        peerViewController.token = token
+        peerViewController.token?.access_token = token
         
         navigationController?.pushViewController(peerViewController, animated: true)
         //        present(peerViewController, animated: true, completion: nil)
@@ -109,7 +111,7 @@ final class UserSearchViewController: UIViewController {
         
         guard let login = searchField.text,
             !login.isEmpty,
-            let token = decodedToken
+            let token = accessToken
             else { return }
         showUserDetails(with: login.lowercased(), token: token)
     }
