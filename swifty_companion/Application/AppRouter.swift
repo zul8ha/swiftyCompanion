@@ -17,8 +17,11 @@ final class AppRouter: IAppRouter {
     weak var window: UIWindow?
     var navigationController: UINavigationController?
     let authManager: IAuthManager
+    // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
     
-    init(with authManager: IAuthManager) {
+    init(
+        with authManager: IAuthManager
+    ) {
         self.authManager = authManager
     }
     
