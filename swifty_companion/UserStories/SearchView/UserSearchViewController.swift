@@ -35,6 +35,7 @@ final class UserSearchViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.placeholder = "Type here the 42peer nickname"
         field.font = .systemFont(ofSize: 12)
+        field.autocorrectionType = .no
         
         if let searchParameter = field.text {
             
@@ -89,6 +90,23 @@ final class UserSearchViewController: UIViewController {
             searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
             searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
+        
+        addLogOutButton()
+    }
+    
+    func addLogOutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "LogOut",
+            style: .plain,
+            target: self,
+            action: #selector(onBackButtonTap)
+        )
+    }
+    
+    @objc func onBackButtonTap() {
+        listener?.didSignOut()
+        print(#function, "8888")
+
     }
     
     func showUserDetails(with login: String, token: AccessToken) {
@@ -101,7 +119,7 @@ final class UserSearchViewController: UIViewController {
 //        navigationController.viewControllers = [peerViewController]
 
         peerViewController.login = login
-        peerViewController.token?.access_token = token
+        peerViewController.accessToken = token
         
         navigationController?.pushViewController(peerViewController, animated: true)
         //        present(peerViewController, animated: true, completion: nil)

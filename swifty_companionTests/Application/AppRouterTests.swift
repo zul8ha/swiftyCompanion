@@ -11,9 +11,9 @@ import XCTest
 
 final class AppRouterTests: XCTestCase {
     
+    var window: UIWindow!
     var appRouter: AppRouter!
     var authManager: AuthManagerMock!
-    var window: UIWindow!
     
     override func setUpWithError() throws {
         window = UIWindow()
@@ -34,7 +34,7 @@ final class AppRouterTests: XCTestCase {
         // Act / when
         appRouter.startApp(in: window)
         
-        //
+        // Assert / then
         XCTAssertTrue(appRouter.window === window)
         XCTAssertTrue(appRouter.window?.isKeyWindow ?? false)
         XCTAssertTrue(appRouter.window?.rootViewController is UINavigationController)

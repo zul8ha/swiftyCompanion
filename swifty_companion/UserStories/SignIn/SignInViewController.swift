@@ -14,7 +14,8 @@ protocol SignInListener: AnyObject {
 }
 
 final class SignInViewController: UIViewController {
-    let authHandler = AuthHandler()
+//    private let authHandler = AuthHandler()
+    private let authManager: IAuthManager
     weak var listener: SignInListener?
     var isAuthSessionRunning = false {
         didSet {
@@ -35,6 +36,15 @@ final class SignInViewController: UIViewController {
         return button
     }()
     
+    init(authManager: IAuthManager) {
+        self.authManager = authManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -51,18 +61,18 @@ final class SignInViewController: UIViewController {
     @objc func onSignInButtonTapped() {
         
         isAuthSessionRunning = true
-        authHandler.showAuthPage(with: self) { [weak self] result in
+        authManager.showAuthPage(with: self) { [weak self] result in
             self?.handleAuth(result: result)
         }
     }
     
-    func handleAuth(result: Result<Token, Error>) {
+    func handleAuth(result: Result<AccessToken, Error>) {
         DispatchQueue.main.async {
             
             self.isAuthSessionRunning = false
             switch result {
-            case let .success(token):
-                self.listener?.didSignIn(with: token.access_token)
+            case let .success(accessToken):
+                self.listener?.didSignIn(with: accessToken)
             case let .failure(error):
                 print(error)
             }

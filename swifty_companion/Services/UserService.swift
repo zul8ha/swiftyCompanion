@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IUserService {
-    func loadUserData(with login: String, token: String, completion: @escaping (Result<User, Error>) -> Void)
+    func loadUserData(with login: String, accessToken: String, completion: @escaping (Result<User, Error>) -> Void)
 }
 
 final class UserService: IUserService {
@@ -20,10 +20,10 @@ final class UserService: IUserService {
         self.httpClient = httpClient
     }
     
-    func loadUserData(with login: String, token: String, completion: @escaping (Result<User, Error>) -> Void) {
+    func loadUserData(with login: String, accessToken: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") else { return }
         var urlRequest = URLRequest(url: url)
-        let bearer = "Bearer \(token)"
+        let bearer = "Bearer \(accessToken)"
         urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
         
         httpClient.loadData(with: urlRequest) { result in

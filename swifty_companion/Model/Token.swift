@@ -7,17 +7,25 @@
 //
 
 import Foundation
-// TODO: Rename fields to scakeCase
 
 struct Token: Decodable {
-    var access_token: String
-    var token_type: String
-    var expires_in: Int
-    var refresh_token: String
+    var accessToken: String
+    var tokenType: String
+    var expiresIn: Int
+    var refreshToken: String
     var scope: String
-    var created_at: Int
+    var createdAt: Int
     
     func getAccessToken() -> String {
-        return access_token
+        return accessToken
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case refreshToken = "refresh_token"
+        case scope
+        case createdAt = "created_at"
     }
 }

@@ -12,11 +12,13 @@ protocol IAppRouter {
     func startApp(in window: UIWindow)
 }
 
+/// Routes the flow
 final class AppRouter: IAppRouter {
     
     weak var window: UIWindow?
     var navigationController: UINavigationController?
     let authManager: IAuthManager
+    
     // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
     
     init(
@@ -25,6 +27,9 @@ final class AppRouter: IAppRouter {
         self.authManager = authManager
     }
     
+    /// Creates an instance of the NavigationController, makes it a rootVC of the window and makes it key&visible
+    /// In case we have a valid access token, shows the SeatchVC, otherwise - signInVC
+    /// - Parameter window: came from the AppDelegate
     func startApp(in window: UIWindow) {
         self.window = window
         navigationController = UINavigationController()
@@ -40,15 +45,19 @@ final class AppRouter: IAppRouter {
     }
     
     func showShigIn() {
-        let viewController = SignInViewController()
+        let viewController = SignInViewController(
+            authManager: authManager
+        )
         viewController.listener = self
+        viewController.isModalInPresentation = true
         navigationController?.present(viewController, animated: true)
     }
     
     func showUserSearch(with accessToken: AccessToken) {
         let searchController = UserSearchViewController(accessToken: accessToken)
         navigationController?.viewControllers = [searchController]
-        print(accessToken)
+        searchController.listener = self
+        print("😈", accessToken)
     }
 }
 
@@ -63,6 +72,8 @@ extension AppRouter: SignInListener {
 
 extension AppRouter: UserSearchListener {
     func didSignOut() {
-        print("\(type(of: self)) = \(#function)")
+        authManager.logOut()
+        showShigIn()
+        navigationController?.viewControllers = []
     }
 }
