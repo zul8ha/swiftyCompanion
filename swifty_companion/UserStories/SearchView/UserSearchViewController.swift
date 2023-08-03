@@ -16,6 +16,7 @@ final class UserSearchViewController: UIViewController {
     
     var accessToken: AccessToken?
     weak var listener: UserSearchListener?
+    var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
     
     init(accessToken: AccessToken) {
         super.init(nibName: nil, bundle: nil)
@@ -25,6 +26,19 @@ final class UserSearchViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private lazy var searchController: UISearchController = {
+        let search = UISearchController(searchResultsController: nil)
+        
+        return search
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: .plain)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        
+        return table
+    }()
     
     private lazy var searchField: UITextField = {
         let field = UITextField()
@@ -76,21 +90,28 @@ final class UserSearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
 //        navigationController?.setNavigationBarHidden(true, animated: true)
 
-        view.addSubview(searchField)
+//        view.addSubview(searchField)
+//        NSLayoutConstraint.activate([
+//            searchField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.72),
+//            searchField.heightAnchor.constraint(equalToConstant: 42),
+//            searchField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
+//        ])
+//        view.addSubview(searchButton)
+//        NSLayoutConstraint.activate([
+//            searchButton.heightAnchor.constraint(equalToConstant: 42),
+//            searchButton.centerYAnchor.constraint(equalTo: searchField.centerYAnchor),
+//            searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
+//            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
+//        ])
+        navigationItem.searchController = searchController
+        view.addSubview(tableView)
         NSLayoutConstraint.activate([
-            searchField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.72),
-            searchField.heightAnchor.constraint(equalToConstant: 42),
-            searchField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
-        view.addSubview(searchButton)
-        NSLayoutConstraint.activate([
-            searchButton.heightAnchor.constraint(equalToConstant: 42),
-            searchButton.centerYAnchor.constraint(equalTo: searchField.centerYAnchor),
-            searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
-            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
-        ])
-        
         addLogOutButton()
     }
     
