@@ -5,6 +5,7 @@
 //  Created by Heidi Merianne on 5/10/23.
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
+/// For the filtering https://www.kodeco.com/4363809-uisearchcontroller-tutorial-getting-started
 
 import UIKit
 
@@ -16,18 +17,23 @@ final class UserSearchViewController: UIViewController {
     
     var accessToken: AccessToken?
     weak var listener: UserSearchListener?
-    var user: User?
-    var filteredUsers: [User] = []
-//    private let httpClient: IHTTPClient
-//    private let userService: IUserService
 
-    var isSearchBarEmpty: Bool {
+    // MARK:- Dummy users array and filtering by tutorial
+    var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
+    var filteredUsers: [String] = []
+    var isSearcBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     var isFiltering: Bool {
-      return searchController.isActive && !isSearchBarEmpty
+        return searchController.isActive && !isSearcBarEmpty
     }
     
+    func filterContentForsearchTest(_ searchText: String) {
+        filteredUsers = users.filter { (user: String) -> Bool in
+            return user.lowercased().contains(searchText.lowercased())
+        }
+        tableView.reloadData()
+    }
     
     init(accessToken: AccessToken) {
         super.init(nibName: nil, bundle: nil)
@@ -41,18 +47,19 @@ final class UserSearchViewController: UIViewController {
     // MARK: - searchController
     private lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-//        search.searchResultsUpdater = self
-        search.searchBar.placeholder = "Type here"
+        search.searchResultsUpdater = self
         search.obscuresBackgroundDuringPresentation = false
-        definesPresentationContext = true
+        search.searchBar.placeholder = "Search for your peer"
+        search.definesPresentationContext = true
+        
         return search
     }()
     
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.register(UserTableViewCell.self, forCellReuseIdentifier: "Cell")
-        //        table.dataSource = self
+        table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
+        table.dataSource = self
         table.delegate = self
         return table
     }()
@@ -107,7 +114,6 @@ final class UserSearchViewController: UIViewController {
 
 //        view.addSubview(searchField)
 //        NSLayoutConstraint.activate([
-//
 //            searchField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.72),
 //            searchField.heightAnchor.constraint(equalToConstant: 42),
 //            searchField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -120,15 +126,13 @@ final class UserSearchViewController: UIViewController {
 //            searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
 //            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
 //        ])
-//
         navigationItem.searchController = searchController
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -4),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
         addLogOutButton()
     }
@@ -184,18 +188,37 @@ final class UserSearchViewController: UIViewController {
 //      }
 }
 
-extension UserSearchViewController: UITableViewDelegate {
-    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let user = user else { return UITableViewCell() }
-//    }
+extension UserSearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterContentForsearchTest(searchBar.text!)
+    }
 }
 
-//extension UserSearchViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        let searchBar = searchController.searchBar
-//        filterContentForSearchText(searchBar.text ?? "")
-//    }
-//}
+extension UserSearchViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering {
+            return filteredUsers.count
+        }
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath)
+        let user: String
+        if isFiltering {
+            user = filteredUsers[indexPath.row]
+        } else {
+            user = users[indexPath.row]
+        }
+        cell.textLabel?.text = user
+        return cell
+    }
+}
 
+extension UserSearchViewController: UITableViewDelegate {
+    
 
+}
