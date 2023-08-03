@@ -12,6 +12,7 @@ protocol IUserService {
     func loadUserData(with login: String, accessToken: String, completion: @escaping (Result<User, Error>) -> Void)
 }
 
+/// Performs the urlRequest to load Users data using the httpClient and AccessToken and decodes the User from loaded data
 final class UserService: IUserService {
    
     private let httpClient: IHTTPClient
