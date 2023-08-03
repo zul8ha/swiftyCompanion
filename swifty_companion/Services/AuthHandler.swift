@@ -44,7 +44,7 @@ final class AuthHandler: IAuthHandler {
             callbackURLScheme: callbackURLScheme
         ) { [weak self] callbackURL, error in
             
-            if let error {
+            if let error = error {
                 completion(.failure(AuthError.showAuthPageError(error)))
             }
             

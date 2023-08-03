@@ -130,7 +130,7 @@ final class AuthManager: IAuthManager {
         error: Error?,
         completion: @escaping (Result<AccessToken, Error>) -> Void
     ) {
-        if let error {
+        if let error = error {
             completion(.failure(AuthError.showAuthPageError(error)))
         }
         guard
