@@ -5,6 +5,7 @@
 //  Created by Heidi Merianne on 5/10/23.
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
+/// For the filtering https://www.kodeco.com/4363809-uisearchcontroller-tutorial-getting-started
 
 import UIKit
 
@@ -16,7 +17,23 @@ final class UserSearchViewController: UIViewController {
     
     var accessToken: AccessToken?
     weak var listener: UserSearchListener?
+    
+    // MARK:- Dummy users array and filtering by tutorial
     var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
+    var filteresUsers: [String] = []
+    var isSearcBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    var isFiltering: Bool {
+        return searchController.isActive && !isSearcBarEmpty
+    }
+    
+    func filterContentForsearchTest(_ searchText: String) {
+        filteresUsers = users.filter { (user: String) -> Bool in
+            return user.lowercased().contains(searchText.lowercased())
+        }
+        tableView.reloadData()
+    }
     
     init(accessToken: AccessToken) {
         super.init(nibName: nil, bundle: nil)
@@ -29,6 +46,10 @@ final class UserSearchViewController: UIViewController {
     
     private lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
+        search.searchResultsUpdater = self
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Search for your peer"
+        search.definesPresentationContext = true
         
         return search
     }()
@@ -36,7 +57,10 @@ final class UserSearchViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
-        
+//        table.estimatedRowHeight = UITableView.automaticDimension
+        table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
+        table.dataSource = self
+        table.delegate = self
         return table
     }()
     
@@ -156,4 +180,37 @@ final class UserSearchViewController: UIViewController {
     }
 }
 
+extension UserSearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterContentForsearchTest(searchBar.text!)
+    }
+}
 
+extension UserSearchViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering {
+            return filteresUsers.count
+        }
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath)
+        let user: String
+        if isFiltering {
+            user = filteresUsers[indexPath.row]
+        } else {
+            user = users[indexPath.row]
+        }
+        cell.textLabel?.text = user
+        return cell
+    }
+}
+
+extension UserSearchViewController: UITableViewDelegate {
+    
+
+}
