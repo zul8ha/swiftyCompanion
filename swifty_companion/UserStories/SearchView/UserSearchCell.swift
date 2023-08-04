@@ -12,7 +12,6 @@ final class UserSearchCell: UITableViewCell {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 1
         
@@ -21,7 +20,7 @@ final class UserSearchCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUpUI()
+        contentView.addSubview(label)
     }
     
     required init?(coder: NSCoder) {
@@ -30,16 +29,6 @@ final class UserSearchCell: UITableViewCell {
     
     override func prepareForReuse() {
         label.text = ""
-    }
-    
-    func setUpUI() {
-        contentView.addSubview(label)
-//        NSLayoutConstraint.activate([
-//            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-//            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
-//            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
-//            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
-//        ])
     }
     
     func configure(with item: String) {
