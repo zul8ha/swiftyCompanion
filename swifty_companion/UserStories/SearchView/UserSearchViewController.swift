@@ -17,7 +17,7 @@ final class UserSearchViewController: UIViewController {
     
     var accessToken: AccessToken?
     weak var listener: UserSearchListener?
-
+    
     // MARK:- Dummy users array and filtering by tutorial
     var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
     var filteredUsers: [String] = []
@@ -49,7 +49,6 @@ final class UserSearchViewController: UIViewController {
         let search = UISearchController(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.obscuresBackgroundDuringPresentation = false
-        search.searchBar.placeholder = "Search for your peer"
         search.definesPresentationContext = true
         
         return search
@@ -99,33 +98,18 @@ final class UserSearchViewController: UIViewController {
         super.viewDidLoad()
         title = "Search User"
         setUpUI()
+        searchController.searchBar.delegate = self
     }
-//
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        showAuthPage()
-//    }
-//
-
+    //
+    //    override func viewDidAppear(_ animated: Bool) {
+    //        super.viewDidAppear(animated)
+    //        showAuthPage()
+    //    }
+    //
+    
     // MARK: - setUpUI
     func setUpUI() {
         view.backgroundColor = .systemBackground
-//        navigationController?.setNavigationBarHidden(true, animated: true)
-
-//        view.addSubview(searchField)
-//        NSLayoutConstraint.activate([
-//            searchField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.72),
-//            searchField.heightAnchor.constraint(equalToConstant: 42),
-//            searchField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
-//        ])
-//        view.addSubview(searchButton)
-//        NSLayoutConstraint.activate([
-//            searchButton.heightAnchor.constraint(equalToConstant: 42),
-//            searchButton.centerYAnchor.constraint(equalTo: searchField.centerYAnchor),
-//            searchButton.leadingAnchor.constraint(equalTo: searchField.trailingAnchor, constant: 8),
-//            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
-//        ])
         navigationItem.searchController = searchController
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -152,18 +136,17 @@ final class UserSearchViewController: UIViewController {
     @objc func onBackButtonTap() {
         listener?.didSignOut()
         print(#function, "8888")
-
     }
     
     func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
-//        let navigationController = UINavigationController()
+        //        let navigationController = UINavigationController()
         let peerViewController = PeerViewController(
             with: httpClient,
             userService: UserService(with: httpClient)
         )
-//        navigationController.viewControllers = [peerViewController]
-
+        //        navigationController.viewControllers = [peerViewController]
+        
         peerViewController.login = login
         peerViewController.accessToken = token
         
@@ -174,18 +157,18 @@ final class UserSearchViewController: UIViewController {
     @objc func onButtonTapped() {
         
         guard let login = searchField.text,
-            !login.isEmpty,
-            let token = accessToken
-            else { return }
+              !login.isEmpty,
+              let token = accessToken
+        else { return }
         showUserDetails(with: login.lowercased(), token: token)
     }
     
-//    func filterContentForSearchText(_ searchText: String) {
-//        filteredUsers = users.filter { (user: User) -> Bool in
-//            return user.login.lowercased().contains(searchText.lowercased())
-//        }
-//        tableView.reloadData()
-//      }
+    //    func filterContentForSearchText(_ searchText: String) {
+    //        filteredUsers = users.filter { (user: User) -> Bool in
+    //            return user.login.lowercased().contains(searchText.lowercased())
+    //        }
+    //        tableView.reloadData()
+    //      }
 }
 
 extension UserSearchViewController: UISearchResultsUpdating {
@@ -220,5 +203,14 @@ extension UserSearchViewController: UITableViewDataSource {
 
 extension UserSearchViewController: UITableViewDelegate {
     
+    
+}
 
+extension UserSearchViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchButton.addTarget(self, action: #selector(onButtonTapped), for: .touchUpInside)
+        print("search button click")
+    }
+    
 }
