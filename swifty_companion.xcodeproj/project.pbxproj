@@ -19,9 +19,10 @@
 		A44DE3AE2A76663D00307CBA /* AuthManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3AD2A76663D00307CBA /* AuthManagerMock.swift */; };
 		A44DE3B02A76A0CD00307CBA /* KeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */; };
 		A44DE3B32A76A27F00307CBA /* KeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3B22A76A27F00307CBA /* KeyValueStorageTests.swift */; };
+		A44DE3B92A7FC1C800307CBA /* UserSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3B82A7FC1C800307CBA /* UserSearchResult.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
-		B57D06482A0E44E6003169FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* User.swift */; };
+		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
 		B57FB13D2A7BC94700275FDD /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */; };
 		B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* PeerViewController.swift */; };
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
@@ -55,9 +56,10 @@
 		A44DE3AD2A76663D00307CBA /* AuthManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManagerMock.swift; sourceTree = "<group>"; };
 		A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorage.swift; sourceTree = "<group>"; };
 		A44DE3B22A76A27F00307CBA /* KeyValueStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageTests.swift; sourceTree = "<group>"; };
+		A44DE3B82A7FC1C800307CBA /* UserSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchResult.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
-		B57D06472A0E44E6003169FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		B588CA022A0BA95C00E11921 /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
 		B58AE88E2A0B9334004D049E /* swifty_companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swifty_companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,8 +193,9 @@
 		B57D06462A0E44BE003169FE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B57D06472A0E44E6003169FE /* User.swift */,
+				B57D06472A0E44E6003169FE /* UserDetails.swift */,
 				A43E63D72A18CC0000FDCDAB /* Token.swift */,
+				A44DE3B82A7FC1C800307CBA /* UserSearchResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -350,9 +353,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */,
-				B57D06482A0E44E6003169FE /* User.swift in Sources */,
+				B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */,
 				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
+				A44DE3B92A7FC1C800307CBA /* UserSearchResult.swift in Sources */,
 				B57FB13D2A7BC94700275FDD /* UserSearchCell.swift in Sources */,
 				A44DE39B2A76577600307CBA /* AuthManager.swift in Sources */,
 				A43978A62A220FCC00406BCB /* AppRouter.swift in Sources */,

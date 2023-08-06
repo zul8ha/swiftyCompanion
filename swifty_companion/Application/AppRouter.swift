@@ -16,8 +16,9 @@ protocol IAppRouter {
 final class AppRouter: IAppRouter {
     
     weak var window: UIWindow?
-    var navigationController: UINavigationController?
-    let authManager: IAuthManager
+    private var navigationController: UINavigationController?
+    private let authManager: IAuthManager
+    private let httpClient = HTTPClient()
     
     // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
     
@@ -38,7 +39,14 @@ final class AppRouter: IAppRouter {
         
         switch authManager.authState {
         case let .authorised(accessToken):
-            showUserSearch(with: accessToken)
+            let userService = UserService(
+                accessToken: accessToken,
+                httpClient: httpClient
+            )
+            showUserSearch(
+                with: accessToken,
+                userService: userService
+            )
         case .unauthorised:
             showShigIn()
         }
@@ -53,8 +61,8 @@ final class AppRouter: IAppRouter {
         navigationController?.present(viewController, animated: true)
     }
     
-    func showUserSearch(with accessToken: AccessToken) {
-        let searchController = UserSearchViewController(accessToken: accessToken)
+    func showUserSearch(with accessToken: AccessToken, userService: UserService) {
+        let searchController = UserSearchViewController(accessToken: accessToken, userService: userService)
         navigationController?.viewControllers = [searchController]
         searchController.listener = self
         print("😈", accessToken)
@@ -63,7 +71,11 @@ final class AppRouter: IAppRouter {
 
 extension AppRouter: SignInListener {
     func didSignIn(with accessToken: AccessToken) {
-        showUserSearch(with: accessToken)
+        let userService = UserService(
+            accessToken: accessToken,
+            httpClient: httpClient
+        )
+        showUserSearch(with: accessToken, userService: userService)
         if navigationController?.presentedViewController is SignInViewController {
             navigationController?.dismiss(animated: true)
         }

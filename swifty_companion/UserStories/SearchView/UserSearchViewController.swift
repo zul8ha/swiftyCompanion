@@ -15,37 +15,6 @@ protocol UserSearchListener: AnyObject {
 }
 
 final class UserSearchViewController: UIViewController {
-    
-    private var accessToken: AccessToken
-    weak var listener: UserSearchListener?
-    
-    // TODO: - Dummy users - pull here the real ones (dmorfin - doesn't exist)
-    var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
-    var filteredUsers: [String] = []
-    var isSearchBarEmpty: Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    var isFiltering: Bool {
-        return searchController.isActive && !isSearchBarEmpty
-    }
-    
-    init(accessToken: AccessToken) {
-        self.accessToken = accessToken
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    func filterContentForsearchText(_ searchText: String) {
-        filteredUsers = users.filter { (user: String) -> Bool in
-            return user.lowercased().contains(searchText.lowercased())
-        }
-        tableView.reloadData()
-    }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - searchController
     private lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
@@ -64,41 +33,50 @@ final class UserSearchViewController: UIViewController {
         return table
     }()
     
-    // MARK: - searchField and Button
-    private lazy var searchField: UITextField = {
-        let field = UITextField()
-        
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.layer.cornerRadius = 10
-        field.backgroundColor = .systemGray6
-        field.borderStyle = .roundedRect
-        field.placeholder = "Type here the 42peer nickname"
-        field.font = .systemFont(ofSize: 12)
-        field.autocorrectionType = .no
-        
-        if let searchParameter = field.text {
-        }
-        return field
-    }()
+    private var accessToken: AccessToken
+    private let userService: IUserService
     
-    private lazy var searchButton: UIButton = {
-        let button = UIButton(type: .system)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 5
-        button.setTitle("Zoek", for: .normal)
-        button.tintColor = .white
-        button.titleLabel?.font = .boldSystemFont(ofSize: 14)
-        button.backgroundColor = .darkGray
-//        button.addTarget(self, action: #selector(onButtonTapped), for: .touchUpInside)
-        
-        return button
-    }()
+    weak var listener: UserSearchListener?
+    
+    // TODO: - Dummy users - pull here the real ones (dmorfin - doesn't exist)
+    //    var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
+    var users: [UserSearchResult] = []
+    
+    init(accessToken: AccessToken, userService: IUserService) {
+        self.accessToken = accessToken
+        self.userService = userService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search User"
         setUpUI()
+        
+        userService.search(
+            with: "hmer",
+            accessToken: accessToken
+        ) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.handleUserSearch(result: result)
+                }
+            }
+        
+    }
+    
+    func handleUserSearch(result: Result<[UserSearchResult], Error>) {
+        print("**** handleUserSearch")
+        switch result {
+        case let .success(users):
+            self.users = users
+            tableView.reloadData()
+        case let .failure(error):
+            print(#function, "🚨")
+        }
     }
     
     //    override func viewDidAppear(_ animated: Bool) {
@@ -111,7 +89,7 @@ final class UserSearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         navigationItem.searchController = searchController
-
+        
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -134,8 +112,15 @@ final class UserSearchViewController: UIViewController {
     
     @objc func onBackButtonTap() {
         listener?.didSignOut()
-//        print(#function, "8888")
+        //        print(#function, "8888")
     }
+    
+    //    func filterContentForsearchText(_ searchText: String) {
+    //        filteredUsers = users.filter { (user: String) -> Bool in
+    //            return user.lowercased().contains(searchText.lowercased())
+    //        }
+    //        tableView.reloadData()
+    //    }
     
     func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
@@ -155,65 +140,52 @@ final class UserSearchViewController: UIViewController {
         //        present(peerViewController, animated: true, completion: nil)
     }
     
-//    @objc func onButtonTapped() {
-//
-//        guard let login = searchField.text,
-//              !login.isEmpty,
-//              let token = accessToken
-//        else { return }
-//        showUserDetails(with: login.lowercased(), token: token)
-//    }
+    //    @objc func onButtonTapped() {
+    //
+    //        guard let login = searchField.text,
+    //              !login.isEmpty,
+    //              let token = accessToken
+    //        else { return }
+    //        showUserDetails(with: login.lowercased(), token: token)
+    //    }
     
     /// Pushes to the PeerViewController for the user from selected row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user: String
-        if isFiltering {
-            user = filteredUsers[indexPath.row]
-        } else {
-            user = users[indexPath.row]
-        }
-        showUserDetails(with: user, token: accessToken)
+        let login: String = users[indexPath.row].login
+        showUserDetails(with: login, token: accessToken)
     }
 }
 
 extension UserSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        filterContentForsearchText(searchBar.text!)
+        //        filterContentForsearchText(searchBar.text!)
     }
 }
 
 extension UserSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltering {
-            return filteredUsers.count
-        }
         return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath)
-        let user: String
-        if isFiltering {
-            user = filteredUsers[indexPath.row]
-        } else {
-            user = users[indexPath.row]
-        }
-        cell.textLabel?.text = user
+        let login: String = users[indexPath.row].login
+        cell.textLabel?.text = login
         return cell
     }
 }
 
 extension UserSearchViewController: UITableViewDelegate {
-//    func onButtonTapped() {
-//
-//        guard let login = searchField.text,
-//              !login.isEmpty,
-//              let token = accessToken
-//        else { return }
-//        showUserDetails(with: login.lowercased(), token: token)
-//    }
-//
+    //    func onButtonTapped() {
+    //
+    //        guard let login = searchField.text,
+    //              !login.isEmpty,
+    //              let token = accessToken
+    //        else { return }
+    //        showUserDetails(with: login.lowercased(), token: token)
+    //    }
+    //
 }

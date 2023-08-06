@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct User: Codable {
+struct UserDetails: Codable {
     let id: Int
     let email: String
     let login: String

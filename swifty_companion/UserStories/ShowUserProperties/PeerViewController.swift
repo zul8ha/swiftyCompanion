@@ -14,7 +14,7 @@ import UIKit
 class PeerViewController: UIViewController {
     
     private var login: String
-    private var user: User?
+    private var user: UserDetails?
     private var accessToken: AccessToken
     private var skills: [Skill] = []
     private var projects: [Project] = []
@@ -159,7 +159,7 @@ class PeerViewController: UIViewController {
         })
     }
     
-    func handleUserLoading(with result: Result<User, Error>) {
+    func handleUserLoading(with result: Result<UserDetails, Error>) {
         switch result {
         case let .success(user):
             self.user = user
@@ -173,7 +173,7 @@ class PeerViewController: UIViewController {
     
     // MARK: - Show User
     
-    func parseUserForSkills(for user: User) {
+    func parseUserForSkills(for user: UserDetails) {
         for cursus in user.cursusUsers {
             for skill in cursus.skills {
                 skills.append(skill)
@@ -181,7 +181,7 @@ class PeerViewController: UIViewController {
         }
     }
     
-    func showUser(_ user: User) {
+    func showUser(_ user: UserDetails) {
         userFullName.text = user.displayName
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
