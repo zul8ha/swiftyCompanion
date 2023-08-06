@@ -10,17 +10,28 @@ import Foundation
 
 protocol IUserService {
     func loadUserData(with login: String, accessToken: String, completion: @escaping (Result<User, Error>) -> Void)
+    
+    func search(with searchString: String, accessToken: String, completion: @escaping (Result<[User], Error>) -> Void)
 }
 
 /// Performs the urlRequest to load Users data using the httpClient and AccessToken and decodes the User from loaded data
 final class UserService: IUserService {
-   
+
+    private let accessToken: AccessToken
     private let httpClient: IHTTPClient
     
-    init(with httpClient: IHTTPClient) {
+    init(
+        accessToken: AccessToken,
+        httpClient: IHTTPClient
+    ) {
+        self.accessToken = accessToken
         self.httpClient = httpClient
     }
     
+    func search(with searchString: String, accessToken: String, completion: @escaping (Result<[User], Error>) -> Void) {
+        
+    }
+   
     func loadUserData(with login: String, accessToken: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") else { return }
         var urlRequest = URLRequest(url: url)

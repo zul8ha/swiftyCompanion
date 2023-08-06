@@ -6,6 +6,7 @@
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
 /// For the filtering https://www.kodeco.com/4363809-uisearchcontroller-tutorial-getting-started
+/// https://api.intra.42.fr/v2/users?range[login]=hmer,hmerz
 
 import UIKit
 
@@ -15,10 +16,10 @@ protocol UserSearchListener: AnyObject {
 
 final class UserSearchViewController: UIViewController {
     
-    var accessToken: AccessToken?
+    private var accessToken: AccessToken
     weak var listener: UserSearchListener?
     
-    // MARK:- Dummy users array and filtering by tutorial
+    // TODO: - Dummy users - pull here the real ones (dmorfin - doesn't exist)
     var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
     var filteredUsers: [String] = []
     var isSearchBarEmpty: Bool {
@@ -28,6 +29,10 @@ final class UserSearchViewController: UIViewController {
         return searchController.isActive && !isSearchBarEmpty
     }
     
+    init(accessToken: AccessToken) {
+        self.accessToken = accessToken
+    }
+    
     func filterContentForsearchText(_ searchText: String) {
         filteredUsers = users.filter { (user: String) -> Bool in
             return user.lowercased().contains(searchText.lowercased())
@@ -35,10 +40,6 @@ final class UserSearchViewController: UIViewController {
         tableView.reloadData()
     }
     
-    init(accessToken: AccessToken) {
-        super.init(nibName: nil, bundle: nil)
-        self.accessToken = accessToken
-    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -98,12 +99,11 @@ final class UserSearchViewController: UIViewController {
         title = "Search User"
         setUpUI()
     }
-    //
+    
     //    override func viewDidAppear(_ animated: Bool) {
     //        super.viewDidAppear(animated)
     //        showAuthPage()
     //    }
-    //
     
     // MARK: - setUpUI
     func setUpUI() {
@@ -133,20 +133,22 @@ final class UserSearchViewController: UIViewController {
     
     @objc func onBackButtonTap() {
         listener?.didSignOut()
-        print(#function, "8888")
+//        print(#function, "8888")
     }
     
     func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
         //        let navigationController = UINavigationController()
         let peerViewController = PeerViewController(
-            with: httpClient,
-            userService: UserService(with: httpClient)
+            accessToken: accessToken,
+            httpClient: httpClient,
+            login: login,
+            userService: UserService(
+                accessToken: token,
+                httpClient: httpClient
+            )
         )
         //        navigationController.viewControllers = [peerViewController]
-        
-        peerViewController.login = login
-        peerViewController.accessToken = token
         
         navigationController?.pushViewController(peerViewController, animated: true)
         //        present(peerViewController, animated: true, completion: nil)
@@ -161,9 +163,9 @@ final class UserSearchViewController: UIViewController {
 //        showUserDetails(with: login.lowercased(), token: token)
 //    }
     
+    /// Pushes to the PeerViewController for the user from selected row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user: String
-        guard let accessToken = accessToken else { return }
         if isFiltering {
             user = filteredUsers[indexPath.row]
         } else {

@@ -13,18 +13,25 @@ import UIKit
 
 class PeerViewController: UIViewController {
     
-    var login: String?
-    var user: User?
-    var accessToken: AccessToken?
-    var skills: [Skill] = []
-    var projects: [Project] = []
+    private var login: String
+    private var user: User?
+    private var accessToken: AccessToken
+    private var skills: [Skill] = []
+    private var projects: [Project] = []
     private let httpClient: IHTTPClient
     private let userService: IUserService
     
     // MARK: - init
-    init(with httpClient: IHTTPClient, userService: IUserService) {
+    init(
+        accessToken: AccessToken,
+        httpClient: IHTTPClient,
+        login: String,
+        userService: IUserService
+    ) {
+        self.accessToken = accessToken
         self.httpClient = httpClient
-        self.userService = UserService(with: httpClient)
+        self.login = login
+        self.userService = UserService(accessToken: accessToken, httpClient: httpClient)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -139,14 +146,12 @@ class PeerViewController: UIViewController {
         setUpUI()
         // to show it as a title of the View - on the NavigationBar (the same as navigationItem.title = login)
         title = login
-        guard let login = login else { return }
         loadUserData(with: login)
     }
     
     // MARK: - Load User Data
     
     func loadUserData(with login: String) {
-        guard let accessToken = accessToken else { return }
         userService.loadUserData(with: login, accessToken: accessToken, completion: { [weak self] result in
             DispatchQueue.main.async {
                 self?.handleUserLoading(with: result)
