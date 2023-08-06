@@ -31,6 +31,7 @@ final class UserSearchViewController: UIViewController {
     
     init(accessToken: AccessToken) {
         self.accessToken = accessToken
+        super.init(nibName: nil, bundle: nil)
     }
     
     func filterContentForsearchText(_ searchText: String) {
