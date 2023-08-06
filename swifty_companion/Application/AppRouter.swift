@@ -33,6 +33,7 @@ final class AppRouter: IAppRouter {
     /// - Parameter window: came from the AppDelegate
     func startApp(in window: UIWindow) {
         self.window = window
+        
         navigationController = UINavigationController()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

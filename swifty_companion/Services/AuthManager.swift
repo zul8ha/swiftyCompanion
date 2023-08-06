@@ -95,8 +95,10 @@ final class AuthManager: IAuthManager {
     }
     
     /// Need to be known that doesn't show the SignInVC, if there is an access token already saved
+    private var accessToken: AccessToken?
     var authState: AuthState {
         if let accessToken = keyValueStorage.get(valueFor: "accessToken") {
+//        if let accessToken = accessToken {
             return .authorised(accessToken: accessToken)
         }
         return .unauthorised
@@ -191,7 +193,7 @@ final class AuthManager: IAuthManager {
         let decoder = JSONDecoder()
         do {
             let decodedToken = try decoder.decode(Token.self, from: data)
-            //                self.decodedToken = decodedToken
+//            self.accessToken = decodedToken
             save(decodedToken)
             return .success(decodedToken)
         } catch {
@@ -202,7 +204,8 @@ final class AuthManager: IAuthManager {
     func save(_ token: Token) {
         keyValueStorage.set(token.accessToken, for: "accessToken")
         keyValueStorage.set(token.refreshToken, for: "refreshToken")
-        //        keyValueStorage.set(token.expiresIn, for: "expiresIn")
+//        keyValueStorage.set(token.expiresIn, for: "expiresIn")
+//        accessToken = token.accessToken
     }
     
     func logOut() {

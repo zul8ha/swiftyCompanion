@@ -18,18 +18,23 @@ final class UserSearchViewController: UIViewController {
     // MARK: - searchController
     private lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-        search.searchResultsUpdater = self
+//        search.searchResultsUpdater = self
         search.obscuresBackgroundDuringPresentation = false
         search.definesPresentationContext = true
+        search.searchBar.delegate = self
+        search.searchBar.placeholder = "Search by peer login"
+        
         return search
     }()
     
     private lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
+        let table = UITableView(frame: view.bounds, style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
         table.dataSource = self
         table.delegate = self
+        table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
+        table.rowHeight = UITableView.automaticDimension
+
         return table
     }()
     
@@ -38,8 +43,6 @@ final class UserSearchViewController: UIViewController {
     
     weak var listener: UserSearchListener?
     
-    // TODO: - Dummy users - pull here the real ones (dmorfin - doesn't exist)
-    //    var users: [String] = ["hmeriann","gkarina","zkerriga","mshmelly","mcamps","cpopa","dmorfin","jlensing","cstaats","dasanero","mhogg"]
     var users: [UserSearchResult] = []
     
     init(accessToken: AccessToken, userService: IUserService) {
@@ -56,26 +59,18 @@ final class UserSearchViewController: UIViewController {
         super.viewDidLoad()
         title = "Search User"
         setUpUI()
-        
-        userService.search(
-            with: "hmer",
-            accessToken: accessToken
-        ) { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.handleUserSearch(result: result)
-                }
-            }
-        
     }
     
+    
+    
     func handleUserSearch(result: Result<[UserSearchResult], Error>) {
-        print("**** handleUserSearch")
         switch result {
         case let .success(users):
             self.users = users
             tableView.reloadData()
         case let .failure(error):
-            print(#function, "🚨")
+            // TODO: Add alert
+            print(#function, "🚨 \(error)")
         }
     }
     
@@ -115,13 +110,6 @@ final class UserSearchViewController: UIViewController {
         //        print(#function, "8888")
     }
     
-    //    func filterContentForsearchText(_ searchText: String) {
-    //        filteredUsers = users.filter { (user: String) -> Bool in
-    //            return user.lowercased().contains(searchText.lowercased())
-    //        }
-    //        tableView.reloadData()
-    //    }
-    
     func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
         //        let navigationController = UINavigationController()
@@ -134,20 +122,8 @@ final class UserSearchViewController: UIViewController {
                 httpClient: httpClient
             )
         )
-        //        navigationController.viewControllers = [peerViewController]
-        
         navigationController?.pushViewController(peerViewController, animated: true)
-        //        present(peerViewController, animated: true, completion: nil)
     }
-    
-    //    @objc func onButtonTapped() {
-    //
-    //        guard let login = searchField.text,
-    //              !login.isEmpty,
-    //              let token = accessToken
-    //        else { return }
-    //        showUserDetails(with: login.lowercased(), token: token)
-    //    }
     
     /// Pushes to the PeerViewController for the user from selected row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -156,12 +132,12 @@ final class UserSearchViewController: UIViewController {
     }
 }
 
-extension UserSearchViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        //        filterContentForsearchText(searchBar.text!)
-    }
-}
+//extension UserSearchViewController: UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        let searchBar = searchController.searchBar
+//        //        filterContentForsearchText(searchBar.text!)
+//    }
+//}
 
 extension UserSearchViewController: UITableViewDataSource {
     
@@ -171,21 +147,32 @@ extension UserSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath)
-        let login: String = users[indexPath.row].login
-        cell.textLabel?.text = login
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath) as? UserSearchCell else { return UITableViewCell() }
+        cell.configure(with: users[indexPath.row])
+        
         return cell
     }
 }
 
 extension UserSearchViewController: UITableViewDelegate {
-    //    func onButtonTapped() {
-    //
-    //        guard let login = searchField.text,
-    //              !login.isEmpty,
-    //              let token = accessToken
-    //        else { return }
-    //        showUserDetails(with: login.lowercased(), token: token)
-    //    }
-    //
+
+}
+
+
+extension UserSearchViewController: UISearchBarDelegate {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text else {
+            users = []
+            tableView.reloadData()
+            return
+        }
+        userService.search(
+            with: searchText,
+            accessToken: accessToken
+        ) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.handleUserSearch(result: result)
+            }
+        }
+    }
 }

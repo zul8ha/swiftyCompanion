@@ -12,11 +12,19 @@ struct UserSearchResult: Codable {
     let id: Int
     let login: String
     let usualFullName: String
+    let kind: String
+    let image: Image?
     
     enum CodingKeys: String, CodingKey {
         
         case id
         case login
         case usualFullName = "usual_full_name"
+        case kind
+        case image
+    }
+    
+    struct Image: Codable {
+        let link: String?
     }
 }
