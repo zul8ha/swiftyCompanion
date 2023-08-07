@@ -20,7 +20,7 @@ final class UserSearchCell: UITableViewCell {
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .heavy)
+        label.font = .systemFont(ofSize: 18, weight: .heavy)
         label.numberOfLines = 1
         
         return label
@@ -29,18 +29,34 @@ final class UserSearchCell: UITableViewCell {
     private lazy var fullNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = .darkGray
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 1
         
         return label
+    }()
+    
+    private lazy var layerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private lazy var paddingView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .orange
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     private lazy var kindLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.backgroundColor = .orange
-        label.layer.cornerRadius = 5
+    
         label.numberOfLines = 1
         
         return label
@@ -52,8 +68,8 @@ final class UserSearchCell: UITableViewCell {
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         stack.spacing = 4
-        stack.backgroundColor = .lightGray
-        stack.layer.cornerRadius = 5
+//        stack.backgroundColor = .lightGray
+//        stack.layer.cornerRadius = 5
         return stack
     }()
     
@@ -85,20 +101,32 @@ final class UserSearchCell: UITableViewCell {
             
             imagePreview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             imagePreview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            imagePreview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+//            imagePreview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         contentView.addSubview(infoStackView)
         NSLayoutConstraint.activate([
             infoStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             infoStackView.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
             infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-//            infoStackView.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: -8)
+            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24)
         ])
         
         infoStackView.addArrangedSubview(loginLabel)
         infoStackView.addArrangedSubview(fullNameLabel)
-        infoStackView.addArrangedSubview(kindLabel)
-        
+        infoStackView.addArrangedSubview(layerView)
+
+        layerView.addSubview(paddingView)
+        layerView.addSubview(kindLabel)
+        NSLayoutConstraint.activate([
+            kindLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
+            kindLabel.leadingAnchor.constraint(equalTo: layerView.leadingAnchor, constant: 8),
+            kindLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
+
+            paddingView.topAnchor.constraint(equalTo: kindLabel.topAnchor, constant: -4),
+            paddingView.leadingAnchor.constraint(equalTo: kindLabel.leadingAnchor, constant: -8),
+            paddingView.trailingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 8),
+            paddingView.bottomAnchor.constraint(equalTo: kindLabel.bottomAnchor, constant: 4),
+        ])
     }
     
     override func prepareForReuse() {
