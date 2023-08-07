@@ -129,6 +129,7 @@ final class UserSearchViewController: UIViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let login: String = users[indexPath.row].login
         showUserDetails(with: login, token: accessToken)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
