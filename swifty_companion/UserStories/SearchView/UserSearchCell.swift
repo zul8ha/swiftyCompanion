@@ -10,10 +10,16 @@ import UIKit
 
 final class UserSearchCell: UITableViewCell {
     
+    // MARK: - UI
     private lazy var imagePreview: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
+        image.layer.borderWidth = 3
+        image.layer.masksToBounds = false
+        image.layer.borderColor = UIColor.gray.cgColor
+        image.layer.cornerRadius = 45
+        image.clipsToBounds = true
         return image
     }()
     
@@ -72,18 +78,8 @@ final class UserSearchCell: UITableViewCell {
 //        stack.layer.cornerRadius = 5
         return stack
     }()
-    
-//    private lazy var cellStackView: UIStackView = {
-//        let stack = UIStackView()
-//        stack.translatesAutoresizingMaskIntoConstraints = false
-//        stack.axis = .horizontal
-//        stack.spacing = 16
-//        stack.backgroundColor = .blue
-//        stack.layer.cornerRadius = 5
-//
-//        return stack
-//    }()
-    
+
+    // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
@@ -93,6 +89,7 @@ final class UserSearchCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - setUpUI
     func setUpUI() {
         contentView.addSubview(imagePreview)
         NSLayoutConstraint.activate([
@@ -129,6 +126,7 @@ final class UserSearchCell: UITableViewCell {
         ])
     }
     
+    // MARK: - table view cell
     override func prepareForReuse() {
         super.prepareForReuse()
         loginLabel.text = ""
@@ -140,6 +138,28 @@ final class UserSearchCell: UITableViewCell {
         loginLabel.text = item.login
         fullNameLabel.text = item.usualFullName
         kindLabel.text = item.kind
-        imagePreview.image = UIImage(systemName: "person")
+        
+        if let imageLink = item.image?.link {
+            loadImage(with: imageLink)
+        } else {
+            imagePreview.image = UIImage()
+        }
+    }
+    
+    func loadImage(with imageURLString: String) {
+        guard let url = URL(string: imageURLString) else { return }
+        
+        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let data = data,
+                    !data.isEmpty,
+                    let image = UIImage(data: data) {
+                    self.imagePreview.image = image
+                }
+            }
+        }
+        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+        dataTask.resume()
     }
 }
