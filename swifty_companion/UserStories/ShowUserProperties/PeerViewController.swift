@@ -51,6 +51,13 @@ class PeerViewController: UIViewController {
         return stack
     }()
     
+    private lazy var imagePaddingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     private lazy var peerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +65,11 @@ class PeerViewController: UIViewController {
         image.tintColor = .darkGray
         image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
         image.contentMode = .scaleAspectFit
+        image.layer.cornerRadius = 75
+        image.clipsToBounds = true
+        image.layer.borderWidth = 3
+        image.layer.borderColor = UIColor.gray.cgColor
+        
         return image
     }()
     
@@ -224,22 +236,27 @@ class PeerViewController: UIViewController {
     func setUpUI() {
         view.backgroundColor = .systemBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -4),
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
         ])
         
-        stackView.addArrangedSubview(peerImage)
+        stackView.addArrangedSubview(imagePaddingView)
+        imagePaddingView.addSubview(peerImage)
         NSLayoutConstraint.activate([
             peerImage.heightAnchor.constraint(equalToConstant: 150),
-            peerImage.widthAnchor.constraint(equalToConstant: 150)
-//            peerImage.widthAnchor.constraint(equalTo: peerImage.heightAnchor, multiplier: 1),
+            peerImage.widthAnchor.constraint(equalToConstant: 150),
+            peerImage.topAnchor.constraint(equalTo: imagePaddingView.topAnchor),
+            peerImage.leadingAnchor.constraint(equalTo: imagePaddingView.leadingAnchor),
+            peerImage.trailingAnchor.constraint(equalTo: imagePaddingView.trailingAnchor, constant: 24),
+            peerImage.bottomAnchor.constraint(equalTo: imagePaddingView.bottomAnchor),
             
         ])
         stackView.addArrangedSubview(userInfo)
-        
+
         userInfo.addArrangedSubview(userFullName)
         userInfo.addArrangedSubview(email)
         userInfo.addArrangedSubview(poolYear)
@@ -255,7 +272,7 @@ class PeerViewController: UIViewController {
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             
-            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 4),
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4),

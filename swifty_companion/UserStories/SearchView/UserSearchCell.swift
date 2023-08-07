@@ -105,7 +105,7 @@ final class UserSearchCell: UITableViewCell {
             infoStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             infoStackView.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
             infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24)
+            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
         
         infoStackView.addArrangedSubview(loginLabel)
