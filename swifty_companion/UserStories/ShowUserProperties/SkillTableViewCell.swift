@@ -29,6 +29,16 @@ class SkillTableViewCell: UITableViewCell {
         return label
     }()
     
+    private lazy var levelProgressBar: UIProgressView = {
+        let progress = UIProgressView(progressViewStyle: .bar)
+        progress.progress = 0.0
+        progress.progressTintColor = .systemBlue
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        progress.trackTintColor = .lightGray
+        
+        return progress
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
@@ -48,7 +58,7 @@ class SkillTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+//            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             
         ])
         
@@ -58,12 +68,24 @@ class SkillTableViewCell: UITableViewCell {
             levelLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 16),
             levelLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
         ])
+        
+        contentView.addSubview(levelProgressBar)
+        NSLayoutConstraint.activate([
+            levelProgressBar.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            levelProgressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            levelProgressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            levelProgressBar.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
     }
     
     
     func configure(with item: Skill) {
         nameLabel.text = item.name
         levelLabel.text = String(format: "%.2f", item.level)
+        guard let levelString = levelLabel.text else { return }
+        guard let level = Float(levelString) else {return}
+        levelProgressBar.progress = level / 20.0
     }
     
 }
+

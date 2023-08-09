@@ -11,7 +11,7 @@
 
 import UIKit
 
-class PeerViewController: UIViewController {
+class DetailsViewController: UIViewController {
     
     private var login: String
     private var user: UserDetails?
@@ -65,7 +65,7 @@ class PeerViewController: UIViewController {
         image.tintColor = .darkGray
         image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
         image.contentMode = .scaleAspectFit
-        image.layer.cornerRadius = 75
+        image.layer.cornerRadius = 60
         image.clipsToBounds = true
         image.layer.borderWidth = 3
         image.layer.borderColor = UIColor.gray.cgColor
@@ -93,6 +93,13 @@ class PeerViewController: UIViewController {
         label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.numberOfLines = 0
         label.text = user?.displayName
+        return label
+    }()
+    
+    // TODO: create a progressBar for the level
+    private lazy var level: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -130,11 +137,23 @@ class PeerViewController: UIViewController {
     }()
     
     private lazy var userLevel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .bold)
         label.text = ""
         return label
+    }()
+    
+    private lazy var userLevelProgressBar: UIProgressView = {
+        let levelProgress = UIProgressView(progressViewStyle: .bar)
+        levelProgress.translatesAutoresizingMaskIntoConstraints = false
+        levelProgress.progress = 0.0
+        levelProgress.progressTintColor = .systemOrange
+        levelProgress.trackTintColor = .lightGray
+        levelProgress.layer.cornerRadius = 5
+        levelProgress.clipsToBounds = true
+        
+        return levelProgress
     }()
     
     private lazy var tableView: UITableView = {
@@ -198,7 +217,12 @@ class PeerViewController: UIViewController {
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
         poolYear.text = "Pool Year: \(user.poolYear)"
-//        userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
+        if user.cursusUsers.count == 1 {
+            userLevel.text = String(format: "%.2f", user.cursusUsers[0].level)
+        } else {
+            userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
+            userLevelProgressBar.progress = Float(user.cursusUsers[1].level) / 21
+        }
         
         if let imageLink = user.image?.link {
             loadImage(with: imageLink)
@@ -247,8 +271,8 @@ class PeerViewController: UIViewController {
         stackView.addArrangedSubview(imagePaddingView)
         imagePaddingView.addSubview(peerImage)
         NSLayoutConstraint.activate([
-            peerImage.heightAnchor.constraint(equalToConstant: 150),
-            peerImage.widthAnchor.constraint(equalToConstant: 150),
+            peerImage.heightAnchor.constraint(equalToConstant: 120),
+            peerImage.widthAnchor.constraint(equalToConstant: 120),
             peerImage.topAnchor.constraint(equalTo: imagePaddingView.topAnchor),
             peerImage.leadingAnchor.constraint(equalTo: imagePaddingView.leadingAnchor),
             peerImage.trailingAnchor.constraint(equalTo: imagePaddingView.trailingAnchor, constant: 24),
@@ -256,23 +280,35 @@ class PeerViewController: UIViewController {
             
         ])
         stackView.addArrangedSubview(userInfo)
-
+        
         userInfo.addArrangedSubview(userFullName)
         userInfo.addArrangedSubview(email)
         userInfo.addArrangedSubview(poolYear)
         userInfo.addArrangedSubview(wallets)
         userInfo.addArrangedSubview(userLevel)
         
-//        let spacerView = UIView()
-//        spacerView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.addArrangedSubview(spacerView)
-//        spacerView.setContentHuggingPriority(UILayoutPriority(50), for: .horizontal)
+        //        let spacerView = UIView()
+        //        spacerView.translatesAutoresizingMaskIntoConstraints = false
+        //        stackView.addArrangedSubview(spacerView)
+        //        spacerView.setContentHuggingPriority(UILayoutPriority(50), for: .horizontal)
         
         
+        view.addSubview(userLevelProgressBar)
+        userLevelProgressBar.addSubview(userLevel)
+        NSLayoutConstraint.activate([
+            userLevelProgressBar.heightAnchor.constraint(equalToConstant: 24),
+            userLevelProgressBar.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+            userLevelProgressBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            userLevelProgressBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+
+            userLevel.centerXAnchor.constraint(equalTo: userLevelProgressBar.centerXAnchor),
+            userLevel.centerYAnchor.constraint(equalTo: userLevelProgressBar.centerYAnchor),
+        ])
+
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             
-            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: userLevel.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4),
@@ -306,7 +342,7 @@ enum UserDescriptionSection: CaseIterable {
     }
 }
 
-extension PeerViewController: UITableViewDataSource {
+extension DetailsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return UserDescriptionSection.allCases.count
@@ -336,7 +372,7 @@ extension PeerViewController: UITableViewDataSource {
     }
 }
 
-extension PeerViewController: UITableViewDelegate {
+extension DetailsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let user = user else { return UITableViewCell() }

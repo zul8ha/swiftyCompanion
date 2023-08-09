@@ -24,7 +24,7 @@
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
 		B57FB13D2A7BC94700275FDD /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */; };
-		B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* PeerViewController.swift */; };
+		B588CA032A0BA95C00E11921 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* DetailsViewController.swift */; };
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
 		B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* UserSearchViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
@@ -61,7 +61,7 @@
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
-		B588CA022A0BA95C00E11921 /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
+		B588CA022A0BA95C00E11921 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		B58AE88E2A0B9334004D049E /* swifty_companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swifty_companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58AE8912A0B9334004D049E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B58AE8952A0B9334004D049E /* UserSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		A43978AA2A2210D000406BCB /* ShowUserProperties */ = {
 			isa = PBXGroup;
 			children = (
-				B588CA022A0BA95C00E11921 /* PeerViewController.swift */,
+				B588CA022A0BA95C00E11921 /* DetailsViewController.swift */,
 				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
 				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
 			);
@@ -367,7 +367,7 @@
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,
 				B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */,
-				B588CA032A0BA95C00E11921 /* PeerViewController.swift in Sources */,
+				B588CA032A0BA95C00E11921 /* DetailsViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

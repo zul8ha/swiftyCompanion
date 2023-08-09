@@ -14,6 +14,7 @@ struct UserSearchResult: Codable {
     let usualFullName: String
     let kind: String
     let image: Image?
+//    let active: Bool?
     
     enum CodingKeys: String, CodingKey {
         
@@ -22,6 +23,7 @@ struct UserSearchResult: Codable {
         case usualFullName = "usual_full_name"
         case kind
         case image
+//        case active
     }
     
     struct Image: Codable {
