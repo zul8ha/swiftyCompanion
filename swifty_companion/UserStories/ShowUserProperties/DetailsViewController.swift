@@ -203,7 +203,6 @@ class DetailsViewController: UIViewController {
     }
     
     // MARK: - Show User
-    
     func parseUserForSkills(for user: UserDetails) {
         for cursus in user.cursusUsers {
             for skill in cursus.skills {
