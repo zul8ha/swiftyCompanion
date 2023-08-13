@@ -15,15 +15,14 @@ protocol UserSearchListener: AnyObject {
 }
 
 final class UserSearchViewController: UIViewController {
+    
     // MARK: - searchController
     private lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-//        search.searchResultsUpdater = self
         search.obscuresBackgroundDuringPresentation = false
         search.definesPresentationContext = true
         search.searchBar.delegate = self
         search.searchBar.placeholder = "Search by peer login"
-        
         return search
     }()
     
@@ -34,11 +33,9 @@ final class UserSearchViewController: UIViewController {
         table.delegate = self
         table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
         table.rowHeight = UITableView.automaticDimension
-
         return table
     }()
     
-    private var accessToken: AccessToken
     private let userService: IUserService
     
     private let userDetailsBuilder: UserDetailsBuildable
@@ -48,12 +45,8 @@ final class UserSearchViewController: UIViewController {
     var users: [UserSearchResult] = []
     
     init(accessToken: AccessToken, userService: IUserService) {
-        self.accessToken = accessToken
         self.userService = userService
-        let httpClient = HTTPClient()
         self.userDetailsBuilder = UserDetailsBuilder(
-            accessToken: accessToken,
-            httpClient: httpClient,
             userService: userService
         )
         super.init(nibName: nil, bundle: nil)
@@ -68,9 +61,7 @@ final class UserSearchViewController: UIViewController {
         title = "Search User"
         setUpUI()
     }
-    
-    
-    
+
     func handleUserSearch(result: Result<[UserSearchResult], Error>) {
         switch result {
         case let .success(users):
@@ -81,11 +72,6 @@ final class UserSearchViewController: UIViewController {
             print(#function, "🚨 \(error)")
         }
     }
-    
-    //    override func viewDidAppear(_ animated: Bool) {
-    //        super.viewDidAppear(animated)
-    //        showAuthPage()
-    //    }
     
     // MARK: - setUpUI
     func setUpUI() {
@@ -115,10 +101,9 @@ final class UserSearchViewController: UIViewController {
     
     @objc func onBackButtonTap() {
         listener?.didSignOut()
-        //        print(#function, "8888")
     }
     
-    func showUserDetails(with login: String, token: AccessToken) {
+    func showUserDetails(with login: String) {
         
         let detailsViewController = userDetailsBuilder.build(
             login: login
@@ -126,21 +111,7 @@ final class UserSearchViewController: UIViewController {
         
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
-    
-    /// Pushes to the PeerViewController for the user from selected row
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let login: String = users[indexPath.row].login
-        showUserDetails(with: login, token: accessToken)
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
 }
-
-//extension UserSearchViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        let searchBar = searchController.searchBar
-//        //        filterContentForsearchText(searchBar.text!)
-//    }
-//}
 
 extension UserSearchViewController: UITableViewDataSource {
     
@@ -158,7 +129,12 @@ extension UserSearchViewController: UITableViewDataSource {
 }
 
 extension UserSearchViewController: UITableViewDelegate {
-
+    /// Pushes to the UserDetailsViewController for the user from selected row
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let login: String = users[indexPath.row].login
+        showUserDetails(with: login)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 
@@ -170,8 +146,7 @@ extension UserSearchViewController: UISearchBarDelegate {
             return
         }
         userService.search(
-            with: searchText,
-            accessToken: accessToken
+            with: searchText
         ) { [weak self] result in
             DispatchQueue.main.async {
                 self?.handleUserSearch(result: result)

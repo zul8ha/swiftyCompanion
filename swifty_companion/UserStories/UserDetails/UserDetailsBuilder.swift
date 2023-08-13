@@ -14,31 +14,24 @@ protocol UserDetailsBuildable {
 
 final class UserDetailsBuilder: UserDetailsBuildable {
     
-    private let accessToken: AccessToken
-    private let httpClient: IHTTPClient
     private let userService: IUserService
     
     init(
-        accessToken: AccessToken,
-        httpClient: IHTTPClient,
         userService: IUserService
     ) {
-        self.accessToken = accessToken
-        self.httpClient = httpClient
         self.userService = userService
     }
     
     func build(login: String) -> UIViewController {
 
-        let detailsViewController = UserDetailsViewController(
-            accessToken: accessToken,
-            httpClient: httpClient,
+        let presenter = UserDetailsPresenter(
             login: login,
-            userService: UserService(
-                accessToken: accessToken,
-                httpClient: httpClient
-            )
+            userService: userService
         )
-        return detailsViewController
+        
+        let viewController = UserDetailsViewController(presenter: presenter)
+        presenter.view = viewController
+        
+        return viewController
     }
 }

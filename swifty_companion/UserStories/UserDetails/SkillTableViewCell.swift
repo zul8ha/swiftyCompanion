@@ -57,9 +57,7 @@ class SkillTableViewCell: UITableViewCell {
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-//            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8)
         ])
         
         contentView.addSubview(levelLabel)
@@ -78,7 +76,6 @@ class SkillTableViewCell: UITableViewCell {
         ])
     }
     
-    
     func configure(with item: SkillItem) {
         nameLabel.text = item.title
         levelLabel.text = String(format: "%.2f", item.level)
@@ -86,6 +83,4 @@ class SkillTableViewCell: UITableViewCell {
         guard let level = Float(levelString) else {return}
         levelProgressBar.progress = level / 20.0
     }
-    
 }
-
