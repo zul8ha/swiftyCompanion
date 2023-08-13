@@ -63,6 +63,11 @@ struct CursusUser: Codable {
     let grade: String?
     let level: Double
     let skills: [Skill]
+    let cursus: Cursus
+}
+
+struct Cursus: Codable {
+    let name: String
 }
 
 struct Skill: Codable {

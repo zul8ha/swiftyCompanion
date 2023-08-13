@@ -1,5 +1,5 @@
 //
-//  PeerViewController.swift
+//  UserDetailsViewController.swift
 //  swifty_companion
 //
 //  Created by Heidi Merianne on 5/10/23.
@@ -11,15 +11,15 @@
 
 import UIKit
 
-class DetailsViewController: UIViewController {
+class UserDetailsViewController: UIViewController {
     
     private var login: String
     private var user: UserDetails?
     private var accessToken: AccessToken
-    private var skills: [Skill] = []
-    private var projects: [Project] = []
     private let httpClient: IHTTPClient
     private let userService: IUserService
+    
+    private var userDetailsSection: [UserDetailsSection] = []
     
     // MARK: - init
     init(
@@ -162,7 +162,7 @@ class DetailsViewController: UIViewController {
         table.estimatedRowHeight = UITableView.automaticDimension
         
         table.dataSource = self
-        table.delegate = self
+//        table.delegate = self
         table.register(SkillTableViewCell.self, forCellReuseIdentifier: "skillCell")
         table.register(ProjectTableViewCell.self, forCellReuseIdentifier: "projectCell")
         
@@ -195,6 +195,7 @@ class DetailsViewController: UIViewController {
         case let .success(user):
             self.user = user
             parseUserForSkills(for: user)
+            parseUserForProjects(for: user)
             showUser(user)
             tableView.reloadData()
         case let .failure(error):
@@ -205,11 +206,48 @@ class DetailsViewController: UIViewController {
     // MARK: - Show User
     
     func parseUserForSkills(for user: UserDetails) {
-        for cursus in user.cursusUsers {
-            for skill in cursus.skills {
-                skills.append(skill)
+        for cursusUser in user.cursusUsers {
+            
+            var skillItems: [SkillItem] = []
+//            .cursusSkillsSection()
+            
+            for skill in cursusUser.skills {
+                skillItems.append(SkillItem(
+                    id: skill.id,
+                    title: skill.name,
+                    level: skill.level
+                ))
             }
+            
+            let cursusSkillsSection = CursusSkillsSection(
+                name: cursusUser.cursus.name,
+                level: cursusUser.level,
+                skillItems: skillItems
+            )
+            
+            userDetailsSection.append(.cursusSkillsSection(cursusSkillsSection))
         }
+    }
+    
+    func parseUserForProjects(for user: UserDetails) {
+        var projectItems: [ProjectItem] = []
+
+        for projectUser in user.projectsUsers {
+            if projectUser.project.parentId != nil {
+                continue
+            }
+            let projectItem = ProjectItem(
+                id: projectUser.project.id,
+                title: projectUser.project.name
+            )
+            projectItems.append(projectItem)
+        }
+        
+        projectItems.sort { lhs, rhs in
+            lhs.title < rhs.title
+        }
+        
+        userDetailsSection.append(.projectsSection(projectItems))
     }
     
     func showUser(_ user: UserDetails) {
@@ -287,12 +325,6 @@ class DetailsViewController: UIViewController {
         userInfo.addArrangedSubview(wallets)
         userInfo.addArrangedSubview(userLevel)
         
-        //        let spacerView = UIView()
-        //        spacerView.translatesAutoresizingMaskIntoConstraints = false
-        //        stackView.addArrangedSubview(spacerView)
-        //        spacerView.setContentHuggingPriority(UILayoutPriority(50), for: .horizontal)
-        
-        
         view.addSubview(userLevelProgressBar)
         userLevelProgressBar.addSubview(userLevel)
         NSLayoutConstraint.activate([
@@ -342,54 +374,36 @@ enum UserDescriptionSection: CaseIterable {
     }
 }
 
-extension DetailsViewController: UITableViewDataSource {
+extension UserDetailsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return UserDescriptionSection.allCases.count
+        return userDetailsSection.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case UserDescriptionSection.skills.sectionIndex:
-            return UserDescriptionSection.skills.sectionTitle
-        case UserDescriptionSection.projects.sectionIndex:
-            return UserDescriptionSection.projects.sectionTitle
-        default:
-            return nil
-        }
+        return userDetailsSection[section].title
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let user = user else {return 0}
-        switch section {
-        case UserDescriptionSection.skills.sectionIndex:
-            return skills.count
-        case UserDescriptionSection.projects.sectionIndex:
-            return user.projectsUsers.count
-        default:
-            return 0
-        }
+        return userDetailsSection[section].itemsCount
     }
-}
-
-extension DetailsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let user = user else { return UITableViewCell() }
-        switch indexPath.section {
-        case UserDescriptionSection.skills.sectionIndex:
-            let skill = skills[indexPath.row]
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "skillCell", for: indexPath) as? SkillTableViewCell else { return UITableViewCell() }
-            cell.configure(with: skill)
-            return cell
-        case UserDescriptionSection.projects.sectionIndex:
-            let project = user.projectsUsers[indexPath.row].project
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as? ProjectTableViewCell else { return UITableViewCell() }
-            cell.configure(with: project)
-            return cell
-        default:
-            return UITableViewCell()
+        
+        let currentSection = userDetailsSection[indexPath.section]
+        switch currentSection {
+        case .cursusSkillsSection(let cursusSkillsSection):
+            let currenSkillItem = cursusSkillsSection.skillItems[indexPath.item]
+            guard let skillCell = tableView.dequeueReusableCell(withIdentifier: "skillCell", for: indexPath) as? SkillTableViewCell else { return UITableViewCell() }
             
+            skillCell.configure(with: currenSkillItem)
+            return skillCell
+        case .projectsSection(let projectItems):
+            let currentProjectItem = projectItems[indexPath.row]
+            guard let projectItemsCell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as? ProjectTableViewCell else { return UITableViewCell() }
+            
+            projectItemsCell.configure(with: currentProjectItem)
+            return projectItemsCell
         }
     }
 }

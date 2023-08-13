@@ -20,11 +20,12 @@
 		A44DE3B02A76A0CD00307CBA /* KeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */; };
 		A44DE3B32A76A27F00307CBA /* KeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3B22A76A27F00307CBA /* KeyValueStorageTests.swift */; };
 		A44DE3B92A7FC1C800307CBA /* UserSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3B82A7FC1C800307CBA /* UserSearchResult.swift */; };
+		A44DE3C22A878CD400307CBA /* UserDetailsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C12A878CD400307CBA /* UserDetailsSection.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
 		B57FB13D2A7BC94700275FDD /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */; };
-		B588CA032A0BA95C00E11921 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* DetailsViewController.swift */; };
+		B588CA032A0BA95C00E11921 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588CA022A0BA95C00E11921 /* UserDetailsViewController.swift */; };
 		B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8912A0B9334004D049E /* AppDelegate.swift */; };
 		B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* UserSearchViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
@@ -57,11 +58,12 @@
 		A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorage.swift; sourceTree = "<group>"; };
 		A44DE3B22A76A27F00307CBA /* KeyValueStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageTests.swift; sourceTree = "<group>"; };
 		A44DE3B82A7FC1C800307CBA /* UserSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchResult.swift; sourceTree = "<group>"; };
+		A44DE3C12A878CD400307CBA /* UserDetailsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsSection.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
-		B588CA022A0BA95C00E11921 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		B588CA022A0BA95C00E11921 /* UserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewController.swift; sourceTree = "<group>"; };
 		B58AE88E2A0B9334004D049E /* swifty_companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swifty_companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58AE8912A0B9334004D049E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B58AE8952A0B9334004D049E /* UserSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
@@ -106,23 +108,24 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
-		A43978A92A2210BF00406BCB /* SearchView */ = {
+		A43978A92A2210BF00406BCB /* UserSearch */ = {
 			isa = PBXGroup;
 			children = (
 				B58AE8952A0B9334004D049E /* UserSearchViewController.swift */,
 				B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */,
 			);
-			path = SearchView;
+			path = UserSearch;
 			sourceTree = "<group>";
 		};
-		A43978AA2A2210D000406BCB /* ShowUserProperties */ = {
+		A43978AA2A2210D000406BCB /* UserDetails */ = {
 			isa = PBXGroup;
 			children = (
-				B588CA022A0BA95C00E11921 /* DetailsViewController.swift */,
+				B588CA022A0BA95C00E11921 /* UserDetailsViewController.swift */,
 				B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */,
 				B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */,
+				A44DE3C12A878CD400307CBA /* UserDetailsSection.swift */,
 			);
-			path = ShowUserProperties;
+			path = UserDetails;
 			sourceTree = "<group>";
 		};
 		A43978AB2A22440900406BCB /* Resources */ = {
@@ -234,8 +237,8 @@
 		B58AE8A52A0B9E7C004D049E /* UserStories */ = {
 			isa = PBXGroup;
 			children = (
-				A43978A92A2210BF00406BCB /* SearchView */,
-				A43978AA2A2210D000406BCB /* ShowUserProperties */,
+				A43978A92A2210BF00406BCB /* UserSearch */,
+				A43978AA2A2210D000406BCB /* UserDetails */,
 				A43978A82A2210B200406BCB /* SignIn */,
 			);
 			path = UserStories;
@@ -361,13 +364,14 @@
 				A44DE39B2A76577600307CBA /* AuthManager.swift in Sources */,
 				A43978A62A220FCC00406BCB /* AppRouter.swift in Sources */,
 				A44DE3B02A76A0CD00307CBA /* KeyValueStorage.swift in Sources */,
+				A44DE3C22A878CD400307CBA /* UserDetailsSection.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
 				B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,
 				B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */,
-				B588CA032A0BA95C00E11921 /* DetailsViewController.swift in Sources */,
+				B588CA032A0BA95C00E11921 /* UserDetailsViewController.swift in Sources */,
 				B58AE8922A0B9334004D049E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

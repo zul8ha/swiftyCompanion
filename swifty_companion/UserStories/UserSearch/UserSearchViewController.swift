@@ -113,7 +113,7 @@ final class UserSearchViewController: UIViewController {
     func showUserDetails(with login: String, token: AccessToken) {
         let httpClient = HTTPClient()
         //        let navigationController = UINavigationController()
-        let peerViewController = DetailsViewController(
+        let peerViewController = UserDetailsViewController(
             accessToken: accessToken,
             httpClient: httpClient,
             login: login,

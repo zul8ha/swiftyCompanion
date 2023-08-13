@@ -79,8 +79,8 @@ class SkillTableViewCell: UITableViewCell {
     }
     
     
-    func configure(with item: Skill) {
-        nameLabel.text = item.name
+    func configure(with item: SkillItem) {
+        nameLabel.text = item.title
         levelLabel.text = String(format: "%.2f", item.level)
         guard let levelString = levelLabel.text else { return }
         guard let level = Float(levelString) else {return}

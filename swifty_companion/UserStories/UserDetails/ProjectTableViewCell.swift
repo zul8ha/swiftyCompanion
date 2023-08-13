@@ -30,8 +30,8 @@ class ProjectTableViewCell: UITableViewCell {
         projectLabel.text = ""
     }
     
-    func configure(with item: Project) {
-        projectLabel.text = item.name
+    func configure(with item: ProjectItem) {
+        projectLabel.text = item.title
     }
     
     func setUpUI() {
