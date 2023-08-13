@@ -41,6 +41,8 @@ final class UserSearchViewController: UIViewController {
     private var accessToken: AccessToken
     private let userService: IUserService
     
+    private let userDetailsBuilder: UserDetailsBuildable
+    
     weak var listener: UserSearchListener?
     
     var users: [UserSearchResult] = []
@@ -48,6 +50,12 @@ final class UserSearchViewController: UIViewController {
     init(accessToken: AccessToken, userService: IUserService) {
         self.accessToken = accessToken
         self.userService = userService
+        let httpClient = HTTPClient()
+        self.userDetailsBuilder = UserDetailsBuilder(
+            accessToken: accessToken,
+            httpClient: httpClient,
+            userService: userService
+        )
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -111,18 +119,12 @@ final class UserSearchViewController: UIViewController {
     }
     
     func showUserDetails(with login: String, token: AccessToken) {
-        let httpClient = HTTPClient()
-        //        let navigationController = UINavigationController()
-        let peerViewController = UserDetailsViewController(
-            accessToken: accessToken,
-            httpClient: httpClient,
-            login: login,
-            userService: UserService(
-                accessToken: token,
-                httpClient: httpClient
-            )
+        
+        let detailsViewController = userDetailsBuilder.build(
+            login: login
         )
-        navigationController?.pushViewController(peerViewController, animated: true)
+        
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     /// Pushes to the PeerViewController for the user from selected row
