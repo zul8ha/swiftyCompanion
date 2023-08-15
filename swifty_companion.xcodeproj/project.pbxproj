@@ -23,6 +23,9 @@
 		A44DE3C22A878CD400307CBA /* UserDetailsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C12A878CD400307CBA /* UserDetailsSection.swift */; };
 		A44DE3C42A88E16900307CBA /* UserDetailsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C32A88E16900307CBA /* UserDetailsBuilder.swift */; };
 		A44DE3C62A88E52E00307CBA /* UserDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C52A88E52E00307CBA /* UserDetailsPresenter.swift */; };
+		A44DE3C82A88F2D400307CBA /* UserSearchBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C72A88F2D400307CBA /* UserSearchBuilder.swift */; };
+		A44DE3CA2A88F6C300307CBA /* UserSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C92A88F6C300307CBA /* UserSearchPresenter.swift */; };
+		A44DE3EC2A8A3E7D00307CBA /* UserSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3EB2A8A3E7D00307CBA /* UserSearchRouter.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
@@ -63,6 +66,9 @@
 		A44DE3C12A878CD400307CBA /* UserDetailsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsSection.swift; sourceTree = "<group>"; };
 		A44DE3C32A88E16900307CBA /* UserDetailsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsBuilder.swift; sourceTree = "<group>"; };
 		A44DE3C52A88E52E00307CBA /* UserDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsPresenter.swift; sourceTree = "<group>"; };
+		A44DE3C72A88F2D400307CBA /* UserSearchBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchBuilder.swift; sourceTree = "<group>"; };
+		A44DE3C92A88F6C300307CBA /* UserSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchPresenter.swift; sourceTree = "<group>"; };
+		A44DE3EB2A8A3E7D00307CBA /* UserSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchRouter.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
@@ -117,6 +123,9 @@
 			children = (
 				B58AE8952A0B9334004D049E /* UserSearchViewController.swift */,
 				B57FB13C2A7BC94700275FDD /* UserSearchCell.swift */,
+				A44DE3C72A88F2D400307CBA /* UserSearchBuilder.swift */,
+				A44DE3C92A88F6C300307CBA /* UserSearchPresenter.swift */,
+				A44DE3EB2A8A3E7D00307CBA /* UserSearchRouter.swift */,
 			);
 			path = UserSearch;
 			sourceTree = "<group>";
@@ -365,13 +374,16 @@
 				B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */,
 				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
+				A44DE3C82A88F2D400307CBA /* UserSearchBuilder.swift in Sources */,
 				A44DE3B92A7FC1C800307CBA /* UserSearchResult.swift in Sources */,
 				B57FB13D2A7BC94700275FDD /* UserSearchCell.swift in Sources */,
 				A44DE39B2A76577600307CBA /* AuthManager.swift in Sources */,
 				A43978A62A220FCC00406BCB /* AppRouter.swift in Sources */,
 				A44DE3B02A76A0CD00307CBA /* KeyValueStorage.swift in Sources */,
 				A44DE3C22A878CD400307CBA /* UserDetailsSection.swift in Sources */,
+				A44DE3CA2A88F6C300307CBA /* UserSearchPresenter.swift in Sources */,
 				A44DE3C62A88E52E00307CBA /* UserDetailsPresenter.swift in Sources */,
+				A44DE3EC2A8A3E7D00307CBA /* UserSearchRouter.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
 				B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,

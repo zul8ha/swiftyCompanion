@@ -22,8 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow()
         self.window = window
         
-//        print("!!! 🚀 \(authManager.authState)")
-        
         appRouter.startApp(in: window)
         return true
     }

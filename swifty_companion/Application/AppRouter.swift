@@ -19,6 +19,7 @@ final class AppRouter: IAppRouter {
     private var navigationController: UINavigationController?
     private let authManager: IAuthManager
     private let httpClient = HTTPClient()
+    private let searchBuilder = UserSearchBuilder()
     
     // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
     
@@ -45,7 +46,6 @@ final class AppRouter: IAppRouter {
                 httpClient: httpClient
             )
             showUserSearch(
-                with: accessToken,
                 userService: userService
             )
         case .unauthorised:
@@ -62,11 +62,12 @@ final class AppRouter: IAppRouter {
         navigationController?.present(viewController, animated: true)
     }
     
-    func showUserSearch(with accessToken: AccessToken, userService: UserService) {
-        let searchController = UserSearchViewController(accessToken: accessToken, userService: userService)
+    func showUserSearch(userService: UserService) {
+        let searchController = searchBuilder.build(
+            listener: self,
+            userService: userService
+        )
         navigationController?.viewControllers = [searchController]
-        searchController.listener = self
-        print("😈", accessToken)
     }
 }
 
@@ -76,7 +77,7 @@ extension AppRouter: SignInListener {
             accessToken: accessToken,
             httpClient: httpClient
         )
-        showUserSearch(with: accessToken, userService: userService)
+        showUserSearch(userService: userService)
         if navigationController?.presentedViewController is SignInViewController {
             navigationController?.dismiss(animated: true)
         }

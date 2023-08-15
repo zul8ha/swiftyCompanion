@@ -1,5 +1,5 @@
 //
-//  StartViewController.swift
+//  UserSearchViewController.swift
 //  swifty_companion
 //
 //  Created by Heidi Merianne on 5/10/23.
@@ -9,6 +9,13 @@
 /// https://api.intra.42.fr/v2/users?range[login]=hmer,hmerz
 
 import UIKit
+
+protocol UserSearchPresentable: AnyObject {
+    var users: [UserSearchResult] { get }
+    
+    func didSelectItem(at indexPath: IndexPath)
+    func search(with queryString: String)
+}
 
 protocol UserSearchListener: AnyObject {
     func didSignOut()
@@ -36,16 +43,15 @@ final class UserSearchViewController: UIViewController {
         return table
     }()
     
-    private let userService: IUserService
-    
+    private let presenter: UserSearchPresentable
     private let userDetailsBuilder: UserDetailsBuildable
-    
     weak var listener: UserSearchListener?
     
-    var users: [UserSearchResult] = []
-    
-    init(accessToken: AccessToken, userService: IUserService) {
-        self.userService = userService
+    init(
+        presenter: UserSearchPresentable,
+        userService: IUserService
+    ) {
+        self.presenter = presenter
         self.userDetailsBuilder = UserDetailsBuilder(
             userService: userService
         )
@@ -62,17 +68,6 @@ final class UserSearchViewController: UIViewController {
         setUpUI()
     }
 
-    func handleUserSearch(result: Result<[UserSearchResult], Error>) {
-        switch result {
-        case let .success(users):
-            self.users = users
-            tableView.reloadData()
-        case let .failure(error):
-            // TODO: Add alert
-            print(#function, "🚨 \(error)")
-        }
-    }
-    
     // MARK: - setUpUI
     func setUpUI() {
         view.backgroundColor = .systemBackground
@@ -116,13 +111,13 @@ final class UserSearchViewController: UIViewController {
 extension UserSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return presenter.users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "userSearchCell", for: indexPath) as? UserSearchCell else { return UITableViewCell() }
-        cell.configure(with: users[indexPath.row])
+        cell.configure(with: presenter.users[indexPath.row])
         
         return cell
     }
@@ -131,26 +126,24 @@ extension UserSearchViewController: UITableViewDataSource {
 extension UserSearchViewController: UITableViewDelegate {
     /// Pushes to the UserDetailsViewController for the user from selected row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let login: String = users[indexPath.row].login
-        showUserDetails(with: login)
+        presenter.didSelectItem(at: indexPath)
+//        let login: String = users[indexPath.row].login
+//        showUserDetails(with: login)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
-
 extension UserSearchViewController: UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let searchText = searchBar.text else {
-            users = []
-            tableView.reloadData()
+        guard let queryString = searchBar.text else {
             return
         }
-        userService.search(
-            with: searchText
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.handleUserSearch(result: result)
-            }
-        }
+        presenter.search(with: queryString)
+    }
+}
+
+extension UserSearchViewController: UserSearchViewControllable {
+    func reloadData() {
+        tableView.reloadData()
     }
 }
