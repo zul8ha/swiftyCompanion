@@ -1,5 +1,5 @@
 # swiftyCompanion
-The idea of this application is to search for information about student 42 by his nickname using 42 API.
+The idea of this application is to search for information about student of the 42 Network by his nickname using 42 API.
 
 ## My app can:
 - Signs in using OAuth 2.0
