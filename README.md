@@ -1,5 +1,4 @@
 # swiftyCompanion
-### This intra42 (42 Network) project aims to introduce you to the development of iOS application.
 The idea of this application is to search for information about student 42 by his nickname using 42 API.
 
 ## My app can:
