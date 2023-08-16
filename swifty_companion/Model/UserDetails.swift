@@ -18,6 +18,7 @@ struct UserDetails: Codable {
     let wallet: Int
     let cursusUsers: [CursusUser]
     let projectsUsers: [ProjectsUser]
+    let active: Bool
     
     enum CodingKeys: String, CodingKey {
 
@@ -30,6 +31,7 @@ struct UserDetails: Codable {
         case wallet
         case cursusUsers = "cursus_users"
         case projectsUsers = "projects_users"
+        case active = "active?"
     }
     
 //    init(from decoder: Decoder) throws {

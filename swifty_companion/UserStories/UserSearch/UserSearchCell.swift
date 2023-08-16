@@ -68,25 +68,6 @@ final class UserSearchCell: UITableViewCell {
         return label
     }()
     
-    private lazy var alumniPaddingView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemPurple
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var alumniLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-    
-        label.numberOfLines = 1
-        
-        return label
-    }()
-    
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false

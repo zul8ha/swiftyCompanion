@@ -56,13 +56,13 @@ final class UserDetailsViewController: UIViewController {
     private lazy var peerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(systemName: "person")
+        image.image = UIImage()
         image.tintColor = .darkGray
         image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 60
         image.clipsToBounds = true
-        image.layer.borderWidth = 3
+        image.layer.borderWidth = 4
         image.layer.borderColor = UIColor.gray.cgColor
         
         return image
@@ -179,9 +179,10 @@ final class UserDetailsViewController: UIViewController {
             userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
             userLevelProgressBar.progress = Float(user.cursusUsers[1].level) / 21
         }
-        
         if let imageLink = user.image?.link {
             loadImage(with: imageLink)
+            guard user.active == true else { return }
+            peerImage.layer.borderColor = UIColor.systemGreen.cgColor
         }
         tableView.reloadData()
     }
