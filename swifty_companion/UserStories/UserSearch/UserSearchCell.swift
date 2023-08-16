@@ -15,8 +15,8 @@ final class UserSearchCell: UITableViewCell {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
-        image.layer.borderWidth = 3
         image.layer.masksToBounds = false
+                image.layer.borderWidth = 4
         image.layer.borderColor = UIColor.gray.cgColor
         image.layer.cornerRadius = 45
         image.clipsToBounds = true
@@ -49,7 +49,7 @@ final class UserSearchCell: UITableViewCell {
         return view
     }()
     
-    private lazy var paddingView: UIView = {
+    private lazy var kindPaddingView: UIView = {
         let view = UIView()
         view.backgroundColor = .orange
         view.layer.cornerRadius = 10
@@ -68,14 +68,31 @@ final class UserSearchCell: UITableViewCell {
         return label
     }()
     
+    private lazy var alumniPaddingView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemPurple
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private lazy var alumniLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
+    
+        label.numberOfLines = 1
+        
+        return label
+    }()
+    
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         stack.spacing = 4
-//        stack.backgroundColor = .lightGray
-//        stack.layer.cornerRadius = 5
         return stack
     }()
 
@@ -112,17 +129,17 @@ final class UserSearchCell: UITableViewCell {
         infoStackView.addArrangedSubview(fullNameLabel)
         infoStackView.addArrangedSubview(layerView)
 
-        layerView.addSubview(paddingView)
+        layerView.addSubview(kindPaddingView)
         layerView.addSubview(kindLabel)
         NSLayoutConstraint.activate([
             kindLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
             kindLabel.leadingAnchor.constraint(equalTo: layerView.leadingAnchor, constant: 8),
             kindLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
 
-            paddingView.topAnchor.constraint(equalTo: kindLabel.topAnchor, constant: -4),
-            paddingView.leadingAnchor.constraint(equalTo: kindLabel.leadingAnchor, constant: -8),
-            paddingView.trailingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 8),
-            paddingView.bottomAnchor.constraint(equalTo: kindLabel.bottomAnchor, constant: 4),
+            kindPaddingView.topAnchor.constraint(equalTo: kindLabel.topAnchor, constant: -4),
+            kindPaddingView.leadingAnchor.constraint(equalTo: kindLabel.leadingAnchor, constant: -8),
+            kindPaddingView.trailingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 8),
+            kindPaddingView.bottomAnchor.constraint(equalTo: kindLabel.bottomAnchor, constant: 4),
         ])
     }
     
@@ -131,20 +148,29 @@ final class UserSearchCell: UITableViewCell {
         super.prepareForReuse()
         loginLabel.text = ""
         fullNameLabel.text = ""
-        imagePreview.image = UIImage(systemName: "person")
+        imagePreview.image = UIImage()
+        imagePreview.layer.borderColor = UIColor.systemGray.cgColor
     }
     
     func configure(with item: UserSearchResult) {
         loginLabel.text = item.login
         fullNameLabel.text = item.usualFullName
-        kindLabel.text = item.kind
+        if item.alumni == true {
+            kindLabel.text = "alumni"
+            kindPaddingView.backgroundColor = .systemYellow
+        } else {
+            kindLabel.text = item.kind
+            kindPaddingView.backgroundColor = .systemOrange
+        }
         
         if let imageLink = item.image?.link {
             loadImage(with: imageLink)
+            guard item.active == true else { return }
+            imagePreview.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
             imagePreview.image = UIImage()
         }
-    }
+        }
     
     func loadImage(with imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }

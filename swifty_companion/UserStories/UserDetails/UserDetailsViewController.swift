@@ -59,7 +59,7 @@ final class UserDetailsViewController: UIViewController {
         image.image = UIImage(systemName: "person")
         image.tintColor = .darkGray
         image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 60
         image.clipsToBounds = true
         image.layer.borderWidth = 3

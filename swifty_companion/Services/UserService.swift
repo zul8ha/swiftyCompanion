@@ -70,7 +70,6 @@ final class UserService: IUserService {
                 }
             case let .failure(error):
                 completion(.failure(error))
-                //                print("🐙🐙🐙 \(error)")
             }
         }
     }

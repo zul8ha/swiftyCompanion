@@ -48,7 +48,6 @@ final class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-//        navigationController?.setNavigationBarHidden(true, animated: true)
         view.addSubview(signInButton)
         NSLayoutConstraint.activate([
             signInButton.widthAnchor.constraint(equalToConstant: 120),

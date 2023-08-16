@@ -127,8 +127,6 @@ extension UserSearchViewController: UITableViewDelegate {
     /// Pushes to the UserDetailsViewController for the user from selected row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didSelectItem(at: indexPath)
-//        let login: String = users[indexPath.row].login
-//        showUserDetails(with: login)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
