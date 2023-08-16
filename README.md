@@ -7,3 +7,8 @@ The idea of this application is to search for information about student 42 by hi
 - Shows peer's details which are profile picture, full name, email, pool year, the level and all the cursus skills with values in the sections and all the projects peer did or in progress with.
 - It is possible to go back to the first view
 - The project uses Auto Layout.
+
+## The short demo:
+
+https://github.com/hmeriann/swiftyCompanion/assets/78214685/efe6871c-8eac-4467-9a8c-0e1b17b60a62
+
