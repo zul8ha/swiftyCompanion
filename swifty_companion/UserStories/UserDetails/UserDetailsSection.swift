@@ -46,6 +46,8 @@ struct SkillItem {
 struct ProjectItem {
     let id: Int
     let title: String
+    let status: ProjectStatus
+    let finalMark: Int
 }
 
 extension UserDetailsSection {
@@ -71,7 +73,7 @@ extension UserDetailsSection {
             skillItems: []
         )),
         .projectsSection([
-            ProjectItem(id: 0, title: "Piscine")
+            ProjectItem(id: 0, title: "Piscine", status: .finished, finalMark: 100)
         ])
     ]
 }

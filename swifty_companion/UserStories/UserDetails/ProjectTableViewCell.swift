@@ -17,6 +17,13 @@ class ProjectTableViewCell: UITableViewCell {
         return label
     }()
     
+    private lazy var markLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 16, weight: .heavy)
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
@@ -32,6 +39,12 @@ class ProjectTableViewCell: UITableViewCell {
     
     func configure(with item: ProjectItem) {
         projectLabel.text = item.title
+        markLabel.text = String(item.finalMark)
+        if item.finalMark >= 60 && item.status == .finished {
+            markLabel.textColor = .systemGreen
+        } else {
+            markLabel.textColor = .systemRed
+        }
     }
     
     func setUpUI() {
@@ -39,8 +52,16 @@ class ProjectTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             projectLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             projectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            projectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+//            projectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             projectLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+        ])
+        
+        contentView.addSubview(markLabel)
+        NSLayoutConstraint.activate([
+            markLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+//            markLabel.leadingAnchor.constraint(equalTo: projectLabel.trailingAnchor, constant: 8),
+            markLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            markLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         ])
     }
 }

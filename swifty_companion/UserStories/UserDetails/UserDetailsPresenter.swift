@@ -89,9 +89,13 @@ private extension UserDetailsPresenter {
             }
             let projectItem = ProjectItem(
                 id: projectUser.project.id,
-                title: projectUser.project.name
+                title: projectUser.project.name,
+                status: projectUser.status,
+                finalMark: projectUser.finalMark ?? 0
             )
-            projectItems.append(projectItem)
+            if projectItem.status == .finished {
+                projectItems.append(projectItem)
+            }
         }
         projectItems.sort { lhs, rhs in
             lhs.title < rhs.title

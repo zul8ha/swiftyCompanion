@@ -83,6 +83,7 @@ struct ProjectsUser: Codable {
     let finalMark: Int?
     let status: ProjectStatus
     let project: Project
+//    let validated: String
     
     enum CodingKeys: String, CodingKey {
 
@@ -90,6 +91,7 @@ struct ProjectsUser: Codable {
         case finalMark = "final_mark"
         case status
         case project
+//        case validated = "validated?"
     }
 }
 
