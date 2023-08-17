@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow()
         self.window = window
-        window.backgroundColor = .systemBackground
+        window.backgroundColor = .systemGroupedBackground
         
         appRouter.startApp(in: window)
         return true
