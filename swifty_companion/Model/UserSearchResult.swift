@@ -16,6 +16,7 @@ struct UserSearchResult: Codable {
     let image: Image?
     let active: Bool
     let alumni: Bool
+    let staff: Bool
     
     enum CodingKeys: String, CodingKey {
         
@@ -26,6 +27,7 @@ struct UserSearchResult: Codable {
         case image
         case active = "active?"
         case alumni = "alumni?"
+        case staff = "staff?"
     }
     
     struct Image: Codable {
