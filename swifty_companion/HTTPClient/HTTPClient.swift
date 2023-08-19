@@ -9,7 +9,7 @@
 import Foundation
 
 //typealias DataCompletion = (Result<Data, Error>) -> Void
-enum HTTPClientError: Error {
+enum HTTPClientError: LocalizedError {
     case wrongResponseType
     case wrongStatusCode
     case emptyData

@@ -187,14 +187,12 @@ final class UserDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    func showError(_ message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(action)
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
+//    func showError(_ message: String) {
+//        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        alert.addAction(action)
+//        self.present(alert, animated: true, completion: nil)
+//    }
     
     // TODO: Separate this to the ImageService
     func loadImage(with imageURLString: String) {

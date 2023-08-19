@@ -25,8 +25,8 @@ final class UserSearchBuilder: UserSearchBuildable {
         
         let searchController = UserSearchViewController(presenter: presenter, userService: userService)
         presenter.view = searchController
+        presenter.listener = listener
         router.transitionHandler = searchController
-        searchController.listener = listener
         return searchController
     }
 }

@@ -15,11 +15,9 @@ protocol UserSearchPresentable: AnyObject {
     
     func didSelectItem(at indexPath: IndexPath)
     func search(with queryString: String)
-}
-
-protocol UserSearchListener: AnyObject {
     func didSignOut()
 }
+
 
 final class UserSearchViewController: UIViewController {
     
@@ -45,7 +43,7 @@ final class UserSearchViewController: UIViewController {
     
     private let presenter: UserSearchPresentable
     private let userDetailsBuilder: UserDetailsBuildable
-    weak var listener: UserSearchListener?
+    
     
     init(
         presenter: UserSearchPresentable,
@@ -95,7 +93,7 @@ final class UserSearchViewController: UIViewController {
     }
     
     @objc func onBackButtonTap() {
-        listener?.didSignOut()
+        presenter.didSignOut()
     }
     
     func showUserDetails(with login: String) {

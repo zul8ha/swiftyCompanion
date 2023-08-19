@@ -8,18 +8,24 @@
 
 import Foundation
 
+protocol UserSearchListener: AnyObject {
+    func didSignOut()
+}
+
 protocol UserSearchRoutable {
     func showUserDetails(with login: String)
 }
 
 protocol UserSearchViewControllable: AnyObject {
     func reloadData()
-    func showError(message: String)
+    func showError(_ message: String)
 }
 
 final class UserSearchPresenter: UserSearchPresentable {
     
     weak var view: UserSearchViewControllable?
+    weak var listener: UserSearchListener?
+    
     var users: [UserSearchResult] = []
     private let router: UserSearchRoutable
     private let userService: IUserService
@@ -48,14 +54,21 @@ final class UserSearchPresenter: UserSearchPresentable {
             self.users = users
             view?.reloadData()
         case let .failure(error):
-            view?.showError(message: error.localizedDescription)
-            // TODO: Add alert
-            print(#function, "🚨 \(error)")
+            switch error {
+            case HTTPClientError.unauthorized:
+                listener?.didSignOut()
+            default:
+                view?.showError(error.localizedDescription)
+            }
         }
     }
     
     func didSelectItem(at indexPath: IndexPath) {
         let login: String = users[indexPath.row].login
         router.showUserDetails(with: login)
+    }
+    
+    func didSignOut() {
+        listener?.didSignOut()
     }
 }

@@ -20,13 +20,13 @@ final class AppRouter: IAppRouter {
     private let authManager: IAuthManager
     private let httpClient = HTTPClient()
     private let searchBuilder = UserSearchBuilder()
-    
-    // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
-    
+    private let signInBuilder: SignInBuildable
+
     init(
         with authManager: IAuthManager
     ) {
         self.authManager = authManager
+        signInBuilder = SignInBuilder(authManager: authManager)
     }
     
     /// Creates an instance of the NavigationController, makes it a rootVC of the window and makes it key&visible
@@ -54,11 +54,7 @@ final class AppRouter: IAppRouter {
     }
     
     func showShigIn() {
-        let viewController = SignInViewController(
-            authManager: authManager
-        )
-        viewController.listener = self
-        viewController.isModalInPresentation = true
+        let viewController = signInBuilder.build(listener: self)
         navigationController?.present(viewController, animated: true)
     }
     
