@@ -22,6 +22,25 @@ enum AuthError: Error {
     case wrongStatusCode
     case emptyData
     case decodingError(Error)
+    case failedToStartAuthSession
+    
+    var errorMessage: String {
+        switch self {
+        case let .showAuthPageError(error):
+            return "\(error?.localizedDescription ?? "Error"): Couldn't get the code."
+        case .wrongResponseType:
+            return "Wrong Response Type"
+        case .wrongStatusCode:
+            return "Wrong Status Code"
+        case .emptyData:
+            return "Empty Data"
+        case let .decodingError(error):
+            return "Decoding Error: \(error.localizedDescription)"
+        case .failedToStartAuthSession:
+            return "Failed To Start Authorisation Session"
+        }
+    }
+
 }
 ///
 final class AuthHandler: IAuthHandler {

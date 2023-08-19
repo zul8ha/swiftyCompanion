@@ -73,7 +73,8 @@ final class SignInViewController: UIViewController {
             case let .success(accessToken):
                 self.listener?.didSignIn(with: accessToken)
             case let .failure(error):
-                print(error)
+                
+                print(error.localizedDescription)
             }
         }
     }

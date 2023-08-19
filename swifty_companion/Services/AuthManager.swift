@@ -17,6 +17,10 @@ enum AuthState {
     case unauthorised
 }
 
+//protocol AuthManagerDelegate {
+//    func showError(
+//}
+
 protocol IAuthManager {
     var authState: AuthState { get }
     
@@ -27,7 +31,6 @@ protocol IAuthManager {
     
     func logOut()
 }
-
 
 /// The purpose of the class AuthManager is to get an Access Token
 /// First it shows thisrd-part Authorisation page using ASWebAuthenticationPresentationContextProviding to login the user, handles callback, exchanges a code to an access token and saves it to the UserDefaults.
@@ -98,6 +101,7 @@ final class AuthManager: IAuthManager {
     private var accessToken: AccessToken?
     var authState: AuthState {
         if let accessToken = keyValueStorage.get(valueFor: "accessToken") {
+            
 //        if let accessToken = accessToken {
             return .authorised(accessToken: accessToken)
         }
@@ -121,8 +125,7 @@ final class AuthManager: IAuthManager {
         }
         authenticationSession.presentationContextProvider = authContentProvider
         if !authenticationSession.start() {
-            // TODO: handle if didn't start
-            print("Failed to start")
+            completion(.failure(AuthError.failedToStartAuthSession))
         }
     }
     
