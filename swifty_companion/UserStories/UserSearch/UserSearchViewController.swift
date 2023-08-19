@@ -145,3 +145,4 @@ extension UserSearchViewController: UserSearchViewControllable {
         tableView.reloadData()
     }
 }
+

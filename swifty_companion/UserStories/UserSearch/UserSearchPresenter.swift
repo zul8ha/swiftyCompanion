@@ -14,6 +14,7 @@ protocol UserSearchRoutable {
 
 protocol UserSearchViewControllable: AnyObject {
     func reloadData()
+    func showError(message: String)
 }
 
 final class UserSearchPresenter: UserSearchPresentable {
@@ -47,6 +48,7 @@ final class UserSearchPresenter: UserSearchPresentable {
             self.users = users
             view?.reloadData()
         case let .failure(error):
+            view?.showError(message: error.localizedDescription)
             // TODO: Add alert
             print(#function, "🚨 \(error)")
         }

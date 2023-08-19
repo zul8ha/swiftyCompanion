@@ -23,6 +23,15 @@ final class UserSearchCell: UITableViewCell {
         return image
     }()
     
+    private lazy var infoStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.distribution = .equalSpacing
+        stack.spacing = 4
+        return stack
+    }()
+    
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,78 +51,39 @@ final class UserSearchCell: UITableViewCell {
         return label
     }()
     
-    private lazy var layerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var kindPaddingView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemOrange
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var kindLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.numberOfLines = 1
-    
-        return label
-    }()
-    
-    private lazy var alumniPaddingView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemYellow
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var alumniLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.text = "alumni"
-        label.numberOfLines = 1
-        
-        return label
-    }()
-    
-    private lazy var staffPaddingView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemTeal
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var staffLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.text = "staff"
-        label.numberOfLines = 1
-        
-        return label
-    }()
-    
-    private lazy var infoStackView: UIStackView = {
+    private lazy var tagsStackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
+        stack.axis = .horizontal
+        stack.alignment = .leading
         stack.distribution = .equalSpacing
         stack.spacing = 4
         return stack
     }()
+    
+    private lazy var kindTagView: TagView = {
+        let tag = TagView()
+        tag.translatesAutoresizingMaskIntoConstraints = false
+        tag.configure(with: .kind(title: ""))
+        return tag
+    }()
 
+    private lazy var alumniTagView: TagView = {
+        let tag = TagView()
+        tag.translatesAutoresizingMaskIntoConstraints = false
+        tag.configure(with: .alumni)
+        tag.isHidden = true
+        return tag
+    }()
+    
+    private lazy var staffTagView: TagView = {
+        let tag = TagView()
+        tag.translatesAutoresizingMaskIntoConstraints = false
+        tag.configure(with: .staff)
+        tag.isHidden = true
+        return tag
+    }()
+    
     // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -140,25 +110,20 @@ final class UserSearchCell: UITableViewCell {
             infoStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             infoStackView.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
             infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
         
         infoStackView.addArrangedSubview(loginLabel)
         infoStackView.addArrangedSubview(fullNameLabel)
-        infoStackView.addArrangedSubview(layerView)
-
-        layerView.addSubview(kindPaddingView)
-        layerView.addSubview(kindLabel)
+        contentView.addSubview(tagsStackView)
         NSLayoutConstraint.activate([
-            kindLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
-            kindLabel.leadingAnchor.constraint(equalTo: layerView.leadingAnchor, constant: 8),
-            kindLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
-
-            kindPaddingView.topAnchor.constraint(equalTo: kindLabel.topAnchor, constant: -4),
-            kindPaddingView.leadingAnchor.constraint(equalTo: kindLabel.leadingAnchor, constant: -8),
-            kindPaddingView.trailingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 8),
-            kindPaddingView.bottomAnchor.constraint(equalTo: kindLabel.bottomAnchor, constant: 4),
+            tagsStackView.topAnchor.constraint(equalTo: infoStackView.bottomAnchor, constant: 8),
+            tagsStackView.leadingAnchor.constraint(equalTo: infoStackView.leadingAnchor),
+            tagsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
+
+        tagsStackView.addArrangedSubview(kindTagView)
+        tagsStackView.addArrangedSubview(alumniTagView)
+        tagsStackView.addArrangedSubview(staffTagView)
     }
     
     // MARK: - table view cell
@@ -166,6 +131,8 @@ final class UserSearchCell: UITableViewCell {
         super.prepareForReuse()
         loginLabel.text = ""
         fullNameLabel.text = ""
+        alumniTagView.isHidden = true
+        staffTagView.isHidden = true
         imagePreview.image = UIImage()
         imagePreview.layer.borderColor = UIColor.systemGray.cgColor
     }
@@ -173,60 +140,9 @@ final class UserSearchCell: UITableViewCell {
     func configure(with item: UserSearchResult) {
         loginLabel.text = item.login
         fullNameLabel.text = item.usualFullName
-        kindLabel.text = item.kind
-        if item.alumni == true && item.staff == true {
-            layerView.addSubview(alumniPaddingView)
-            layerView.addSubview(alumniLabel)
-            NSLayoutConstraint.activate([
-                alumniLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
-                alumniLabel.leadingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 24),
-                alumniLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
-
-                alumniPaddingView.topAnchor.constraint(equalTo: alumniLabel.topAnchor, constant: -4),
-                alumniPaddingView.leadingAnchor.constraint(equalTo: alumniLabel.leadingAnchor, constant: -8),
-                alumniPaddingView.trailingAnchor.constraint(equalTo: alumniLabel.trailingAnchor, constant: 8),
-                alumniPaddingView.bottomAnchor.constraint(equalTo: alumniLabel.bottomAnchor, constant: 4),
-            ])
-            
-            layerView.addSubview(staffPaddingView)
-            layerView.addSubview(staffLabel)
-            NSLayoutConstraint.activate([
-                staffLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
-                staffLabel.leadingAnchor.constraint(equalTo: alumniLabel.trailingAnchor, constant: 24),
-                staffLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
-
-                staffPaddingView.topAnchor.constraint(equalTo: staffLabel.topAnchor, constant: -4),
-                staffPaddingView.leadingAnchor.constraint(equalTo: staffLabel.leadingAnchor, constant: -8),
-                staffPaddingView.trailingAnchor.constraint(equalTo: staffLabel.trailingAnchor, constant: 8),
-                staffPaddingView.bottomAnchor.constraint(equalTo: staffLabel.bottomAnchor, constant: 4),
-            ])
-        } else if item.alumni == true && item.staff == false {
-            layerView.addSubview(alumniPaddingView)
-            layerView.addSubview(alumniLabel)
-            NSLayoutConstraint.activate([
-                alumniLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
-                alumniLabel.leadingAnchor.constraint(equalTo: kindLabel.trailingAnchor, constant: 24),
-                alumniLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
-
-                alumniPaddingView.topAnchor.constraint(equalTo: alumniLabel.topAnchor, constant: -4),
-                alumniPaddingView.leadingAnchor.constraint(equalTo: alumniLabel.leadingAnchor, constant: -8),
-                alumniPaddingView.trailingAnchor.constraint(equalTo: alumniLabel.trailingAnchor, constant: 8),
-                alumniPaddingView.bottomAnchor.constraint(equalTo: alumniLabel.bottomAnchor, constant: 4),
-            ])
-        } else if item.alumni == false && item.staff == true{
-            layerView.addSubview(staffPaddingView)
-            layerView.addSubview(staffLabel)
-            NSLayoutConstraint.activate([
-                staffLabel.topAnchor.constraint(equalTo: layerView.topAnchor, constant: 4),
-                staffLabel.leadingAnchor.constraint(equalTo: alumniLabel.trailingAnchor, constant: 24),
-                staffLabel.bottomAnchor.constraint(equalTo: layerView.bottomAnchor, constant: -4),
-
-                staffPaddingView.topAnchor.constraint(equalTo: staffLabel.topAnchor, constant: -4),
-                staffPaddingView.leadingAnchor.constraint(equalTo: staffLabel.leadingAnchor, constant: -8),
-                staffPaddingView.trailingAnchor.constraint(equalTo: staffLabel.trailingAnchor, constant: 8),
-                staffPaddingView.bottomAnchor.constraint(equalTo: staffLabel.bottomAnchor, constant: 4),
-            ])
-        }
+        kindTagView.configure(with: TagView.Tag.kind(title: item.kind))
+        alumniTagView.isHidden = !item.alumni
+        staffTagView.isHidden = !item.staff
         
         if let imageLink = item.image?.link {
             loadImage(with: imageLink)
