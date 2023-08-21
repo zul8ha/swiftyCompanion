@@ -20,7 +20,6 @@ final class SignInViewController: UIViewController {
     var isAuthSessionRunning = false {
         didSet {
             signInButton.isEnabled = !isAuthSessionRunning
-            print("💲 isAuthSessionRunning: \(isAuthSessionRunning)")
         }
     }
 
