@@ -26,9 +26,10 @@
 		A44DE3C82A88F2D400307CBA /* UserSearchBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C72A88F2D400307CBA /* UserSearchBuilder.swift */; };
 		A44DE3CA2A88F6C300307CBA /* UserSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3C92A88F6C300307CBA /* UserSearchPresenter.swift */; };
 		A44DE3EC2A8A3E7D00307CBA /* UserSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3EB2A8A3E7D00307CBA /* UserSearchRouter.swift */; };
-		A44DE3FC2A90E67A00307CBA /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3FB2A90E67A00307CBA /* TagView.swift */; };
 		A44DE3F82A90DA6C00307CBA /* ViewControllerExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3F72A90DA6C00307CBA /* ViewControllerExtention.swift */; };
 		A44DE3FA2A90DC1400307CBA /* SignInBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3F92A90DC1400307CBA /* SignInBuilder.swift */; };
+		A44DE3FC2A90E67A00307CBA /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3FB2A90E67A00307CBA /* TagView.swift */; };
+		A4D4B1152A9BB6D500CC9377 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D4B1142A9BB6D500CC9377 /* ImageService.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
@@ -72,9 +73,10 @@
 		A44DE3C72A88F2D400307CBA /* UserSearchBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchBuilder.swift; sourceTree = "<group>"; };
 		A44DE3C92A88F6C300307CBA /* UserSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchPresenter.swift; sourceTree = "<group>"; };
 		A44DE3EB2A8A3E7D00307CBA /* UserSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchRouter.swift; sourceTree = "<group>"; };
-		A44DE3FB2A90E67A00307CBA /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		A44DE3F72A90DA6C00307CBA /* ViewControllerExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtention.swift; sourceTree = "<group>"; };
 		A44DE3F92A90DC1400307CBA /* SignInBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInBuilder.swift; sourceTree = "<group>"; };
+		A44DE3FB2A90E67A00307CBA /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
+		A4D4B1142A9BB6D500CC9377 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */,
 				A44DE39A2A76577600307CBA /* AuthManager.swift */,
 				A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */,
+				A4D4B1142A9BB6D500CC9377 /* ImageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 			files = (
 				A43E63D22A14D5E400FDCDAB /* UserService.swift in Sources */,
 				B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */,
+				A4D4B1152A9BB6D500CC9377 /* ImageService.swift in Sources */,
 				A43E63D82A18CC0000FDCDAB /* Token.swift in Sources */,
 				B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */,
 				A44DE3C82A88F2D400307CBA /* UserSearchBuilder.swift in Sources */,

@@ -84,6 +84,8 @@ final class UserSearchCell: UITableViewCell {
         return tag
     }()
     
+    private var imageDataTask: URLSessionDataTask?
+    
     // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -146,12 +148,13 @@ final class UserSearchCell: UITableViewCell {
         
         if let imageLink = item.image?.link {
             loadImage(with: imageLink)
-            guard item.active == true else { return }
+            guard item.active else { return }
             imagePreview.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
+            // TODO: Put default image
             imagePreview.image = UIImage()
         }
-        }
+    }
     
     func loadImage(with imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }
@@ -166,7 +169,8 @@ final class UserSearchCell: UITableViewCell {
                 }
             }
         }
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
+        imageDataTask?.cancel()
+        imageDataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+        imageDataTask?.resume()
     }
 }
