@@ -41,7 +41,7 @@ final class AuthManager: IAuthManager {
     // MARK: Static properties
     
     static let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-    static let clientSecret = "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"
+    static let clientSecret = "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"
     static let callbackURLScheme = "hmeriann"
     
     /// Builds a OAuth URL from the components
@@ -168,6 +168,7 @@ final class AuthManager: IAuthManager {
             case let .success(token):
                 completion(.success(token.accessToken))
             case let .failure(error):
+                print(error)
                 completion(.failure(error))
             }
         }

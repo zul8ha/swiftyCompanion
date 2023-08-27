@@ -30,6 +30,7 @@
 		A44DE3FA2A90DC1400307CBA /* SignInBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3F92A90DC1400307CBA /* SignInBuilder.swift */; };
 		A44DE3FC2A90E67A00307CBA /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DE3FB2A90E67A00307CBA /* TagView.swift */; };
 		A4D4B1152A9BB6D500CC9377 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D4B1142A9BB6D500CC9377 /* ImageService.swift */; };
+		A4D4B1172A9BDAEE00CC9377 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D4B1162A9BDAEE00CC9377 /* AuthError.swift */; };
 		B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */; };
 		B542F4AF2A13A36500CEA307 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */; };
 		B57D06482A0E44E6003169FE /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D06472A0E44E6003169FE /* UserDetails.swift */; };
@@ -39,7 +40,6 @@
 		B58AE8962A0B9334004D049E /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AE8952A0B9334004D049E /* UserSearchViewController.swift */; };
 		B58AE89B2A0B933D004D049E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58AE89A2A0B933D004D049E /* Assets.xcassets */; };
 		B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */; };
-		B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +77,7 @@
 		A44DE3F92A90DC1400307CBA /* SignInBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInBuilder.swift; sourceTree = "<group>"; };
 		A44DE3FB2A90E67A00307CBA /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		A4D4B1142A9BB6D500CC9377 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		A4D4B1162A9BDAEE00CC9377 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		B542F4AC2A138C8200CEA307 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		B542F4AE2A13A36500CEA307 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		B57D06472A0E44E6003169FE /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
@@ -88,7 +89,6 @@
 		B58AE89A2A0B933D004D049E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B58AE89F2A0B933D004D049E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B58DE3A12A1DFC13003ABAE8 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,10 +176,10 @@
 			isa = PBXGroup;
 			children = (
 				A43E63D12A14D5E400FDCDAB /* UserService.swift */,
-				B58DE3A32A1E0F7C003ABAE8 /* AuthHandler.swift */,
 				A44DE39A2A76577600307CBA /* AuthManager.swift */,
 				A44DE3AF2A76A0CD00307CBA /* KeyValueStorage.swift */,
 				A4D4B1142A9BB6D500CC9377 /* ImageService.swift */,
+				A4D4B1162A9BDAEE00CC9377 /* AuthError.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -405,9 +405,9 @@
 				A44DE3C22A878CD400307CBA /* UserDetailsSection.swift in Sources */,
 				A44DE3CA2A88F6C300307CBA /* UserSearchPresenter.swift in Sources */,
 				A44DE3C62A88E52E00307CBA /* UserDetailsPresenter.swift in Sources */,
+				A4D4B1172A9BDAEE00CC9377 /* AuthError.swift in Sources */,
 				A44DE3EC2A8A3E7D00307CBA /* UserSearchRouter.swift in Sources */,
 				B542F4AD2A138C8200CEA307 /* SkillTableViewCell.swift in Sources */,
-				B58DE3A42A1E0F7C003ABAE8 /* AuthHandler.swift in Sources */,
 				A43E63CD2A140D3900FDCDAB /* HTTPClient.swift in Sources */,
 				A43E63CF2A14D53F00FDCDAB /* IURLSession.swift in Sources */,
 				B58DE3A22A1DFC13003ABAE8 /* SignInViewController.swift in Sources */,

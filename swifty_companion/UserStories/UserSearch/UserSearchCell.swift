@@ -84,8 +84,8 @@ final class UserSearchCell: UITableViewCell {
         return tag
     }()
     
-    private var imageDataTask: URLSessionDataTask?
-    
+    private let imageService = ImageService()
+        
     // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -147,7 +147,11 @@ final class UserSearchCell: UITableViewCell {
         staffTagView.isHidden = !item.staff
         
         if let imageLink = item.image?.link {
-            loadImage(with: imageLink)
+            imageService.loadImage(with: imageLink) { result in
+                DispatchQueue.main.async {
+                    self.handleImageLoadingResult(with: result)
+                }
+            }
             guard item.active else { return }
             imagePreview.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
@@ -156,21 +160,30 @@ final class UserSearchCell: UITableViewCell {
         }
     }
     
-    func loadImage(with imageURLString: String) {
-        guard let url = URL(string: imageURLString) else { return }
-        
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let data = data,
-                    !data.isEmpty,
-                    let image = UIImage(data: data) {
-                    self.imagePreview.image = image
-                }
-            }
+    func handleImageLoadingResult(with result: Result<UIImage, Error>) {
+        switch result {
+        case .success(let image):
+            self.imagePreview.image = image
+        case .failure(let error):
+            print("Failed to load imagePreview: \(error)")
         }
-        imageDataTask?.cancel()
-        imageDataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        imageDataTask?.resume()
     }
+    
+//    func loadImage(with imageURLString: String) {
+//        guard let url = URL(string: imageURLString) else { return }
+//
+//        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
+//            guard let self = self else { return }
+//            DispatchQueue.main.async {
+//                if let data = data,
+//                    !data.isEmpty,
+//                    let image = UIImage(data: data) {
+//                    self.imagePreview.image = image
+//                }
+//            }
+//        }
+//        imageDataTask?.cancel()
+//        imageDataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+//        imageDataTask?.resume()
+//    }
 }
