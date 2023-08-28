@@ -14,6 +14,7 @@ protocol IImageService {
 
 final class ImageService: IImageService {
     private var imageDataTask: URLSessionDataTask?
+    static let shared = ImageService()
     
     init() {
         

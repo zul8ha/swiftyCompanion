@@ -16,7 +16,7 @@ final class UserSearchCell: UITableViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
         image.layer.masksToBounds = false
-                image.layer.borderWidth = 4
+        image.layer.borderWidth = 4
         image.layer.borderColor = UIColor.gray.cgColor
         image.layer.cornerRadius = 45
         image.clipsToBounds = true
@@ -67,7 +67,7 @@ final class UserSearchCell: UITableViewCell {
         tag.configure(with: .kind(title: ""))
         return tag
     }()
-
+    
     private lazy var alumniTagView: TagView = {
         let tag = TagView()
         tag.translatesAutoresizingMaskIntoConstraints = false
@@ -84,8 +84,8 @@ final class UserSearchCell: UITableViewCell {
         return tag
     }()
     
-    private let imageService = ImageService()
-        
+    private let imageService = ImageService.shared
+    
     // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -105,7 +105,7 @@ final class UserSearchCell: UITableViewCell {
             
             imagePreview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             imagePreview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-//            imagePreview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            //            imagePreview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         contentView.addSubview(infoStackView)
         NSLayoutConstraint.activate([
@@ -122,7 +122,7 @@ final class UserSearchCell: UITableViewCell {
             tagsStackView.leadingAnchor.constraint(equalTo: infoStackView.leadingAnchor),
             tagsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
-
+        
         tagsStackView.addArrangedSubview(kindTagView)
         tagsStackView.addArrangedSubview(alumniTagView)
         tagsStackView.addArrangedSubview(staffTagView)
@@ -168,22 +168,4 @@ final class UserSearchCell: UITableViewCell {
             print("Failed to load imagePreview: \(error)")
         }
     }
-    
-//    func loadImage(with imageURLString: String) {
-//        guard let url = URL(string: imageURLString) else { return }
-//
-//        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-//            guard let self = self else { return }
-//            DispatchQueue.main.async {
-//                if let data = data,
-//                    !data.isEmpty,
-//                    let image = UIImage(data: data) {
-//                    self.imagePreview.image = image
-//                }
-//            }
-//        }
-//        imageDataTask?.cancel()
-//        imageDataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-//        imageDataTask?.resume()
-//    }
 }

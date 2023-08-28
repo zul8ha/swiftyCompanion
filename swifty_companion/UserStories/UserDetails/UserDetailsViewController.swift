@@ -20,6 +20,7 @@ protocol UserDetailsPresentable {
 
 final class UserDetailsViewController: UIViewController {
     
+    private let imageService = ImageService.shared
     private let presenter: UserDetailsPresentable
     
     // MARK: - init
@@ -180,36 +181,25 @@ final class UserDetailsViewController: UIViewController {
             userLevelProgressBar.progress = Float(user.cursusUsers[1].level) / 21
         }
         if let imageLink = user.image?.link {
-            loadImage(with: imageLink)
+            imageService.loadImage(with: imageLink) {
+                result in
+                DispatchQueue.main.async {
+                    self.handleImageLoadingResult(with: result)
+                }
+            }
             guard user.active == true else { return }
             peerImage.layer.borderColor = UIColor.systemGreen.cgColor
         }
         tableView.reloadData()
     }
     
-//    func showError(_ message: String) {
-//        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-//        let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alert.addAction(action)
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
-    // TODO: Separate this to the ImageService
-    func loadImage(with imageURLString: String) {
-        guard let url = URL(string: imageURLString) else { return }
-        
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let data = data,
-                   !data.isEmpty,
-                   let image = UIImage(data: data) {
-                    self.peerImage.image = image
-                }
-            }
+    func handleImageLoadingResult(with result: Result<UIImage, Error>) {
+        switch result {
+        case .success(let image):
+            self.peerImage.image = image
+        case .failure(let error):
+            print("Failed to load imagePreview: \(error)")
         }
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
     }
     
     // MARK: - Set Up UI
