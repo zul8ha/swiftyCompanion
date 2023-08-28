@@ -189,6 +189,8 @@ final class UserDetailsViewController: UIViewController {
             }
             guard user.active == true else { return }
             peerImage.layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            peerImage.image = UIImage(named: "defaultImage")
         }
         tableView.reloadData()
     }

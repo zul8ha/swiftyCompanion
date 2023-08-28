@@ -156,7 +156,7 @@ final class UserSearchCell: UITableViewCell {
             imagePreview.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
             // TODO: Put default image
-            imagePreview.image = UIImage()
+            imagePreview.image = UIImage(named: "defaultImage")
         }
     }
     
