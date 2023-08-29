@@ -187,7 +187,7 @@ final class UserDetailsViewController: UIViewController {
                     self.handleImageLoadingResult(with: result)
                 }
             }
-            guard user.active == true else { return }
+            guard user.active else { return }
             peerImage.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
             peerImage.image = UIImage(named: "defaultImage")

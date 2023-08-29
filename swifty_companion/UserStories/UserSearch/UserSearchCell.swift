@@ -155,7 +155,6 @@ final class UserSearchCell: UITableViewCell {
             guard item.active else { return }
             imagePreview.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
-            // TODO: Put default image
             imagePreview.image = UIImage(named: "defaultImage")
         }
     }
