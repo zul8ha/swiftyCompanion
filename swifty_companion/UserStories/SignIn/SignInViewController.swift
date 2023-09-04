@@ -20,7 +20,6 @@ final class SignInViewController: UIViewController {
     var isAuthSessionRunning = false {
         didSet {
             signInButton.isEnabled = !isAuthSessionRunning
-            print("💲 isAuthSessionRunning: \(isAuthSessionRunning)")
         }
     }
 
@@ -48,7 +47,6 @@ final class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-//        navigationController?.setNavigationBarHidden(true, animated: true)
         view.addSubview(signInButton)
         NSLayoutConstraint.activate([
             signInButton.widthAnchor.constraint(equalToConstant: 120),
@@ -74,7 +72,8 @@ final class SignInViewController: UIViewController {
             case let .success(accessToken):
                 self.listener?.didSignIn(with: accessToken)
             case let .failure(error):
-                print(error)
+                
+                print(error.localizedDescription)
             }
         }
     }

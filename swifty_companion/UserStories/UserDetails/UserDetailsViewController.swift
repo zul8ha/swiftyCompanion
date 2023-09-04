@@ -1,37 +1,33 @@
 //
-//  PeerViewController.swift
+//  UserDetailsViewController.swift
 //  swifty_companion
 //
 //  Created by Heidi Merianne on 5/10/23.
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
 
-// curl -X POST --data "grant_type=client_credentials&client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&client_secret=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" https://api.intra.42.fr/oauth/accessToken
-
-
 import UIKit
 
-class DetailsViewController: UIViewController {
+private extension String {
+    static let skillCell = "skillCell"
+    static let projectCell = "projectCell"
+}
+
+protocol UserDetailsPresentable {
+    var userDetailsSection: [UserDetailsSection] { get }
+    func onViewDidLoad()
+}
+
+final class UserDetailsViewController: UIViewController {
     
-    private var login: String
-    private var user: UserDetails?
-    private var accessToken: AccessToken
-    private var skills: [Skill] = []
-    private var projects: [Project] = []
-    private let httpClient: IHTTPClient
-    private let userService: IUserService
+    private let imageService = ImageService.shared
+    private let presenter: UserDetailsPresentable
     
     // MARK: - init
     init(
-        accessToken: AccessToken,
-        httpClient: IHTTPClient,
-        login: String,
-        userService: IUserService
+        presenter: UserDetailsPresentable
     ) {
-        self.accessToken = accessToken
-        self.httpClient = httpClient
-        self.login = login
-        self.userService = UserService(accessToken: accessToken, httpClient: httpClient)
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,13 +57,13 @@ class DetailsViewController: UIViewController {
     private lazy var peerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(systemName: "person")
+        image.image = UIImage()
         image.tintColor = .darkGray
         image.setContentHuggingPriority(UILayoutPriority(900), for: .horizontal)
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 60
         image.clipsToBounds = true
-        image.layer.borderWidth = 3
+        image.layer.borderWidth = 4
         image.layer.borderColor = UIColor.gray.cgColor
         
         return image
@@ -92,11 +88,9 @@ class DetailsViewController: UIViewController {
         label.setContentCompressionResistancePriority(UILayoutPriority(740), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(240), for: .horizontal)
         label.numberOfLines = 0
-        label.text = user?.displayName
         return label
     }()
     
-    // TODO: create a progressBar for the level
     private lazy var level: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -112,7 +106,6 @@ class DetailsViewController: UIViewController {
         label.setContentCompressionResistancePriority(UILayoutPriority(720), for: .horizontal)
         label.setContentHuggingPriority(UILayoutPriority(220), for: .horizontal)
         label.numberOfLines = 0
-        label.text = user?.email
         return label
     }()
     
@@ -162,9 +155,8 @@ class DetailsViewController: UIViewController {
         table.estimatedRowHeight = UITableView.automaticDimension
         
         table.dataSource = self
-        table.delegate = self
-        table.register(SkillTableViewCell.self, forCellReuseIdentifier: "skillCell")
-        table.register(ProjectTableViewCell.self, forCellReuseIdentifier: "projectCell")
+        table.register(SkillTableViewCell.self, forCellReuseIdentifier: .skillCell)
+        table.register(ProjectTableViewCell.self, forCellReuseIdentifier: .projectCell)
         
         return table
     }()
@@ -173,42 +165,8 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUpUI()
-        // to show it as a title of the View - on the NavigationBar (the same as navigationItem.title = login)
-        title = login
-        loadUserData(with: login)
-    }
-    
-    // MARK: - Load User Data
-    
-    func loadUserData(with login: String) {
-        userService.loadUserData(with: login, accessToken: accessToken, completion: { [weak self] result in
-            DispatchQueue.main.async {
-                self?.handleUserLoading(with: result)
-            }
-        })
-    }
-    
-    func handleUserLoading(with result: Result<UserDetails, Error>) {
-        switch result {
-        case let .success(user):
-            self.user = user
-            parseUserForSkills(for: user)
-            showUser(user)
-            tableView.reloadData()
-        case let .failure(error):
-            showError(error.localizedDescription)
-        }
-    }
-    
-    // MARK: - Show User
-    func parseUserForSkills(for user: UserDetails) {
-        for cursus in user.cursusUsers {
-            for skill in cursus.skills {
-                skills.append(skill)
-            }
-        }
+        presenter.onViewDidLoad()
     }
     
     func showUser(_ user: UserDetails) {
@@ -222,36 +180,28 @@ class DetailsViewController: UIViewController {
             userLevel.text = String(format: "%.2f", user.cursusUsers[1].level)
             userLevelProgressBar.progress = Float(user.cursusUsers[1].level) / 21
         }
-        
         if let imageLink = user.image?.link {
-            loadImage(with: imageLink)
-        }
-    }
-    
-    func showError(_ message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(action)
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    func loadImage(with imageURLString: String) {
-        guard let url = URL(string: imageURLString) else { return }
-        
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let data = data,
-                   !data.isEmpty,
-                   let image = UIImage(data: data) {
-                    self.peerImage.image = image
+            imageService.loadImage(with: imageLink) {
+                result in
+                DispatchQueue.main.async {
+                    self.handleImageLoadingResult(with: result)
                 }
             }
+            guard user.active else { return }
+            peerImage.layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            peerImage.image = UIImage(named: "defaultImage")
         }
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
+        tableView.reloadData()
+    }
+    
+    func handleImageLoadingResult(with result: Result<UIImage, Error>) {
+        switch result {
+        case .success(let image):
+            self.peerImage.image = image
+        case .failure(let error):
+            print("Failed to load imagePreview: \(error)")
+        }
     }
     
     // MARK: - Set Up UI
@@ -286,12 +236,6 @@ class DetailsViewController: UIViewController {
         userInfo.addArrangedSubview(wallets)
         userInfo.addArrangedSubview(userLevel)
         
-        //        let spacerView = UIView()
-        //        spacerView.translatesAutoresizingMaskIntoConstraints = false
-        //        stackView.addArrangedSubview(spacerView)
-        //        spacerView.setContentHuggingPriority(UILayoutPriority(50), for: .horizontal)
-        
-        
         view.addSubview(userLevelProgressBar)
         userLevelProgressBar.addSubview(userLevel)
         NSLayoutConstraint.activate([
@@ -317,78 +261,42 @@ class DetailsViewController: UIViewController {
 
 // MARK: - Table View
 
-enum UserDescriptionSection: CaseIterable {
-    
-    case skills
-    case projects
-    
-    var sectionIndex: Int {
-        switch self {
-        case .skills:
-            return 0
-        case .projects:
-            return 1
-        }
-    }
-    
-    var sectionTitle: String {
-        switch self {
-        case .skills:
-            return "Skills"
-        case .projects:
-            return "Projects"
-        }
-    }
-}
-
-extension DetailsViewController: UITableViewDataSource {
+extension UserDetailsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return UserDescriptionSection.allCases.count
+        return presenter.userDetailsSection.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case UserDescriptionSection.skills.sectionIndex:
-            return UserDescriptionSection.skills.sectionTitle
-        case UserDescriptionSection.projects.sectionIndex:
-            return UserDescriptionSection.projects.sectionTitle
-        default:
-            return nil
-        }
+        return presenter.userDetailsSection[section].title
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let user = user else {return 0}
-        switch section {
-        case UserDescriptionSection.skills.sectionIndex:
-            return skills.count
-        case UserDescriptionSection.projects.sectionIndex:
-            return user.projectsUsers.count
-        default:
-            return 0
+        return presenter.userDetailsSection[section].itemsCount
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let currentSection = presenter.userDetailsSection[indexPath.section]
+        switch currentSection {
+        case .cursusSkillsSection(let cursusSkillsSection):
+            let currenSkillItem = cursusSkillsSection.skillItems[indexPath.item]
+            guard let skillCell = tableView.dequeueReusableCell(withIdentifier: .skillCell, for: indexPath) as? SkillTableViewCell else { return UITableViewCell() }
+            
+            skillCell.configure(with: currenSkillItem)
+            return skillCell
+        case .projectsSection(let projectItems):
+            let currentProjectItem = projectItems[indexPath.row]
+            guard let projectItemsCell = tableView.dequeueReusableCell(withIdentifier: .projectCell, for: indexPath) as? ProjectTableViewCell else { return UITableViewCell() }
+            
+            projectItemsCell.configure(with: currentProjectItem)
+            return projectItemsCell
         }
     }
 }
 
-extension DetailsViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let user = user else { return UITableViewCell() }
-        switch indexPath.section {
-        case UserDescriptionSection.skills.sectionIndex:
-            let skill = skills[indexPath.row]
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "skillCell", for: indexPath) as? SkillTableViewCell else { return UITableViewCell() }
-            cell.configure(with: skill)
-            return cell
-        case UserDescriptionSection.projects.sectionIndex:
-            let project = user.projectsUsers[indexPath.row].project
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as? ProjectTableViewCell else { return UITableViewCell() }
-            cell.configure(with: project)
-            return cell
-        default:
-            return UITableViewCell()
-            
-        }
+extension UserDetailsViewController: UserDetailsViewControllable {
+    func set(title: String) {
+        self.title = title
     }
 }

@@ -17,6 +17,10 @@ enum AuthState {
     case unauthorised
 }
 
+//protocol AuthManagerDelegate {
+//    func showError(
+//}
+
 protocol IAuthManager {
     var authState: AuthState { get }
     
@@ -28,7 +32,6 @@ protocol IAuthManager {
     func logOut()
 }
 
-
 /// The purpose of the class AuthManager is to get an Access Token
 /// First it shows thisrd-part Authorisation page using ASWebAuthenticationPresentationContextProviding to login the user, handles callback, exchanges a code to an access token and saves it to the UserDefaults.
 /// It is possible to remove token data from UserDefaults calling logOut() from the instance of the authManager.
@@ -38,7 +41,7 @@ final class AuthManager: IAuthManager {
     // MARK: Static properties
     
     static let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-    static let clientSecret = "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"
+    static let clientSecret = "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"
     static let callbackURLScheme = "hmeriann"
     
     /// Builds a OAuth URL from the components
@@ -98,6 +101,7 @@ final class AuthManager: IAuthManager {
     private var accessToken: AccessToken?
     var authState: AuthState {
         if let accessToken = keyValueStorage.get(valueFor: "accessToken") {
+            
 //        if let accessToken = accessToken {
             return .authorised(accessToken: accessToken)
         }
@@ -121,8 +125,7 @@ final class AuthManager: IAuthManager {
         }
         authenticationSession.presentationContextProvider = authContentProvider
         if !authenticationSession.start() {
-            // TODO: handle if didn't start
-            print("Failed to start")
+            completion(.failure(AuthError.failedToStartAuthSession))
         }
     }
     
@@ -165,6 +168,7 @@ final class AuthManager: IAuthManager {
             case let .success(token):
                 completion(.success(token.accessToken))
             case let .failure(error):
+                print(error)
                 completion(.failure(error))
             }
         }

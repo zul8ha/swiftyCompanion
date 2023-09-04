@@ -18,6 +18,7 @@ struct UserDetails: Codable {
     let wallet: Int
     let cursusUsers: [CursusUser]
     let projectsUsers: [ProjectsUser]
+    let active: Bool
     
     enum CodingKeys: String, CodingKey {
 
@@ -30,6 +31,7 @@ struct UserDetails: Codable {
         case wallet
         case cursusUsers = "cursus_users"
         case projectsUsers = "projects_users"
+        case active = "active?"
     }
     
 //    init(from decoder: Decoder) throws {
@@ -63,6 +65,11 @@ struct CursusUser: Codable {
     let grade: String?
     let level: Double
     let skills: [Skill]
+    let cursus: Cursus
+}
+
+struct Cursus: Codable {
+    let name: String
 }
 
 struct Skill: Codable {
@@ -76,6 +83,7 @@ struct ProjectsUser: Codable {
     let finalMark: Int?
     let status: ProjectStatus
     let project: Project
+//    let validated: String
     
     enum CodingKeys: String, CodingKey {
 
@@ -83,6 +91,7 @@ struct ProjectsUser: Codable {
         case finalMark = "final_mark"
         case status
         case project
+//        case validated = "validated?"
     }
 }
 

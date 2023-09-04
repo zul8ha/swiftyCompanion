@@ -19,13 +19,14 @@ final class AppRouter: IAppRouter {
     private var navigationController: UINavigationController?
     private let authManager: IAuthManager
     private let httpClient = HTTPClient()
-    
-    // TODO: add SignInBuilder, add UserSearchBuilder as dependencies
-    
+    private let searchBuilder = UserSearchBuilder()
+    private let signInBuilder: SignInBuildable
+
     init(
         with authManager: IAuthManager
     ) {
         self.authManager = authManager
+        signInBuilder = SignInBuilder(authManager: authManager)
     }
     
     /// Creates an instance of the NavigationController, makes it a rootVC of the window and makes it key&visible
@@ -45,7 +46,6 @@ final class AppRouter: IAppRouter {
                 httpClient: httpClient
             )
             showUserSearch(
-                with: accessToken,
                 userService: userService
             )
         case .unauthorised:
@@ -54,19 +54,16 @@ final class AppRouter: IAppRouter {
     }
     
     func showShigIn() {
-        let viewController = SignInViewController(
-            authManager: authManager
-        )
-        viewController.listener = self
-        viewController.isModalInPresentation = true
+        let viewController = signInBuilder.build(listener: self)
         navigationController?.present(viewController, animated: true)
     }
     
-    func showUserSearch(with accessToken: AccessToken, userService: UserService) {
-        let searchController = UserSearchViewController(accessToken: accessToken, userService: userService)
+    func showUserSearch(userService: UserService) {
+        let searchController = searchBuilder.build(
+            listener: self,
+            userService: userService
+        )
         navigationController?.viewControllers = [searchController]
-        searchController.listener = self
-        print("😈", accessToken)
     }
 }
 
@@ -76,7 +73,7 @@ extension AppRouter: SignInListener {
             accessToken: accessToken,
             httpClient: httpClient
         )
-        showUserSearch(with: accessToken, userService: userService)
+        showUserSearch(userService: userService)
         if navigationController?.presentedViewController is SignInViewController {
             navigationController?.dismiss(animated: true)
         }
