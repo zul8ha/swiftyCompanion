@@ -173,15 +173,24 @@ final class UserDetailsViewController: UIViewController {
         userFullName.text = user.displayName
         email.text = user.email
         wallets.text = "Wallet: ₳ \(user.wallet)"
-        poolYear.text = "Pool Year: \(user.poolYear)"
+        if let year = user.poolYear {
+            poolYear.text = "Pool Year: \(year)"
+        } else {
+            poolYear.text = "Pool Year: Haven't yet attended"
+        }
         let cursus = user.cursusUsers
         for i in 0..<cursus.count {
             if let grade = cursus[i].grade {
                 if grade == "Member" {
                     userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
                     userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
+                } else if grade == "Learner" {
+                    userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
+                    userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
                 }
             }
+            userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
+            userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
         }
 
         if let imageLink = user.image?.link {

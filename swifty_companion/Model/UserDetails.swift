@@ -13,7 +13,7 @@ struct UserDetails: Codable {
     let email: String
     let login: String
     let image: Image?
-    let poolYear: String
+    let poolYear: String?
     let displayName: String
     let wallet: Int
     let cursusUsers: [CursusUser]
@@ -33,32 +33,10 @@ struct UserDetails: Codable {
         case projectsUsers = "projects_users"
         case active = "active?"
     }
-    
-//    init(from decoder: Decoder) throws {
-//        let values = try decoder.container(keyedBy: CodingKeys.self)
-//        id = try values.decode(Int.self, forKey: .id)
-//        email = try values.decode(String.self, forKey: .email)
-//        login = try values.decode(String.self, forKey: .login)
-//    }
-    
 }
 
 struct Image: Codable {
     let link: String?
-//    let versions : Versions?
-
-//    enum CodingKeys: String, CodingKey {
-//
-//        case link = "link"
-//        case versions = "versions"
-//    }
-//
-//    init(from decoder: Decoder) throws {
-//        let values = try decoder.container(keyedBy: CodingKeys.self)
-//        link = try values.decodeIfPresent(String.self, forKey: .link)
-//        versions = try values.decodeIfPresent(Versions.self, forKey: .versions)
-//    }
-
 }
 
 struct CursusUser: Codable {
@@ -83,7 +61,6 @@ struct ProjectsUser: Codable {
     let finalMark: Int?
     let status: ProjectStatus
     let project: Project
-//    let validated: String
     
     enum CodingKeys: String, CodingKey {
 
@@ -91,7 +68,6 @@ struct ProjectsUser: Codable {
         case finalMark = "final_mark"
         case status
         case project
-//        case validated = "validated?"
     }
 }
 
