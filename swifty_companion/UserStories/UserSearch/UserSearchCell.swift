@@ -84,7 +84,7 @@ final class UserSearchCell: UITableViewCell {
         return tag
     }()
     
-    private let imageService = ImageService.shared
+    private let imageService = ImageService()
     
     // MARK: - inits
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
