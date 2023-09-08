@@ -184,9 +184,11 @@ final class UserDetailsViewController: UIViewController {
                 if grade == "Member" {
                     userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
                     userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
+                    break
                 } else if grade == "Learner" {
                     userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
                     userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
+                    break
                 }
             }
             userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)

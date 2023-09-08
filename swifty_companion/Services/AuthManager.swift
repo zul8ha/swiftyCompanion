@@ -40,10 +40,13 @@ final class AuthManager: IAuthManager {
     
     // MARK: Static properties
     
-    static let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-    static let clientSecret = "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"
-    static let callbackURLScheme = "hmeriann"
+//    static let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
+//    static let clientSecret = "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"
     
+    static let callbackURLScheme = "hmeriann"
+    static let clientId = ProcessInfo.processInfo.environment["UID"] ?? nil
+    static let clientSecret = ProcessInfo.processInfo.environment["SECRET"] ?? nil
+        
     /// Builds a OAuth URL from the components
     /// - Returns: URL
     static func makeOAuthUrl() -> URL {
@@ -66,6 +69,7 @@ final class AuthManager: IAuthManager {
     /// - Parameter code: will be exchanged to an access token later, when perform the request
     /// - Returns: URLRequest
     static func makeCodeExchangeRequest(code: String) -> URLRequest {
+    
         var urlComponents = URLComponents()
         
         urlComponents.scheme = "https"
@@ -81,7 +85,7 @@ final class AuthManager: IAuthManager {
         guard let url = urlComponents.url else {
             fatalError("Cannot create exchange URL")
         }
-//        print("👻", url.absoluteString)
+        //        print("👻", url.absoluteString)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
