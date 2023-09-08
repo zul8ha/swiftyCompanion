@@ -191,8 +191,6 @@ final class UserDetailsViewController: UIViewController {
                     break
                 }
             }
-            userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
-            userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
         }
 
         if let imageLink = user.image?.link {
@@ -277,7 +275,7 @@ final class UserDetailsViewController: UIViewController {
 // MARK: - Table View
 
 extension UserDetailsViewController: UITableViewDataSource {
-    
+// FIXME: - hmerieux, mhogenbo - shows a level, but doesn't how table view
     func numberOfSections(in tableView: UITableView) -> Int {
         return presenter.userDetailsSection.count
     }
