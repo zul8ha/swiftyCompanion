@@ -13,6 +13,10 @@ private extension String {
     static let projectCell = "projectCell"
 }
 
+private extension Float {
+    static let maxCursusLevel: Float = 21.0
+}
+
 protocol UserDetailsPresentable {
     var userDetailsSection: [UserDetailsSection] { get }
     func onViewDidLoad()
@@ -169,43 +173,53 @@ final class UserDetailsViewController: UIViewController {
         presenter.onViewDidLoad()
     }
     
-    func showUser(_ user: UserDetails) {
-        userFullName.text = user.displayName
-        email.text = user.email
-        wallets.text = "Wallet: ₳ \(user.wallet)"
-        if let year = user.poolYear {
+    func showUser(_ userDetails: UserDetails) {
+        userFullName.text = userDetails.displayName
+        email.text = userDetails.email
+        wallets.text = "Wallet: ₳ \(userDetails.wallet)"
+        if let year = userDetails.poolYear {
             poolYear.text = "Pool Year: \(year)"
         } else {
             poolYear.text = "Pool Year: Haven't yet attended"
         }
-        let cursus = user.cursusUsers
-        for i in 0..<cursus.count {
-            if let grade = cursus[i].grade {
-                if grade == "Member" {
-                    userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
-                    userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
-                    break
-                } else if grade == "Learner" {
-                    userLevel.text = String(format: "%.2f", user.cursusUsers[i].level)
-                    userLevelProgressBar.progress = Float(user.cursusUsers[i].level) / 21
-                    break
-                }
-            }
-        }
-
-        if let imageLink = user.image?.link {
+        showLevel(for: userDetails)
+        
+        if let imageLink = userDetails.image?.link {
             imageService.loadImage(with: imageLink) {
                 result in
                 DispatchQueue.main.async {
                     self.handleImageLoadingResult(with: result)
                 }
             }
-            guard user.active else { return }
-            peerImage.layer.borderColor = UIColor.systemGreen.cgColor
+            if userDetails.active {
+                peerImage.layer.borderColor = UIColor.systemGreen.cgColor
+            }
         } else {
             peerImage.image = UIImage(named: "defaultImage")
         }
         tableView.reloadData()
+    }
+    
+    private func showLevel(for userDetails: UserDetails) {
+        if let cursusUser = userDetails.cursusUsers.first(where: { $0.grade == "Member"}) {
+            showLevel(for: cursusUser)
+        } else if let cursusUser = userDetails.cursusUsers.first(where: { $0.grade == "Learner"}) {
+            showLevel(for: cursusUser)
+        } else if let cursusUser = userDetails.cursusUsers.first(where: { $0.grade == nil}) {
+            showLevel(for: cursusUser)
+        } else {
+            showZeroLevel()
+        }
+    }
+
+    private func showLevel(for cursusUser: CursusUser) {
+        userLevel.text = String(format: "%.2f", cursusUser.level)
+        userLevelProgressBar.progress = Float(cursusUser.level) / .maxCursusLevel
+    }
+    
+    private func showZeroLevel() {
+        userLevel.text = String(format: "%.2f", 0.0)
+        userLevelProgressBar.progress = 0.0
     }
     
     func handleImageLoadingResult(with result: Result<UIImage, Error>) {
@@ -275,7 +289,7 @@ final class UserDetailsViewController: UIViewController {
 // MARK: - Table View
 
 extension UserDetailsViewController: UITableViewDataSource {
-// FIXME: - hmerieux, mhogenbo - shows a level, but doesn't how table view
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return presenter.userDetailsSection.count
     }

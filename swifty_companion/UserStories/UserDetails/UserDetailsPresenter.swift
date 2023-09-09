@@ -60,7 +60,6 @@ private extension UserDetailsPresenter {
         }
     }
 
-// FIXME: - hmerieux, mhogenbo - shows a level, but doesn't how table view
     func parseUserForSkills(for user: UserDetails) {
         for cursusUser in user.cursusUsers {
             
