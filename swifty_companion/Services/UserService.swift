@@ -33,7 +33,6 @@ final class UserService: IUserService {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users?range[login]=\(searchString.lowercased()),\(searchString.lowercased())z") else { return }
         var urlRequest = URLRequest(url: url)
         let bearer = "Bearer \(accessToken)"
-        print(accessToken)
         urlRequest.setValue(bearer, forHTTPHeaderField: "Authorization")
         
         httpClient.loadData(with: urlRequest) { result in
