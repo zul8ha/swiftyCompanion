@@ -18,7 +18,6 @@ protocol UserSearchPresentable: AnyObject {
     func didSignOut()
 }
 
-
 final class UserSearchViewController: UIViewController {
     
     // MARK: - searchController
@@ -43,8 +42,7 @@ final class UserSearchViewController: UIViewController {
     
     private let presenter: UserSearchPresentable
     private let userDetailsBuilder: UserDetailsBuildable
-    
-    
+        
     init(
         presenter: UserSearchPresentable,
         userService: IUserService

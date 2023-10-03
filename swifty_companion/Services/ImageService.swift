@@ -16,9 +16,7 @@ final class ImageService: IImageService {
     private var imageDataTask: URLSessionDataTask?
     static let shared = ImageService()
     
-    init() {
-        
-    }
+    init() {}
     
     func loadImage(with imageURLString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
         guard let url = URL(string: imageURLString) else { return }

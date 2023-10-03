@@ -15,10 +15,6 @@ enum AuthState {
     case unauthorised
 }
 
-//protocol AuthManagerDelegate {
-//    func showError(
-//}
-
 protocol IAuthManager {
     var authState: AuthState { get }
     
@@ -105,10 +101,6 @@ final class AuthManager: IAuthManager {
         return .unauthorised
     }
     
-    /// <#Description#>
-    /// - Parameters:
-    ///   - authContentProvider: <#authContentProvider description#>
-    ///   - completion: <#completion description#>
     func showAuthPage(
         with authContentProvider: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Result<AccessToken, Error>) -> Void
