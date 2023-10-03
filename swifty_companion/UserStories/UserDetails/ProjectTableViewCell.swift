@@ -52,14 +52,12 @@ class ProjectTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             projectLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             projectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-//            projectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             projectLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         ])
         
         contentView.addSubview(markLabel)
         NSLayoutConstraint.activate([
             markLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-//            markLabel.leadingAnchor.constraint(equalTo: projectLabel.trailingAnchor, constant: 8),
             markLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             markLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         ])
