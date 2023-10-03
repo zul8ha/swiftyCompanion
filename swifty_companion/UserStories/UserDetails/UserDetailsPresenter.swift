@@ -59,7 +59,7 @@ private extension UserDetailsPresenter {
             view?.showError(error.localizedDescription)
         }
     }
-    
+
     func parseUserForSkills(for user: UserDetails) {
         for cursusUser in user.cursusUsers {
             
