@@ -8,7 +8,7 @@
 
 import AuthenticationServices
 
-// curl -X POST --data "grant_type=client_credentials&client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&client_secret=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" https://api.intra.42.fr/oauth/token
+// curl -X POST --data "grant_type=client_credentials&client_id=<UUID>&client_secret=<secret>" https://api.intra.42.fr/oauth/token
 
 typealias AccessToken = String
 
@@ -33,15 +33,15 @@ protocol IAuthManager {
 }
 
 /// The purpose of the class AuthManager is to get an Access Token
-/// First it shows thisrd-part Authorisation page using ASWebAuthenticationPresentationContextProviding to login the user, handles callback, exchanges a code to an access token and saves it to the UserDefaults.
+/// First it shows thisrd-part Authorisation page using ASWebAuthenticationPresentationContextProviding to log the user in, handles callback, exchanges a code to an access token and saves it to the UserDefaults.
 /// It is possible to remove token data from UserDefaults calling logOut() from the instance of the authManager.
 final class AuthManager: IAuthManager {
-// "https://api.intra.42.fr/oauth/authorize?client_id=fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
+// "https://api.intra.42.fr/oauth/authorize?client_id=<UUID>&redirect_uri=hmeriann%3A%2F%2Foauth-callback%2F&response_type=code"
     
     // MARK: Static properties
     
-//    static let clientId = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
-//    static let clientSecret = "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"
+//    static let clientId = <UUID>
+//    static let clientSecret = <secret>
     
     static let callbackURLScheme = "hmeriann"
     static let clientId = ProcessInfo.processInfo.environment["UID"] ?? nil
