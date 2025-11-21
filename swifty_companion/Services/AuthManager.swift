@@ -17,10 +17,6 @@ enum AuthState {
     case unauthorised
 }
 
-//protocol AuthManagerDelegate {
-//    func showError(
-//}
-
 protocol IAuthManager {
     var authState: AuthState { get }
     
@@ -42,7 +38,6 @@ final class AuthManager: IAuthManager {
     
 //    static let clientId = <UUID>
 //    static let clientSecret = <secret>
-    
     static let callbackURLScheme = "hmeriann"
     static let clientId = ProcessInfo.processInfo.environment["UID"] ?? nil
     static let clientSecret = ProcessInfo.processInfo.environment["SECRET"] ?? nil
@@ -85,7 +80,6 @@ final class AuthManager: IAuthManager {
         guard let url = urlComponents.url else {
             fatalError("Cannot create exchange URL")
         }
-        //        print("👻", url.absoluteString)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
@@ -112,10 +106,6 @@ final class AuthManager: IAuthManager {
         return .unauthorised
     }
     
-    /// <#Description#>
-    /// - Parameters:
-    ///   - authContentProvider: <#authContentProvider description#>
-    ///   - completion: <#completion description#>
     func showAuthPage(
         with authContentProvider: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Result<AccessToken, Error>) -> Void
@@ -154,7 +144,6 @@ final class AuthManager: IAuthManager {
             completion(.failure(AuthError.showAuthPageError(nil)))
             return
         }
-        
         exchangeCodeForTokens(with: code, completion: completion)
     }
     
@@ -212,8 +201,6 @@ final class AuthManager: IAuthManager {
     func save(_ token: Token) {
         keyValueStorage.set(token.accessToken, for: "accessToken")
         keyValueStorage.set(token.refreshToken, for: "refreshToken")
-//        keyValueStorage.set(token.expiresIn, for: "expiresIn")
-//        accessToken = token.accessToken
     }
     
     func logOut() {

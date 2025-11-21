@@ -102,10 +102,8 @@ final class UserSearchCell: UITableViewCell {
         NSLayoutConstraint.activate([
             imagePreview.widthAnchor.constraint(equalToConstant: 90),
             imagePreview.heightAnchor.constraint(equalToConstant: 90),
-            
             imagePreview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             imagePreview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            //            imagePreview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
         contentView.addSubview(infoStackView)
         NSLayoutConstraint.activate([
