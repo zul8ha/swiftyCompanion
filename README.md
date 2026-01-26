@@ -8,7 +8,7 @@ The idea of this application is to search for information about student of the 4
 - It is possible to go back to the first view
 - The project uses Auto Layout.
 
-## The short demo:
+## Demo:
 
 https://github.com/hmeriann/swiftyCompanion/assets/78214685/efe6871c-8eac-4467-9a8c-0e1b17b60a62
 
