@@ -8,6 +8,20 @@ The idea of this application is to search for information about student of the 4
 - It is possible to go back to the first view
 - The project uses Auto Layout.
 
+## Quality & UX decisions (what I focused on)
+- Predictable UI states: search / loading / empty / error
+- Clear user feedback when the API request fails or the user is not found
+- Safe networking and parsing: input validation + decoding error handling
+- MVP separation: UI stays simple, business logic stays testable
+- Basic test coverage for the most error-prone parts (networking / parsing / view model logic)
+
+## Edge cases handled
+- Invalid / empty nickname
+- 404 user not found
+- Token expired (OAuth)
+- Slow network / no internet
+- Missing optional fields in API response
+
 ## Demo:
 
 https://github.com/hmeriann/swiftyCompanion/assets/78214685/efe6871c-8eac-4467-9a8c-0e1b17b60a62
