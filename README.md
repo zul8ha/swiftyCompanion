@@ -17,7 +17,6 @@ The idea of this application is to search for information about student of the 4
 
 ## Edge cases handled
 - Invalid / empty nickname
-- 404 user not found
 - Token expired (OAuth)
 - Slow network / no internet
 - Missing optional fields in API response
