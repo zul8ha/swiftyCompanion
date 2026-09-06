@@ -6,6 +6,7 @@
 //  Copyright © 2023 Heidi Merianne. All rights reserved.
 //
 
+import AuthenticationServices
 @testable import swifty_companion
 
 class AuthManagerMock: IAuthManager {
@@ -34,6 +35,17 @@ class AuthManagerMock: IAuthManager {
     var invokedAuthenticateCount = 0
     var stubbedAuthenticateCompletionResult: (Result<AccessToken, Error>, Void)?
 
+    func showAuthPage(
+        with authContentProvider: ASWebAuthenticationPresentationContextProviding,
+        completion: @escaping (Result<AccessToken, Error>) -> Void
+    ) {
+        // Authentication UI is intentionally not started in unit tests.
+    }
+
+    func logOut() {
+        // No-op for tests.
+    }
+    
     func authenticate(completion: (Result<AccessToken, Error>) -> Void) {
         invokedAuthenticate = true
         invokedAuthenticateCount += 1
