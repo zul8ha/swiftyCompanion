@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var appRouter: IAppRouter = AppRouter(with: authManager)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        configureStorageForUITesting()
         
         let window = UIWindow()
         self.window = window
@@ -25,6 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         appRouter.startApp(in: window)
         return true
+    }
+
+    private func configureStorageForUITesting() {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard arguments.contains("-ui-testing") else { return }
+
+        keyValyeStorage.removeAllValues()
+
+        if arguments.contains("-ui-testing-authenticated") {
+            keyValyeStorage.set("ui-test-access-token", for: "accessToken")
+        }
     }
 }
 

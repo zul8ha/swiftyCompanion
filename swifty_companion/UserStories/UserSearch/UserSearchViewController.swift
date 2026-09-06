@@ -27,6 +27,7 @@ final class UserSearchViewController: UIViewController {
         search.definesPresentationContext = true
         search.searchBar.delegate = self
         search.searchBar.placeholder = "Search by peer login"
+        search.searchBar.searchTextField.accessibilityIdentifier = "userSearch.searchField"
         return search
     }()
     
@@ -36,6 +37,7 @@ final class UserSearchViewController: UIViewController {
         table.dataSource = self
         table.delegate = self
         table.register(UserSearchCell.self, forCellReuseIdentifier: "userSearchCell")
+        table.accessibilityIdentifier = "userSearch.resultsTable"
         table.rowHeight = UITableView.automaticDimension
         return table
     }()
@@ -82,12 +84,14 @@ final class UserSearchViewController: UIViewController {
     
     func addLogOutButton() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let logOutButton = UIBarButtonItem(
             title: "LogOut",
             style: .plain,
             target: self,
             action: #selector(onBackButtonTap)
         )
+        logOutButton.accessibilityIdentifier = "userSearch.logoutButton"
+        navigationItem.rightBarButtonItem = logOutButton
     }
     
     @objc func onBackButtonTap() {

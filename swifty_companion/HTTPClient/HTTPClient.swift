@@ -19,7 +19,7 @@ enum HTTPClientError: LocalizedError {
 protocol IHTTPClient {
     
 //    func loadData(with request: URLRequest, completion: DataCompletion)
-    func loadData(with request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void)
+    func loadData(with request: URLRequest, completion: @escaping @Sendable (Result<Data, Error>) -> Void)
 }
 
 final class HTTPClient: IHTTPClient {
@@ -31,21 +31,20 @@ final class HTTPClient: IHTTPClient {
         self.session = session
     }
     
-    func loadData(with request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) {
+    func loadData(with request: URLRequest, completion: @escaping @Sendable (Result<Data, Error>) -> Void) {
         
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-            guard let self = self else { return }
-            self.handleResult(data: data, response: response, error: error, completion: completion)
+        let completionHandler: @Sendable (Data?, URLResponse?, Error?) -> Void = { data, response, error in
+            Self.handleResult(data: data, response: response, error: error, completion: completion)
         }
         let dataTask = session.dataTask(with: request, completionHandler: completionHandler)
         dataTask.resume()
     }
     
-    func handleResult(
+    private static func handleResult(
         data: Data?,
         response: URLResponse?,
         error: Error?,
-        completion: (Result<Data, Error>) -> Void
+        completion: @Sendable (Result<Data, Error>) -> Void
     ) {
         if let error = error {
             completion(.failure(error))

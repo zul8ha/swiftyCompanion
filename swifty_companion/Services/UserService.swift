@@ -10,9 +10,9 @@
 import Foundation
 
 protocol IUserService {
-    func loadUserData(with login: String, completion: @escaping (Result<UserDetails, Error>) -> Void)
+    func loadUserData(with login: String, completion: @escaping @Sendable (Result<UserDetails, Error>) -> Void)
     
-    func search(with searchString: String, completion: @escaping (Result<[UserSearchResult], Error>) -> Void)
+    func search(with searchString: String, completion: @escaping @Sendable (Result<[UserSearchResult], Error>) -> Void)
 }
 
 /// Performs the urlRequest to load Users data using the httpClient and AccessToken and decodes the User from loaded data
@@ -29,7 +29,7 @@ final class UserService: IUserService {
         self.httpClient = httpClient
     }
     
-    func search(with searchString: String, completion: @escaping (Result<[UserSearchResult], Error>) -> Void) {
+    func search(with searchString: String, completion: @escaping @Sendable (Result<[UserSearchResult], Error>) -> Void) {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users?range[login]=\(searchString.lowercased()),\(searchString.lowercased())z") else { return }
         var urlRequest = URLRequest(url: url)
         let bearer = "Bearer \(accessToken)"
@@ -52,7 +52,7 @@ final class UserService: IUserService {
         }
     }
    
-    func loadUserData(with login: String, completion: @escaping (Result<UserDetails, Error>) -> Void) {
+    func loadUserData(with login: String, completion: @escaping @Sendable (Result<UserDetails, Error>) -> Void) {
         guard let url = URL(string: "https://api.intra.42.fr/v2/users/\(login)") else { return }
         var urlRequest = URLRequest(url: url)
         let bearer = "Bearer \(accessToken)"

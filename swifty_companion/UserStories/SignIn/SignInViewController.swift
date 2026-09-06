@@ -29,6 +29,7 @@ final class SignInViewController: UIViewController {
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 60
         button.setTitle("Sign In", for: .normal)
+        button.accessibilityIdentifier = "signIn.button"
         button.tintColor = .white
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.addTarget(self, action: #selector(onSignInButtonTapped), for: .touchUpInside)

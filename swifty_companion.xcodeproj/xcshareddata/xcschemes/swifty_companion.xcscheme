@@ -20,6 +20,20 @@
                ReferencedContainer = "container:swifty_companion.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C0D3A0090000000000000001"
+               BuildableName = "swifty_companionUITests.xctest"
+               BlueprintName = "swifty_companionUITests"
+               ReferencedContainer = "container:swifty_companion.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -36,6 +50,16 @@
                BlueprintIdentifier = "A44DE39F2A76645B00307CBA"
                BuildableName = "swifty_companionTests.xctest"
                BlueprintName = "swifty_companionTests"
+               ReferencedContainer = "container:swifty_companion.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C0D3A0090000000000000001"
+               BuildableName = "swifty_companionUITests.xctest"
+               BlueprintName = "swifty_companionUITests"
                ReferencedContainer = "container:swifty_companion.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -61,6 +85,18 @@
             ReferencedContainer = "container:swifty_companion.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "SECRET"
+            value = "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"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "UID"
+            value = "fd018336ae27ca0008145cf91632254239433a6646ee6441f1c1e28b48962c29"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
